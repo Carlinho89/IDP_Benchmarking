@@ -15,7 +15,7 @@ public class Application extends Controller {
 
         String inputsString = "Count = " + inputs.size();
         for (Input input: inputs) {
-            inputsString += " " + input.name;
+            inputsString += " \n" + input.name;
         }
         return ok(index.render(inputsString));
     }
