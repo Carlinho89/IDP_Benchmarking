@@ -17,126 +17,54 @@
 
         </head>
         <body>
-            <div class="container-fluid">
-                <div class="well">
-                    <h1>AAAAAAAAAAAAA</h1>
-                    @message
-                </div>
+        <nav class="navbar navbar-inverse">
+          <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="#">BenchMarking Football Clubs</a>
             </div>
-            <nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
-                <div class="container">
-                        <!-- Brand and toggle get grouped for better mobile display -->
-                    <div class="navbar-header">
-                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                            <span class="sr-only">Toggle navigation</span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                        </button>
-                        <a class="navbar-brand" href="http://localhost:9000">
-                            <span><img alt="logo" src='@routes.Assets.at("images/logo.png")'></span>
-                            Hello
-                        </a>
-                    </div>
-                        <!-- Collect the nav links, forms, and other content for toggling -->
-                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                        <ul class="nav navbar-nav navbar-right">
-                            <li>
-                                <a href="#" data-toggle="modal" data-target="#logModal">Login</a>
-                            </li>
-                            <li>
-                                <a href="#" data-toggle="modal" data-target="#regModal">Register</a>
-                            </li>
-                        </ul>
-                    </div>
 
-                </div>
-                    <!-- /.container -->
-            </nav>
-
-                <!-- Header Carousel -->
-            <header id="myCarousel" class="carousel slide">
-                    <!-- Indicators -->
-                <ol class="carousel-indicators">
-                    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-                    <li data-target="#myCarousel" data-slide-to="1"></li>
-                    <li data-target="#myCarousel" data-slide-to="2"></li>
-                </ol>
-
-                    <!-- Wrapper for slides -->
-                <div class="carousel-inner">
-                    <div class="item active">
-                        <div class="fill" style="background-image:url(@routes.Assets.at("images/slide-1.jpg"));"></div>
-                        <div class="carousel-caption">
-                            <h2>Specially customized for TUM students</h2>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <div class="fill" style="background-image:url('@routes.Assets.at("images/slide-2.jpg")');"></div>
-                        <div class="carousel-caption">
-                            <h2>We solve all your student life problems</h2>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <div class="fill" style="background-image:url('@routes.Assets.at("images/slide-3.jpg")');"></div>
-                        <div class="carousel-caption">
-                            <h2>A bridge between you and real world companies</h2>
-                        </div>
-                    </div>
-                </div>
-
-                    <!-- Controls -->
-                <a class="left carousel-control" href="#myCarousel" data-slide="prev">
-                    <span class="icon-prev"></span>
-                </a>
-                <a class="right carousel-control" href="#myCarousel" data-slide="next">
-                    <span class="icon-next"></span>
-                </a>
-            </header>
-
-                <!-- Page Content -->
-            <div class="container">
-                    <!-- Marketing Icons Section -->
-                <div class="row">
-                    <div class="col-lg-12">
-                        <h1 class="page-header">
-                            Welcome
-                        </h1>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h4><i class="fa fa-fw fa-check"></i> Only for TUM </h4>
-                            </div>
-                            <div class="panel-body">
-                                <p> Write something </p>
-
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h4><i class="fa fa-fw fa-gift"></i> Peer to Peer </h4>
-                            </div>
-                            <div class="panel-body">
-                                <p>All the answers are provided by your fellow students, who understand your position and have the first-hand experience on your problems. You cannot be in better hand.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h4><i class="fa fa-fw fa-compass"></i> Close Tie to Companies</h4>
-                            </div>
-                            <div class="panel-body">
-                                <p>Our reputable company partners are keen on finding their next leader at TUM info. Keep on asking and answering course and technology related questions. A job offer might be on its way!</p>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            <a href=@routes.Application.getStarted />
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+              <ul class="nav navbar-nav">
+                <li class="active"><a href="#">Get Started <span class="sr-only">(current)</span></a></li>
+                
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Methods <span class="caret"></span></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="#">Action</a></li>
+                    <li><a href="#">Another action</a></li>
+                    <li><a href="#">Something else here</a></li>
+                    <li role="separator" class="divider"></li>
+                    <li><a href="#">Separated link</a></li>
+                    <li role="separator" class="divider"></li>
+                    <li><a href="#">One more separated link</a></li>
+                  </ul>
+                </li>
+              </ul>
+              
+              <ul class="nav navbar-nav navbar-right">
+                <li><a href="#">Link</a></li>
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="#">Action</a></li>
+                    <li><a href="#">Another action</a></li>
+                    <li><a href="#">Something else here</a></li>
+                    <li role="separator" class="divider"></li>
+                    <li><a href="#">Separated link</a></li>
+                  </ul>
+                </li>
+              </ul>
+            </div><!-- /.navbar-collapse -->
+          </div><!-- /.container-fluid -->
+        </nav>
 
 
 
