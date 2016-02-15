@@ -1,4 +1,11 @@
-@(message: String) (allInputs : List[Input])
+@(allInputs : List[Input])
 
 
   HELLO GETTING STARTED
+  @for(input <- allInputs){
+        <div>
+            Name is: @input.name
+
+
+        </div>
+    }
