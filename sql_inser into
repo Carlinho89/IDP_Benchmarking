@@ -145,7 +145,7 @@ INSERT INTO `input` (`id`, `name`, `type`) VALUES
 (23, 'Team Value (MLN €)', 'Social'),
 (24, 'Average Player Value (MLN €)', 'Sporty'),
 (25, 'Stadium Capacity', 'Social');
-INSERT INTO `league` (`id`, `name`, `teamsNumber`, `logo`) VALUES
+INSERT INTO `league` (`id`, `name`, `team_number`, `logo`) VALUES
 (1, 'Serie A', 20, ''),
 (2, 'Premier League', 20, ''),
 (3, 'Liga', 20, ''),
