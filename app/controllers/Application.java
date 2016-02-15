@@ -1,7 +1,7 @@
 package controllers;
 
 import com.avaje.ebean.Model;
-import models.Input;
+import models.*;
 import play.mvc.Controller;
 import play.mvc.Result;
 import views.html.get_started;
