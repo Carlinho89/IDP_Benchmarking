@@ -1,11 +1,17 @@
-@(allInputs : List[Input])
+@(objById : Team)(allObjs : List[Team])
+
+    single obj:
+    @if(objById != null){
+        @objById.name
+    }else{
+        missing id!
+    }
+    <br/>
+    <br/>
 
 
-  HELLO GETTING STARTED
-  @for(input <- allInputs){
-        <div>
-            Name is: @input.name
-
-
-        </div>
+    all objects:
+    @for(obj <- allObjs){
+        <br/>
+        @obj.name
     }
