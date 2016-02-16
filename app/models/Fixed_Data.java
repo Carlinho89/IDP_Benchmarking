@@ -37,4 +37,6 @@ public class Fixed_Data extends Model{
         return (List<Fixed_Data>) new Model.Finder(Fixed_Data.class).all();
     }
 
+
+
 }

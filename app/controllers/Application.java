@@ -18,7 +18,7 @@ public class Application extends Controller {
 
     public Result getStarted() {
 
-        return ok(get_started.render(Team.getById(1), Team.getAll()));
+        return ok(get_started.render(Input.getById(1), Input.getByType("Social")));
     }
 
 

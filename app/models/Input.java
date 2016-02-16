@@ -17,6 +17,7 @@ public class Input extends Model {
     public String name;
     public String type;
 
+    public static Finder find = new Finder(Input.class);
     /**
      * Query to DB to get a "Input" by ID
      * @param id the id
@@ -32,6 +33,17 @@ public class Input extends Model {
      */
     public static List<Input> getAll(){
         return (List<Input>) new Model.Finder(Input.class).all();
+    }
+
+    /**
+     * Query DB for specific input types
+     * @param type
+     * @return
+     */
+    public static List<Input> getByType(String type){
+        List<Input> inputs = (List<Input>) find.where().ilike("type", type).findList();
+
+        return inputs;
     }
 
 }
