@@ -1,4 +1,4 @@
-name := """IDP_Benchmarking"""
+name := """IDP_Benchmarking_3"""
 
 version := "1.0-SNAPSHOT"
 
@@ -15,6 +15,11 @@ libraryDependencies ++= Seq(
 libraryDependencies ++= Seq(
   "org.webjars" %% "webjars-play" % "2.4.0-1",
   "org.webjars" % "bootstrap" % "3.3.6"
+
+
+//"org.webjars" % "bootstrap" % "4.0.0-alpha.2"
+
+
 )
 
 // Play provides two styles of routers, one expects its actions to be injected, the

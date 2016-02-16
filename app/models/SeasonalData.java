@@ -4,6 +4,7 @@ import com.avaje.ebean.Model;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.util.List;
 
 /**
  * Created by carlodidomenico on 10/02/16.
@@ -20,5 +21,21 @@ public class SeasonalData extends Model {
     public String input_id;
     public String value;
 
+    /**
+     * Query to DB to get a "SeasonalData" by ID
+     * @param id the id
+     * @return the SeasonalData fetched obj
+     */
+    public static SeasonalData getById(int id){
+        return (SeasonalData) new Model.Finder(SeasonalData.class).byId(id);
+    }
+
+    /**
+     * Query to get all "SeasonalData" tuples from the DB
+     * @return list with all the fetched objs
+     */
+    public static List<SeasonalData> getAll(){
+        return (List<SeasonalData>) new Model.Finder(SeasonalData.class).all();
+    }
 
 }
