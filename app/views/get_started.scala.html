@@ -1,11 +1,199 @@
 @(allInputs : List[Input])
 
-
-  HELLO GETTING STARTED
-  @for(input <- allInputs){
-        <div>
-            Name is: @input.name
+@main("Get Started") {
 
 
+	<style>
+	  body {
+	      position: relative; 
+	  }
+	  #section1 {padding-top:50px;color: #fff; background-color: #1E88E5;}
+	  #section2 {padding-top:50px;color: #fff; background-color: #673ab7;}
+	  #section3 {padding-top:50px;color: #fff; background-color: #ff9800;}
+	  #section41 {padding-top:50px;color: #fff; background-color: #00bcd4;}
+	  #section42 {padding-top:50px;color: #fff; background-color: #009688;}
+	  </style>
+
+	<body data-spy="scroll" data-target=".navbar" data-offset="50">
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container-fluid">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>                        
+      </button>
+      <a class="navbar-brand" href="@routes.Application.index()">BenchMarking Football Clubs</a>
+      
+    </div>
+    <div>
+      <div class="collapse navbar-collapse" id="myNavbar">
+        <ul class="nav navbar-nav">
+          <li><a href="#section1">Section 1</a></li>
+          <li><a href="#section2">Section 2</a></li>
+          <li><a href="#section3">Section 3</a></li>
+          <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Section 4 <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="#section41">Section 4-1</a></li>
+              <li><a href="#section42">Section 4-2</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</nav>    
+
+<div id="section1" class="container-fluid text-center">
+  <h1 >Choose a League</h1>
+  <p>AAAAAAAAAAAA AAAAAAAAAAAAA AAAAAAAAAAAAA AAAAAAAAAA</p>
+  <p>AAAAAAAAAAAA AAAAAAAAAAAAA AAAAAAAAAAAAA AAAAAAAAAA</p>
+ 
+  
+  <div class="row">
+  	<div class="col-sm-3 text-center">
+  		
+  		  <h2 >Serie A</h2>
+  		 
+        
+  		  <a href="#section2">
+          <img class="img-responsive img-thumbnail img-circle center-block" src="@routes.Assets.at("images/SerieA500.png")" alt="SerieA" width="150" height="150" style="background-color:white;">
+        </a>
+  		   <p>The .img-responsive class makes the </p>
+  	</div>
+  	 <div class="col-sm-3 text-center">
+  	 	
+  	 	  <h2 >Premier League</h2>
+  	 	  
+        <a href="#section2">
+        
+  	 	  <img class="img-responsive img-thumbnail img-circle center-block" src="@routes.Assets.at("images/Premier500.png")" alt="Premier" width="150" height="150" style="background-color:white;">
+  	    
+        </a>
+        <p>The .img-responsive class makes </p>
+  	 </div>
+  	 <div class="col-sm-3 text-center">
+  	 	
+  	 	  <h2  >Liga</h2>
+  	 	  
+        <a href="#section2">
+  	 	  <img class="img-responsive img-thumbnail img-circle center-block" src="@routes.Assets.at("images/Liga500.png")" alt="Liga" width="150" height="150" style="background-color:white;"> 
+  	 		</a>
+        <p>The .img-responsive class makes </p>
+  	 </div>
+  	 <div class="col-sm-3 text-center">
+  	 	
+  	 	  <h2 >Bundes Liga</h2>
+  	 	 
+        <a href="#section2">
+  	 	  <img class="img-responsive img-thumbnail img-circle center-block" src="@routes.Assets.at("images/Bundes500c.png")" alt="Bundes" width="150" height="150" style="background-color:white;"> 
+  	 		</a>
+        <p>The .img-responsive class makes </p>
+  	 </div>
+  </div>
+</div>
+<div id="section2" class="container-fluid text-center">
+  <h1>Choose a Season</h1>
+  <p>Try to scroll this section and look at the navigation bar while scrolling! Try to scroll this section and look at the navigation bar while scrolling!</p>
+  <div class="row">
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+        <div class="form-group">
+        <label for="sel1">Select list:</label>
+        <select class="form-control" id="sel1">
+          <option>2010</option>
+          <option>2011</option>
+          <option>2012</option>
+          <option>2013</option>
+          <option>2014</option>
+          <option>2015</option>
+        </select>
+      </div>  
+    </div>
+    <div class="col-md-4"></div>
+  </div>
+  
+</div>
+<div id="section3" class="container-fluid">
+  <h1 class="text-center">Choose input parameters</h1>
+  <p class="text-center">Try to scroll this section and look at the navigation bar while scrolling! Try to scroll this section and look at the navigation bar while scrolling!</p>
+  <div class="row" >
+    <div class="col-md-4">
+      <div class="panel panel-success">
+        <div class="panel-heading">
+          <h2 class="panel-title">Sportive</h2>
         </div>
-    }
+        <div class="panel-body" style="color: black;">
+          @for(input <- allInputs){
+            <div class="checkbox checkbox-success">
+                <input class="styled" type="checkbox" >
+                <label >
+                     @input.name
+                </label>
+            </div>
+
+                
+            }
+        </div>
+      </div>
+    </div>
+   <div class="col-md-4">
+         <div class="panel panel-info">
+           <div class="panel-heading">
+             <h2 class="panel-title">Social</h2>
+           </div>
+           <div class="panel-body" style="color: black;">
+             @for(input <- allInputs){
+               <div class="checkbox checkbox-info">
+                   <input class="styled" type="checkbox" >
+                   <label>
+                        @input.name
+                   </label>
+               </div>
+
+                   
+               }
+           </div>
+         </div>
+       </div>
+    <div class="col-md-4">
+          <div class="panel panel-warning">
+            <div class="panel-heading">
+              <h1 class="panel-title">Monetary</h1>
+            </div>
+            <div class="panel-body" style="color: black;">
+              @for(input <- allInputs){
+                <div class="checkbox checkbox-warning">
+                    <input class="styled" type="checkbox" >
+                    <label>
+                         @input.name
+                    </label>
+                </div>
+
+                    
+                }
+            </div>
+          </div>
+        </div>
+
+  </div>
+
+ 
+</div>
+<div id="section41" class="container-fluid">
+  <h1>Section 4 Submenu 1</h1>
+  <p>Try to scroll this section and look at the navigation bar while scrolling! Try to scroll this section and look at the navigation bar while scrolling!</p>
+  <p>Try to scroll this section and look at the navigation bar while scrolling! Try to scroll this section and look at the navigation bar while scrolling!</p>
+</div>
+<div id="section42" class="container-fluid">
+  <h1>Section 4 Submenu 2</h1>
+  <p>Try to scroll this section and look at the navigation bar while scrolling! Try to scroll this section and look at the navigation bar while scrolling!</p>
+  <p>Try to scroll this section and look at the navigation bar while scrolling! Try to scroll this section and look at the navigation bar while scrolling!</p>
+</div>
+
+</body>
+   
+
+
+}

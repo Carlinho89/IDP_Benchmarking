@@ -10,3 +10,4 @@ GET     /getStarted/                controllers.Application.getStarted()
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
 GET     /webjars/*file              controllers.WebJarAssets.at(file)
+
