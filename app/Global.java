@@ -9,15 +9,27 @@ public class Global extends GlobalSettings {
     private final String path = "./lib/";
     @Override
     public void onStart(Application app) {
-        PlayNativeLibLoader.load(app.getFile(path + "libcplex1263.jnilib").getPath());
-        PlayNativeLibLoader.load(app.getFile(path + "libcplex1263mpitransport.dylib").getPath());
-        PlayNativeLibLoader.load(app.getFile(path + "libcplex1263mpiworker.dylib").getPath());
-        PlayNativeLibLoader.load(app.getFile(path + "libcplex1263processtransport.dylib").getPath());
-        PlayNativeLibLoader.load(app.getFile(path + "libcplex1263processworker.dylib").getPath());
-        PlayNativeLibLoader.load(app.getFile(path + "libcplex1263remote.dylib").getPath());
-        PlayNativeLibLoader.load(app.getFile(path + "libcplex1263remotejni.jnilib").getPath());
-        PlayNativeLibLoader.load(app.getFile(path + "libcplex1263tcpiptransport.dylib").getPath());
-        PlayNativeLibLoader.load(app.getFile(path + "libcplex1263tcpipworker.dylib").getPath());
+
+	// OSX/Linux:
+        PlayNativeLibLoader.load(app.getFile("./lib/libcplex1263.jnilib").getPath());
+        PlayNativeLibLoader.load(app.getFile("./lib/libcplex1263mpitransport.dylib").getPath());
+        PlayNativeLibLoader.load(app.getFile("./lib/libcplex1263mpiworker.dylib").getPath());
+        PlayNativeLibLoader.load(app.getFile("./lib/libcplex1263processtransport.dylib").getPath());
+        PlayNativeLibLoader.load(app.getFile("./lib/libcplex1263processworker.dylib").getPath());
+        PlayNativeLibLoader.load(app.getFile("./lib/libcplex1263remote.dylib").getPath());
+        PlayNativeLibLoader.load(app.getFile("./lib/libcplex1263remotejni.jnilib").getPath());
+        PlayNativeLibLoader.load(app.getFile("./lib/libcplex1263tcpiptransport.dylib").getPath());
+        PlayNativeLibLoader.load(app.getFile("./lib/libcplex1263tcpipworker.dylib").getPath());
+	// WINDOWS:
+	PlayNativeLibLoader.load(app.getFile("./lib/cplex1260.dll").getPath());
+        PlayNativeLibLoader.load(app.getFile("./lib/cplex1260processtransport.dll").getPath());
+        PlayNativeLibLoader.load(app.getFile("./lib/cplex1260processworker.dll").getPath());
+        PlayNativeLibLoader.load(app.getFile("./lib/cplex1260remote.dll").getPath());
+        PlayNativeLibLoader.load(app.getFile("./lib/cplex1260remotejni.dll").getPath());
+        PlayNativeLibLoader.load(app.getFile("./lib/cplex1260tcpiptransport.dll").getPath());
+        PlayNativeLibLoader.load(app.getFile("./lib/cplex1260tcpipworker.dll").getPath());
+        PlayNativeLibLoader.load(app.getFile("./lib/ILOG.Concert.dll").getPath());
+	PlayNativeLibLoader.load(app.getFile("./lib/ILOG.CPLEX.dll").getPath());
 
     }
     @Override
