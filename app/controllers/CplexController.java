@@ -55,14 +55,4 @@ public class CplexController {
         }
     }
 
-    public String getValueForObject(IloCplex cplex, String key){
-        Object valObj;
-
-        try{
-
-        }catch (IloException e) {
-            e.printStackTrace();
-        }
-
-    }
 }
