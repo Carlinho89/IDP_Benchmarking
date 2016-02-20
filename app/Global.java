@@ -9,15 +9,15 @@ public class Global extends GlobalSettings {
     private final String path = "./lib/";
     @Override
     public void onStart(Application app) {
-        PlayNativeLibLoader.load(app.getFile("./lib/libcplex1263.jnilib").getPath());
-        PlayNativeLibLoader.load(app.getFile("./lib/libcplex1263mpitransport.dylib").getPath());
-        PlayNativeLibLoader.load(app.getFile("./lib/libcplex1263mpiworker.dylib").getPath());
-        PlayNativeLibLoader.load(app.getFile("./lib/libcplex1263processtransport.dylib").getPath());
-        PlayNativeLibLoader.load(app.getFile("./lib/libcplex1263processworker.dylib").getPath());
-        PlayNativeLibLoader.load(app.getFile("./lib/libcplex1263remote.dylib").getPath());
-        PlayNativeLibLoader.load(app.getFile("./lib/libcplex1263remotejni.jnilib").getPath());
-        PlayNativeLibLoader.load(app.getFile("./lib/libcplex1263tcpiptransport.dylib").getPath());
-        PlayNativeLibLoader.load(app.getFile("./lib/libcplex1263tcpipworker.dylib").getPath());
+        PlayNativeLibLoader.load(app.getFile(path + "libcplex1263.jnilib").getPath());
+        PlayNativeLibLoader.load(app.getFile(path + "libcplex1263mpitransport.dylib").getPath());
+        PlayNativeLibLoader.load(app.getFile(path + "libcplex1263mpiworker.dylib").getPath());
+        PlayNativeLibLoader.load(app.getFile(path + "libcplex1263processtransport.dylib").getPath());
+        PlayNativeLibLoader.load(app.getFile(path + "libcplex1263processworker.dylib").getPath());
+        PlayNativeLibLoader.load(app.getFile(path + "libcplex1263remote.dylib").getPath());
+        PlayNativeLibLoader.load(app.getFile(path + "libcplex1263remotejni.jnilib").getPath());
+        PlayNativeLibLoader.load(app.getFile(path + "libcplex1263tcpiptransport.dylib").getPath());
+        PlayNativeLibLoader.load(app.getFile(path + "libcplex1263tcpipworker.dylib").getPath());
 
     }
     @Override
