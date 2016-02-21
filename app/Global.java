@@ -6,7 +6,7 @@ import java.util.*;
 import java.lang.reflect.*;
 
 public class Global extends GlobalSettings {
-    private String path = "./lib/";
+    private String path = "lib/";
     @Override
     public void onStart(Application app) {
 
@@ -14,7 +14,8 @@ public class Global extends GlobalSettings {
         System.out.println("OS is = " + os);
         if(os.contains("mac os x") || os.contains("mac")) {
             // OSX/Linux:
-            path += "OSX_Linux";
+            path += "OSX_Linux/";
+            //path = "";
             PlayNativeLibLoader.load(app.getFile(path +"libcplex1263.jnilib").getPath());
             PlayNativeLibLoader.load(app.getFile(path +"libcplex1263mpitransport.dylib").getPath());
             PlayNativeLibLoader.load(app.getFile(path +"libcplex1263mpiworker.dylib").getPath());
@@ -27,7 +28,7 @@ public class Global extends GlobalSettings {
 
         }else if (os.contains("windows")){
 	    //WINDOWS:
-            path += "WIN";
+            path += "WIN/";
 
             PlayNativeLibLoader.load(app.getFile(path +"cplex1260.dll").getPath());
             PlayNativeLibLoader.load(app.getFile(path +"cplex1260processtransport.dll").getPath());
