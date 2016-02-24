@@ -1,4 +1,5 @@
-@(allInputs : List[Input])
+@import scala.collection.immutable.HashMap
+@(allInputs : List[Input])(objVal : Double)(allVars : HashMap[String, Double])
 
 @main("Get Started") {
 
@@ -47,8 +48,8 @@
 
 <div id="section1" class="container-fluid text-center">
   <h1 >Choose a League</h1>
-  <p>AAAAAAAAAAAA AAAAAAAAAAAAA AAAAAAAAAAAAA AAAAAAAAAA</p>
-  <p>AAAAAAAAAAAA AAAAAAAAAAAAA AAAAAAAAAAAAA AAAAAAAAAA</p>
+  <p>Objective value is @objVal</p>
+   
  
   
   <div class="row">
