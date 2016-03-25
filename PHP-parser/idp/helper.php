@@ -1,40 +1,33 @@
 <?php
-/*Parser for the stats_league.html files.
-Column approach: parse the first column to get the order of teams then parse all wanted columns containing inputs for the teams
-The array of DataRow objects is first filled with league_id, team_id, team_name, year by the getTeams() method and inserts the team in the db if not there
-A copy of this array is passed to every call to the parseInput() method which fills in value and input_id and inserts the input in the db if not there
 
-Parameters extracted:
-
-shotsPerGame, possession, passSuccess, RedCards, ShotsOnTargetPG, 
-dribbleWonPerGame, shotsConcededPerGame, tacklePerGame, interceptionPerGame 
-
-Notice: the limit of execution time for php doesn't give a chance of running the file only once. 
-My suggestion  is to parse 1 or 2 leagues at a time. This can be done be commenting/uncommenting the strings set in the $urls array
-ex: This will parse serieA and premier. 
-$urls=array();
-$urls[]="stats_serieA_"; 
-$urls[]="stats_premier_"; 
-//$urls[]="stats_liga_"; 
-//$urls[]="stats_bundesliga_";
-Re run the script with the first two commented and the last two uncommented to add liga and bundes
-*/
 include('simplehtmldom_1_5/simple_html_dom.php');
 
+
+/**
+Setting connection to db. remember to change dbname
+**/
   $servername = "localhost";
   $username = "root";
   $password = "toxik89";
   $dbname = "idpdoc";
 
-
-
   $conn = new mysqli($servername, $username, $password, $dbname);
   // Check connection
   if ($conn->connect_error) {
       die("Connection failed: " . $conn->connect_error);
-  } 
+  }  
 
 
+/**
+The class is used for data collection. Every row that will be added to the input table will be saved as an instance of this class first. As explained in the comments on the next functions these objects are first partially populated (when the column holding the team names on the web page is parsed). Then a copy of these objects is made for every value being parsed from the webpage.
+Parameters: same as input table
+Methods: 
+	-toString():helper method to print the values in a formatted way
+	-insertMessage(): prints to video the string informing the user that the instance has 	  been saved to db
+	-insertQuery(): outputs the query to insert the object in the db
+	-getTeamId(): checks if the teams exists and retrieves the id. If the team does not exist a new row is added to the teams table and the id is returned.
+	-getTMTeamId(): retrieves team id for transfermarkt parser
+**/
 class DataRow
 {
     // property declaration
@@ -59,7 +52,7 @@ class DataRow
     }
 
     public function insertMessage($input){
-      echo "<br> Insert $input for team $this->team_name year $this->year";
+      echo "Insert $input for team $this->team_name year $this->year<br>";
     }
 
     public function insertQuery(){
@@ -85,76 +78,22 @@ class DataRow
       }
 
     }
-}
 
-
-//Select leagues to parse
-$urls=array();
-$urls[]="stats_serieA_"; 
-//$urls[]="stats_premier_"; 
-//$urls[]="stats_liga_"; 
-//$urls[]="stats_bundesliga_"; 
-
-
-
-
-
-foreach ($urls as $url) {
-  for ($year = 2010; $year<=2015; $year++ ){
-
-    $league_id = setLeagueId($url);
-    
-    $html = file_get_html($url.$year.".html");
-    echo "<br><b>Parsing Stats from ".$url.$year.".html </b><br>";
-
-      //summary
-      $table = $html->getElementById("statistics-team-table-summary")->childNodes(0);
-
-        //Summary
-          $dataArray = getTeams($conn, $table, $year, $league_id, "tn");
+     public function getTMTeamId($conn, $tm_id){
+      $sql = "SELECT id, name FROM `teams` WHERE `tm_id` = $tm_id";
+      $result = $conn->query($sql);
+      if ($result->num_rows > 0) {
+          $row = $result->fetch_assoc();
+          $this->team_id = $row['id'];
+          $this->team_name = $row['name'];
+      } else {
+        echo "<br>No team id matching for ".$tm_id." <br>";
         
 
-          parseInput($conn,"Shots Per Game", "td[class=shotsPerGame]", $table, $dataArray, "Sporty" );
+      }
 
-          parseInput($conn,"Ball Possession", "td[class=possession]", $table, $dataArray, "Sporty" );
-
-          parseInput($conn,"Pass Success", "td[class=passSuccess]", $table, $dataArray, "Sporty" );
-
-          parseInput($conn,"Red Cards", "span[class=red-card-box]", $table, $dataArray, "Sporty" );
-
-
-      //offensive
-      $table = $html->getElementById("statistics-team-table-offensive")->childNodes(0);
-
-        $dataArray = getTeams($conn, $table, $year, $league_id, "tn");
-        
-
-          parseInput($conn,"Shots On Target Per Game", "td[class=shotOnTargetPerGame]", $table, $dataArray, "Sporty" );
-
-          parseInput($conn,"Dribbles Won Per Game", "td[class=dribbleWonPerGame]", $table, $dataArray, "Sporty" );
-
-
-        
-       
-      //defensive
-      $table = $html->getElementById("statistics-team-table-defensive")->childNodes(0);
-
-        $dataArray = getTeams($conn, $table, $year, $league_id, "tn");
-        
-          parseInput($conn,"Shots Conceded Per Game", "td[class=shotsConcededPerGame]", $table, $dataArray, "Sporty" );
-
-          parseInput($conn,"Tackles Per Game", "td[class=tacklePerGame]", $table, $dataArray, "Sporty" );
-
-          parseInput($conn,"Interceptions Per Game", "td[class=interceptionPerGame]", $table, $dataArray, "Sporty" );
-
-     echo "<br><b>Done Parsing Stats from ".$url.$year.".html </b> <br>";
     }
-    
-  }
-
-
-
-
+}
 
 
  //Function to set the league id by reading the url of the file parsed.
@@ -167,6 +106,23 @@ function setLeagueId($url){
   elseif (strpos($url, 'bundesliga') !== false){$id=4;}
   if(! $id > 0 ){
     echo "the file is not named correctly. Couldn't find league name";
+  }
+
+  return $id;
+
+}
+
+
+
+//Function to set the league id by reading the url of the page parsed in transfermarkt.
+function setTMLeagueId($url){
+  $id=0;
+  if (strpos($url, 'serie') !== false){$id=1;}
+  elseif (strpos($url, 'premier') !== false){$id=2;}
+  elseif (strpos($url, 'primera') !== false){$id=3;}
+  elseif (strpos($url, 'bundesliga') !== false){$id=4;}
+  if(! $id > 0 ){
+    echo "Error: couldn't recognize league_id from url $url ";
   }
 
   return $id;
@@ -195,7 +151,7 @@ function getInputId($conn, $name, $type){
 
 }
 
-//Creates dataArray which is used as basis for every insert. This array holds 
+//Creates dataArray which is used as basis for every input insert. This array holds 
 //DataRow objects which only have name year and league set.
 //Notice it retreaves only team name (tn) from the html
 function getTeams($conn, $table, $year, $league_id, $selector){

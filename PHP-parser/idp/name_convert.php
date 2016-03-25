@@ -12,7 +12,7 @@ include('simplehtmldom_1_5/simple_html_dom.php');
   $servername = "localhost";
   $username = "root";
   $password = "toxik89";
-  $dbname = "idp";
+  $dbname = "idpdoc";
 
 
 
@@ -75,7 +75,7 @@ class DataRow
           $row = $result->fetch_assoc();
           $this->team_id = $row['id'];
       } else {
-        $sql2="INSERT INTO `idp`.`teams` (`id`, `name`, `logo`) VALUES (NULL, '".$this->team_name."', '')";
+        $sql2="INSERT INTO `teams` (`id`, `name`, `logo`) VALUES (NULL, '".$this->team_name."', '')";
         $conn->query($sql2);
         $this->team_id = $conn->insert_id;
         

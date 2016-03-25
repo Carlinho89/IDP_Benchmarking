@@ -1,0 +1,331 @@
+Parser Documentation
+Intro: The following documentation explains how to retrieve data and manage the database for the project BenchMarking of Soccer Teams. At the moment the database holds informations on the four main european leagues 
+(Italian, English, Spanish, German) from year 2010 until 2015(partial). The data for season 2015 will be used as study case to show how to update the content. Furthermore an explanation on how to create the whole db from scratch will be given.
+
+Technology: the parsers are written in PHP and store the data in a MySQL database. Once populated the db can be exported to an sql file and then imported in the h2 database used by the Play application. 
+The following steps assume that your machine can run PHP scripts and can connect to a running MySQL database. The easiest way is to install the XAMPP (for Windows, check LAMPP or MAMPP for other OS) distribution which gives both on a local Apache server.
+
+
+Sites Used: the football data has been gathered from two web pages of soccer statistics:
+-whoscored.com: this page has been used to parse most of the inputs regarding  sportive data (ex: ball possession, games won,..). The content from this web site has been cached locally since there was no recognizable pattern in the url; it is saved in the html files handed out with the parser.
+-transfermarkt.com: this page was used to parse the social and monetary values for the teams. The data here is crawled directly from the web source since it was easy to iterate through the actual urls in order to get data from different years in single file.
+
+Notice that the use of different sources also implies a phase of transformation of the data: most of the teams have different names in the two websites and surprisingly also transfermarkt doesn't have a fixed naming for teams among it's own pages. The document will explain how to overcome the problem.
+ 
+
+
+
+
+DB Structure (paste all create tables) (draw UML diagram of DB) (update the sql file handed out):
+The file "benchmarkingfootballteams.sql" holds structure and data of the latest db version. In this section we'll present the sql for creating the tables with a didactical purpose. The tables that have been manually populated will also have the necessary insert statements.
+
+INPUT: holds Id, name and type of the inputs. All the inserts on this table will be done by the parsers except for Stadium Capacity which was added manually
+
+	CREATE TABLE IF NOT EXISTS `inputs` (
+	  `id` int(11) NOT NULL,
+	  `name` varchar(50) NOT NULL,
+	  `type` varchar(20) NOT NULL
+	) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
+
+	INSERT INTO `inputs` (`id`, `name`, `type`) VALUES
+	(25, 'Stadium Capacity', 'Social');
+
+
+
+LEAGUE: holds id, name, number of teams and logo of the league. This table has been populated manually. If you want to change the id of the leagues remember also to change the parsers function setLeagueId() accordingly.
+
+	CREATE TABLE IF NOT EXISTS `leagues` (
+	  `id` int(11) NOT NULL,
+	  `name` varchar(50) NOT NULL,
+	  `teamsNumber` int(11) NOT NULL,
+	  `logo` text NOT NULL
+	) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+	INSERT INTO `leagues` (`id`, `name`, `teamsNumber`, `logo`) VALUES
+	(1, 'Serie A', 20, 'SerieA500.png'),
+	(2, 'Premier League', 20, 'Premier500.png'),
+	(3, 'Liga', 20, 'Liga500.png'),
+	(4, 'Bundes Liga', 18, 'Bundes500.png');
+
+	ALTER TABLE `leagues`
+	  ADD PRIMARY KEY (`id`);
+
+
+
+
+TEAMS: holds name and logo of teams. The PHP scripts for parsing whoscored.com will populate the first two columns (id and name). The remaining fields will be populated by the tm_conversion.php script
+
+CREATE TABLE IF NOT EXISTS `teams` (
+  `id` int(11) NOT NULL,
+  `name` varchar(50) NOT NULL,
+  `tm_id` int(50) NOT NULL,
+  `logo` text NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
+
+	ALTER TABLE `teams`
+	  ADD PRIMARY KEY (`id`);
+
+
+
+
+SEASONAL DATA: This is the table holding the inputs information. Every input should be specified for a team and a season only once, hence a unique constraint has been added on the columns team_id, input_id, year. This table is populated by the parsers
+
+	CREATE TABLE IF NOT EXISTS `seasonal_data` (
+	  `id` int(11) NOT NULL,
+	  `team_id` int(11) NOT NULL,
+	  `team_name` varchar(50) NOT NULL,
+	  `year` int(11) NOT NULL,
+	  `league_id` int(11) NOT NULL,
+	  `input_id` int(11) NOT NULL,
+	  `value` float NOT NULL
+	) ENGINE=InnoDB AUTO_INCREMENT=15595 DEFAULT CHARSET=utf8;
+
+	ALTER TABLE `seasonal_data`
+	  ADD PRIMARY KEY (`id`),
+	  ADD UNIQUE KEY `unique_index` (`team_id`,`year`,`input_id`);
+
+
+
+FIXED DATA: Some of the inputs are not ment to change seasonally. By now this is only the case for the Stadium Capacity input but any data of this type should be stored here. 
+Since transfermarkt only reports capacity for stadiums belonging to teams of the current year it was choosen to parse this data manually. If you are generating the dataset from scratch keep in mind that The insert statement pasted assumes that the Stadium Capacity has id 25. If this is not the case change the data accordingly (use an sql UPDATE command).
+
+	CREATE TABLE IF NOT EXISTS `fixed_data` (
+	  `id` int(11) NOT NULL,
+	  `team_id` int(11) NOT NULL,
+	  `team_name` varchar(50) NOT NULL,
+	  `league_id` int(11) NOT NULL,
+	  `input_id` int(11) NOT NULL,
+	  `value` float NOT NULL
+	) ENGINE=InnoDB AUTO_INCREMENT=119 DEFAULT CHARSET=utf8;
+
+	INSERT INTO `fixed_data` (`id`, `team_id`, `team_name`, `league_id`, `input_id`, `value`) VALUES
+		(1, 1, 'Juventus', 1, 25, 41011),
+		(2, 2, 'Roma', 1, 25, 73261),
+		(3, 3, 'Lazio', 1, 25, 73261),
+		(4, 4, 'Fiorentina', 1, 25, 47282),
+		(5, 5, 'Napoli', 1, 25, 60240),
+		(6, 6, 'Genoa', 1, 25, 36703),
+		(7, 7, 'Sampdoria', 1, 25, 38279),
+		(8, 8, 'Inter', 1, 25, 80018),
+		(9, 9, 'Torino', 1, 25, 27994),
+		(10, 10, 'AC Milan', 1, 25, 81277),
+		(11, 11, 'Palermo', 1, 25, 36349),
+		(12, 12, 'Sassuolo', 1, 25, 21584),
+		(13, 13, 'Verona', 1, 25, 42160),
+		(14, 14, 'Chievo', 1, 25, 38402),
+		(15, 15, 'Empoli', 1, 25, 19847),
+		(16, 16, 'Udinese', 1, 25, 25000),
+		(17, 17, 'Atalanta', 1, 25, 24758),
+		(18, 18, 'Cagliari', 1, 25, 16074),
+		(19, 19, 'Cesena', 1, 25, 23860),
+		(20, 20, 'Parma', 1, 25, 27906),
+		(21, 21, 'Catania', 1, 25, 23200),
+		(22, 22, 'Bologna', 1, 25, 38279),
+		(23, 23, 'Livorno', 1, 25, 19238),
+		(24, 24, 'Carpi', 1, 25, 21092),
+		(25, 25, 'Frosinone', 1, 25, 10000),
+		(26, 26, 'Lecce', 1, 25, 33876),
+		(27, 27, 'Brescia', 1, 25, 23072),
+		(28, 28, 'Bari', 1, 25, 58270),
+		(29, 29, 'Robur Siena', 1, 25, 15373),
+		(30, 30, 'Novara', 1, 25, 17875),
+		(31, 31, 'Pescara', 1, 25, 20476),
+		(32, 32, 'Manchester United', 2, 25, 75653),
+		(33, 33, 'Chelsea', 2, 25, 41789),
+		(34, 34, 'Manchester City', 2, 25, 55097),
+		(35, 35, 'Arsenal', 2, 25, 60260),
+		(36, 36, 'Tottenham', 2, 25, 36284),
+		(37, 37, 'Liverpool', 2, 25, 44742),
+		(38, 38, 'Everton', 2, 25, 39571),
+		(39, 39, 'Fulham', 2, 25, 25700),
+		(40, 40, 'Aston Villa', 2, 25, 42682),
+		(41, 41, 'Sunderland', 2, 25, 48707),
+		(42, 42, 'West Bromwich Albion', 2, 25, 26850),
+		(43, 43, 'Newcastle United', 2, 25, 52338),
+		(44, 44, 'Stoke', 2, 25, 27740),
+		(45, 45, 'Bolton', 2, 25, 28723),
+		(46, 46, 'Blackburn', 2, 25, 31367),
+		(47, 47, 'Wigan', 2, 25, 25133),
+		(48, 48, 'Wolverhampton Wanderers', 2, 25, 30852),
+		(49, 49, 'Birmingham', 2, 25, 30016),
+		(50, 50, 'Blackpool', 2, 25, 16220),
+		(51, 51, 'West Ham', 2, 25, 34977),
+		(52, 52, 'Swansea', 2, 25, 20827),
+		(53, 53, 'Norwich', 2, 25, 27010),
+		(54, 54, 'Queens Park Rangers', 2, 25, 18360),
+		(55, 55, 'Southampton', 2, 25, 32505),
+		(56, 56, 'Reading', 2, 25, 24161),
+		(57, 57, 'Crystal Palace', 2, 25, 26255),
+		(58, 58, 'Hull', 2, 25, 25404),
+		(59, 59, 'Cardiff', 2, 25, 28106),
+		(60, 60, 'Leicester', 2, 25, 32312),
+		(61, 61, 'Burnley', 2, 25, 24646),
+		(62, 62, 'Watford', 2, 25, 21500),
+		(63, 63, 'Bournemouth', 2, 25, 11464),
+		(64, 64, 'Barcelona', 3, 25, 99354),
+		(65, 65, 'Real Madrid', 3, 25, 85454),
+		(66, 66, 'Valencia', 3, 25, 52600),
+		(67, 67, 'Villarreal', 3, 25, 25000),
+		(68, 68, 'Sevilla', 3, 25, 45500),
+		(69, 69, 'Athletic Club', 3, 25, 53332),
+		(70, 70, 'Atletico Madrid', 3, 25, 54851),
+		(71, 71, 'Espanyol', 3, 25, 40500),
+		(72, 72, 'Osasuna', 3, 25, 19800),
+		(73, 73, 'Sporting Gijon', 3, 25, 30000),
+		(74, 74, 'Malaga', 3, 25, 30044),
+		(75, 75, 'Racing Santander', 3, 25, 22271),
+		(76, 76, 'Zaragoza', 3, 25, 34596),
+		(77, 77, 'Real Sociedad', 3, 25, 32076),
+		(78, 78, 'Levante', 3, 25, 25354),
+		(79, 79, 'Getafe', 3, 25, 14400),
+		(80, 80, 'Mallorca', 3, 25, 23142),
+		(81, 81, 'Deportivo La Coruna', 3, 25, 34711),
+		(82, 82, 'Hercules', 3, 25, 30000),
+		(83, 83, 'Almeria', 3, 25, 22000),
+		(84, 84, 'Real Betis', 3, 25, 51700),
+		(85, 85, 'Rayo Vallecano', 3, 25, 14708),
+		(86, 86, 'Granada', 3, 25, 22524),
+		(87, 87, 'Valladolid', 3, 25, 26512),
+		(88, 88, 'Celta Vigo', 3, 25, 29500),
+		(89, 89, 'Elche', 3, 25, 36540),
+		(90, 90, 'Eibar', 3, 25, 6285),
+		(91, 91, 'Cordoba', 3, 25, 21822),
+		(92, 92, 'Las Palmas', 3, 25, 32665),
+		(93, 93, 'Borussia Dortmund', 4, 25, 81359),
+		(94, 94, 'Bayer Leverkusen', 4, 25, 30210),
+		(95, 95, 'Bayern Munich', 4, 25, 75024),
+		(96, 96, 'Hannover 96', 4, 25, 49000),
+		(97, 97, 'Mainz 05', 4, 25, 34000),
+		(98, 98, 'Nuernberg', 4, 25, 50000),
+		(99, 99, 'Kaiserslautern', 4, 25, 29546),
+		(100, 100, 'Hamburger SV', 4, 25, 57000),
+		(101, 101, 'Freiburg', 4, 25, 24000),
+		(102, 102, 'FC Cologne', 4, 25, 49968),
+		(103, 103, 'Hoffenheim', 4, 25, 30150),
+		(104, 104, 'VfB Stuttgart', 4, 25, 60449),
+		(105, 105, 'Werder Bremen', 4, 25, 42100),
+		(106, 106, 'Schalke 04', 4, 25, 62271),
+		(107, 107, 'Wolfsburg', 4, 25, 30000),
+		(108, 108, 'Borussia M.Gladbach', 4, 25, 54010),
+		(109, 109, 'Eintracht Frankfurt', 4, 25, 51500),
+		(110, 110, 'St. Pauli', 4, 25, 29546),
+		(111, 111, 'Augsburg', 4, 25, 30660),
+		(112, 112, 'Hertha Berlin', 4, 25, 74649),
+		(113, 113, 'Fortuna Duesseldorf', 4, 25, 54600),
+		(114, 114, 'Greuther Fuerth', 4, 25, 18000),
+		(115, 115, 'Braunschweig', 4, 25, 23325),
+		(116, 116, 'Paderborn', 4, 25, 15000),
+		(117, 117, 'Ingolstadt', 4, 25, 15800),
+		(118, 118, 'Darmstadt', 4, 25, 17000);
+
+
+HANDOUT(FILES)
+SQL:
+	-benchmarkingfootballteams.sql: export of the latest db
+
+
+
+HTML: as mentioned before for whoscored the html code has been saved in local files renamed so to be easily iterated by the parser. Three files have been saved for each season/league
+	-stats_LEAGUENAME_YEAR.html: holds generic, offensive and defensive stats for the season
+	-passes_LEAGUENAME_YEAR.html: holds stats on the teams passes
+	-results_LEAGUENAME_YEAR.html: holds result stats like victory, losses, draws and goals scored/received
+
+Steps to save html files for who scored:
+1.Visit whoscored.com and select the interested league. 
+2.You will be brought to the statistics of current season of the league. On this page is the standings table. View the page source code (ex in Chrome press ctrl+shift+i).
+
+RESULTS TABLE
+3.Highlight the source code for the table. Look for 
+<div id="standings-NUMBER" style="display: block;">  where NUMBER changes with every season, league.
+4.Right click on the line and copy the content (it will copy also contained code) and paste it to a blank file. 
+5.Save the file with the right naming. In the example we are getting results from Liga in 2015; thee file name would be results_liga_2015.html
+
+STATS TABLE
+6.Scroll back to the top of the page and select Team Statistics.
+7.On this page is the Team Statistics table with 4 tabs: Summary (shown by default), Defensive, Offensive, Detailed.
+8.Click on Defensive, wait for the data to load. Repeat the operation for the Offensive tab. This step is fundamental for the source code to display all the information we want to parse. Keep this in mind if you decide to add other pages to parse: some data are only loaded asynchronously after an event (click in our case) so we have to trigger the event in order to have the data in the source code.
+9.View the source code for the page like in step 2
+10. Highlight the source code for the table. Look for:
+<div id="stage-team-stats" class="ws-panel stat-table">
+Notice this div is holding all the three tables we need. Don't highlight divs with id stage-team-stats-summary (or offensive,difensive) cause it would be missing part of the info we are looking for.
+11.repeat steps 4 and 5. This time the file should be saved as stats_liga_2015.html to follow the example. In the general case substitute league name and year.
+
+
+
+
+PASSES TABLE
+12.On the same page is the  Situational Statistics table. Click on the Pass Types tab (wait for content to load).
+13.Again highlight the code for the table. Look for:
+<div id="stage-situation-stats" class="ws-panel stat-table">
+14.Repeat steps 4 and 5. This time use the following naming scheme: passes_LEAGUENAME_YEAR.html (passes_liga_2015.html in the example).
+
+
+
+
+
+PHP: all the files are commented 
+	-simplehtmldom_1_5 folder: holds the library used to parse html content
+
+	-helper.php: this file is required in every parser. It holds helper functions and classes to parse html.
+
+	-stats_summary_parser.php: parses data from the summary table of whoscored saved in the stats_LEAGUENAME_YEAR.html
+	-stats_defensive_parser.php: parses the defensive data from the same file
+	-stats_offensive_parser.php: parses the defensive data from the same file
+
+	-passes_parser.php: parses passing data saved in the passes_LEAGUENAME_YEAR.html from whoscored
+
+	-result_parser.php: parses passing data saved in the results_LEAGUENAME_YEAR.html from whoscored
+
+	-ADD FILES FOR TRANFERMARKT
+	-tm_conversion.php: 
+
+
+USAGE:
+	The sql file in the handout can be easily imported in any sql database. This is the fastest way to populate the data.
+	The other way is to copy the structure of the db from the section DB Structure by running the create table statements. 
+	Sportive inputs which are parsed from whoscored can be easily obtained by launching the different *_parser.php files. Just remember to read the comments in each file cause due to php's limited time of execution some might have to be launched twice in order to complete their task.
+
+	Fixed Data: Some tables hold data that wont have to be updated seasonally (such as stadium capacitities). 
+	
+	Transfermarkt: 
+
+
+
+
+EXPANDING DATASET 
+-from whoscored: the html files already have some values which are not parsed. The web page also has other tables which have not been taken in consideration. In both cases by looking at the php parsers and reading steps above it should be easy to understand how to proceed.  
+Tables in whoscored have a first column which holds team names and other columns holding values for different kinds of inputs. Luckily the class of the cell in the sourcecode can be used to parse the contents. As example take one results_LEAGUENAME_YEAR.html file. You can notice that every <td> (html tag for a table's cell) has a class describing the content (tn= team name, p=played, w=won, d=draw ecc). The parser creates a first array holding team names by looking for td with class tn (team names) with the getTeams() method. Sequently a copy of the resulting array is passed to every call to the parseInput() method which also takes as parameter the class of the input we want to parse (ex w for wins). 
+The approach is generic and can work for any numeric valued input written  on the page. Some tables may have different elements inside the td: look at red cards in the stats_summary_parser.php.
+
+HOW TO:
+Add a season, add an input,
+
+Example with current season
+
+
+
+Trova un modo per automatizzare tutto
+
+
+Fixed Tables: fixed-data leagues teams
+
+Steps from beginning:
+	Create an empty DB
+	Create Tables
+
+	For whoscored:
+		Create HTML FILES
+		Run tableparser.php -run multiple times for php execution time limit
+
+RIMUOVI TUTTI I RIFERIMENTI A idp.tabella
+CAMBIA TABELLA TEAMS in doc
+
+spiega come farlo funzionare con h2
+
+From whoscored.com
+
+Connecting Sources-(se cambi nome cambia pure in sites used)
+
+
+SET RANK UP TO DATE
+EXTRA INSERTS FOR SPANISH because different final chart
