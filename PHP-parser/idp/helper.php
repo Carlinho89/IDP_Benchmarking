@@ -60,7 +60,12 @@ class DataRow
       return $sql;
     }
 
-    public function getTeamId($conn){
+    public function fixedInsertQuery(){
+      $sql = "INSERT INTO `fixed_data`(`id`, `team_id`, `team_name`, `league_id`, `input_id`, `value`) VALUES (null, $this->team_id,'$this->team_name', $this->league_id, $this->input_id, $this->value)";
+      return $sql;
+    }
+
+    public function getTeamId($conn,$league_id){
       
       $sql = "SELECT id FROM `teams` WHERE `name` LIKE '".$this->team_name."' ";
       $result = $conn->query($sql);
@@ -69,7 +74,7 @@ class DataRow
           $row = $result->fetch_assoc();
           $this->team_id = $row['id'];
       } else {
-        $sql2="INSERT INTO `teams`  VALUES (NULL, '".$this->team_name."','', '')";
+        $sql2="INSERT INTO `teams`  VALUES (NULL, '".$this->team_name."','', '',$league_id)";
         
         $conn->query($sql2);
         $this->team_id = $conn->insert_id;
@@ -80,13 +85,15 @@ class DataRow
     }
 
      public function getTMTeamId($conn, $tm_id){
-      $sql = "SELECT id, name FROM `teams` WHERE `tm_id` = $tm_id";
+      $sql = "SELECT * FROM `teams` WHERE `tm_id` = $tm_id";
       $result = $conn->query($sql);
       if ($result->num_rows > 0) {
           $row = $result->fetch_assoc();
           $this->team_id = $row['id'];
           $this->team_name = $row['name'];
+          $this->league_id=$row['league_id'];
       } else {
+      	 $this->team_id= -1;
         echo "<br>No team id matching for ".$tm_id." <br>";
         
 
@@ -165,7 +172,7 @@ function getTeams($conn, $table, $year, $league_id, $selector){
   }
 
   foreach ($dataArray as $row) {
-    $row->getTeamId($conn);
+    $row->getTeamId($conn,$league_id);
   }  
 
   return $dataArray;
