@@ -8,27 +8,25 @@ The following steps assume that your machine can run PHP scripts and can connect
 
 Sites Used: the football data has been gathered from two web pages of soccer statistics:
 -whoscored.com: this page has been used to parse most of the inputs regarding  sportive data (ex: ball possession, games won,..). The content from this web site has been cached locally since there was no recognizable pattern in the url; it is saved in the html files handed out with the parser.
--transfermarkt.com: this page was used to parse the social and monetary values for the teams. The data here is crawled directly from the web source since it was easy to iterate through the actual urls in order to get data from different years in single file.
+-transfermarkt.com: this page was used to parse the social and monetary values for the teams. The data here is crawled directly from the web source since it was easy to iterate through the actual urls in order to get data from different years in a single parse.
 
-Notice that the use of different sources also implies a phase of transformation of the data: most of the teams have different names in the two websites and surprisingly also transfermarkt doesn't have a fixed naming for teams among it's own pages. The document will explain how to overcome the problem.
- 
+Notice that the use of different sources also implies a phase of transformation of the data: most of the teams have different names in the two websites and surprisingly also transfermarkt doesn't have a fixed naming for teams among it's own pages. 
+To overcome the problem the teams from transfermarkt have been saved with their id which, luckily enough, is saved as an attribute to the link holding the logo of the team. 
 
 
 
 
 DB Structure (paste all create tables) (draw UML diagram of DB) (update the sql file handed out):
-The file "benchmarkingfootballteams.sql" holds structure and data of the latest db version. In this section we'll present the sql for creating the tables with a didactical purpose. The tables that have been manually populated will also have the necessary insert statements.
+The file "benchmarkingfootballteams.sql" holds structure and data of the latest db version. In this section we'll present the sql for creating the tables with a didactical purpose. 
 
-INPUT: holds Id, name and type of the inputs. All the inserts on this table will be done by the parsers except for Stadium Capacity which was added manually
+INPUT: holds Id, name and type of the inputs. All the inserts on this table will be done by the parsers.
 
-	CREATE TABLE IF NOT EXISTS `inputs` (
-	  `id` int(11) NOT NULL,
-	  `name` varchar(50) NOT NULL,
-	  `type` varchar(20) NOT NULL
-	) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
+CREATE TABLE IF NOT EXISTS `inputs` (
+  `id` int(11) NOT NULL,
+  `name` varchar(50) NOT NULL,
+  `type` varchar(20) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
 
-	INSERT INTO `inputs` (`id`, `name`, `type`) VALUES
-	(25, 'Stadium Capacity', 'Social');
 
 
 
@@ -55,15 +53,15 @@ LEAGUE: holds id, name, number of teams and logo of the league. This table has b
 
 TEAMS: holds name and logo of teams. The PHP scripts for parsing whoscored.com will populate the first two columns (id and name). The remaining fields will be populated by the tm_conversion.php script
 
-CREATE TABLE IF NOT EXISTS `teams` (
-  `id` int(11) NOT NULL,
-  `name` varchar(50) NOT NULL,
-  `tm_id` int(50) NOT NULL,
-  `logo` text NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
+	CREATE TABLE IF NOT EXISTS `teams` (
+	  `id` int(11) NOT NULL,
+	  `name` varchar(50) NOT NULL,
+	  `tm_id` int(50) NOT NULL,
+	  `logo` text NOT NULL
+	) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
 
-	ALTER TABLE `teams`
-	  ADD PRIMARY KEY (`id`);
+		ALTER TABLE `teams`
+		  ADD PRIMARY KEY (`id`);
 
 
 
@@ -111,6 +109,9 @@ HTML: as mentioned before for whoscored the html code has been saved in local fi
 	-passes_LEAGUENAME_YEAR.html: holds stats on the teams passes
 	-results_LEAGUENAME_YEAR.html: holds result stats like victory, losses, draws and goals scored/received
 
+For transfermarkt only the data on stadiums has been saved locally
+	-stadiums.html: holds stadium capacity data for major and minor leagues. This data comes from transfermarkt
+
 Steps to save html files for who scored:
 1.Visit whoscored.com and select the interested league. 
 2.You will be brought to the statistics of current season of the league. On this page is the standings table. View the page source code (ex in Chrome press ctrl+shift+i).
@@ -143,6 +144,11 @@ PASSES TABLE
 
 
 
+Steps to save html content for stadiums in transfermarkt:
+1.Launch the php file tm_stadiums.php. This will parse a list of links to stadiums data from different major and minor leagues. Minor leagues where needed here because transfermarkt doesn't organize this data by season: there is only information on the actual season so all teams that in the last six years have left major league should be found in the minor leagues. If you are adding new teams, remember to also add links to the league it comes from at the top of this file in order to get it's stadium capacity input.
+2.Once the tm_stadiums.php file has finished executing, view the source code and copy and paste it in the stadiums.html file. This will then be parsed by the stadiums_parser.php.
+
+
 
 PHP: all the files are commented 
 	-simplehtmldom_1_5 folder: holds the library used to parse html content
@@ -158,25 +164,37 @@ PHP: all the files are commented
 	-result_parser.php: parses passing data saved in the results_LEAGUENAME_YEAR.html from whoscored
 
 	-ADD FILES FOR TRANFERMARKT
-	-tm_conversion.php: 
+	-tm_conversion.php: this file connects data from the two websites. The approach was to use the final rank (position) of each team in the last five years and has to be ran before the other parsers from transfermarkt or the data won't be associated to the correct teams.
+	2 remarks:
+		1. Consistency: the file is using a static and an online source to compare the rank of teams. This means that the last results_league_year.html files (at the moment the ones where year = 2015) should be exactly up to the date for the match to work (example if Barcelona was second at the moment in which the html was saved and is now first the two ranks wont match).
+		2. TM error: unfortunately the two websites don't agree on all final ranks. If you take a look at the final rank for years 2011 in Spain the two websites have a different order for teams with the same points at the end of the season. To overcome this problem some 'Insert' statements have been hardcoded at the end of the file. We know this is a bad practice but it was the only way to keep the process automatic.
+	-tm_stats.php: retrieves Social and Monetary data from TM. This file has to be ran for one league at a time; in the final handout it might be split in 4 files to do so without editing the code.
+	-tm_stadiums.php: as described in HTML section, this file parses online content to be saved in the stadiums.html file. The latter should be given up to date so this file is not ment to be run now (data on stadiums of all teams that have been in the mayor league from 2010-16 are already saved in the html) but can be usefull for future extensions. 
+	-stadiums_parser.php: parses the stadium content saved in the stadiums.html file to create the Stadium Capacity input for all teams. This input is saved in the Fixed_Data table since it doesn't change over seasons.
 
 
 USAGE:
 	The sql file in the handout can be easily imported in any sql database. This is the fastest way to populate the data.
+
 	The other way is to copy the structure of the db from the section DB Structure by running the create table statements. 
 	Sportive inputs which are parsed from whoscored can be easily obtained by launching the different *_parser.php files. Just remember to read the comments in each file cause due to php's limited time of execution some might have to be launched twice in order to complete their task.
-
-	Fixed Data: Some tables hold data that wont have to be updated seasonally (such as stadium capacitities). 
-	
-	Transfermarkt: 
+	For transfermarkt first run the tm_conversion.php in order to connect data from the two db. Befor running read the remarks in previous section. The other parsers can be ran in any order. 
 
 
 
 
 EXPANDING DATASET 
--from whoscored: the html files already have some values which are not parsed. The web page also has other tables which have not been taken in consideration. In both cases by looking at the php parsers and reading steps above it should be easy to understand how to proceed.  
+
+Vertical Parsing vs horizontal
+-from whoscored: the html files already have some values which are not parsed. The web page also has other tables which have not been taken in consideration. In both cases by looking at the php parsers and reading steps above it should be easy to understand how to proceed. 
+Vertical Parsing
 Tables in whoscored have a first column which holds team names and other columns holding values for different kinds of inputs. Luckily the class of the cell in the sourcecode can be used to parse the contents. As example take one results_LEAGUENAME_YEAR.html file. You can notice that every <td> (html tag for a table's cell) has a class describing the content (tn= team name, p=played, w=won, d=draw ecc). The parser creates a first array holding team names by looking for td with class tn (team names) with the getTeams() method. Sequently a copy of the resulting array is passed to every call to the parseInput() method which also takes as parameter the class of the input we want to parse (ex w for wins). 
 The approach is generic and can work for any numeric valued input written  on the page. Some tables may have different elements inside the td: look at red cards in the stats_summary_parser.php.
+
+-from transfermarkt: only a couple of pages were parsed from this web site. But having saved the id of each team in the database (through tm_conversion.php) parsing any other page should be easy, as long as it has the team logo (that's where the team id is stored). 
+Horizontal Parsing
+The data in these tables was not described by a class attribute stating which value each cell is holding. For this reason instead of parsing one column (input) at the time for multiple teams we parse multiple inputs for one row at a time. The different inputs are recognized by their positon in the row.
+
 
 HOW TO:
 Add a season, add an input,
@@ -208,8 +226,6 @@ From whoscored.com
 Connecting Sources-(se cambi nome cambia pure in sites used)
 
 
-SET RANK UP TO DATE
-EXTRA INSERTS FOR SPANISH because different final chart
 
 
 Modifica teams nel sql, prova un inserimento di squadra (leagueid aggiunto)

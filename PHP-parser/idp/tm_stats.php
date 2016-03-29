@@ -5,7 +5,7 @@ Parser for transfermarkt data.
 
 N.Players, AgeAVG, N.ForeignPlayers, TeamValue_MLN€, PlayerValueAVG_MLN€
  
-Needs to be executed after the other scripts since it's using tm_id
+Needs to be executed after the tm_conversion script since it's using tm_id
 
 //Run more than once: parse max one league per run
 **/
