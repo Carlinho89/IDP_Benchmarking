@@ -1,53 +1,51 @@
 <?php
 /**
-Parser for transfermarkt data.
-//Parameters extracted:
-
-N.Players, AgeAVG, N.ForeignPlayers, TeamValue_MLN€, PlayerValueAVG_MLN€
- 
-Needs to be executed after the other scripts since it's using tm_id
-
-//Run more than once: parse max one league per run
+Parser to join data from different leagues (also second leagues) on stadiums
 **/
 require('helper.php');
 
 
-$html = file_get_html("stadiums.html");
 
-echo "<b>Parsing transfermarkt stadiums </b><br>";
-//result
-$input_id = getInputId($conn, "Stadium Capacity", "Social");
 
-foreach($html->find('table[class=items]') as $table){
+$leagueURL= array();
+$leagueURL[]="http://www.transfermarkt.it/serie-a/stadien/wettbewerb/IT1";
+$leagueURL[]="http://www.transfermarkt.it/jumplist/stadien/wettbewerb/IT2";
+$leagueURL[]="http://www.transfermarkt.it/jumplist/stadien/wettbewerb/IT3A";
+$leagueURL[]="http://www.transfermarkt.it/jumplist/stadien/wettbewerb/IT3B";
+$leagueURL[]="http://www.transfermarkt.it/jumplist/stadien/wettbewerb/IT3C";
+$leagueURL[]="http://www.transfermarkt.it/jumplist/stadien/wettbewerb/IT4D";
+$leagueURL[]="http://www.transfermarkt.it/jumplist/stadien/wettbewerb/GB1";
+$leagueURL[]="http://www.transfermarkt.it/jumplist/stadien/wettbewerb/GB2";
+$leagueURL[]="http://www.transfermarkt.it/jumplist/stadien/wettbewerb/GB3";
+$leagueURL[]="http://www.transfermarkt.it/jumplist/stadien/wettbewerb/GB4";
+$leagueURL[]="http://www.transfermarkt.it/jumplist/stadien/wettbewerb/ES1";
+$leagueURL[]="http://www.transfermarkt.it/jumplist/stadien/wettbewerb/ES2";
+$leagueURL[]="http://www.transfermarkt.it/jumplist/stadien/wettbewerb/ES3A";
+$leagueURL[]="http://www.transfermarkt.it/jumplist/stadien/wettbewerb/ES3B";
+$leagueURL[]="http://www.transfermarkt.it/jumplist/stadien/wettbewerb/ES3C";
+$leagueURL[]="http://www.transfermarkt.it/jumplist/stadien/wettbewerb/ES3D";
+$leagueURL[]="http://www.transfermarkt.it/jumplist/stadien/wettbewerb/L1";
+$leagueURL[]="http://www.transfermarkt.it/jumplist/stadien/wettbewerb/L2";
+$leagueURL[]="http://www.transfermarkt.it/jumplist/stadien/wettbewerb/L3";
 
-  echo "<br>New League<br>";
-  foreach(array_slice($table->find('tr'),1) as $tr){
 
-    foreach($tr->find('table') as $tab){
-      $tm_id= $tab->find('a',1)->id;
-      
-      }
 
-     $value = $tr->find('td[class=rechts]',0)->plaintext*1000;
-     if($value>0){
-      //echo "$tm_id----------$value ";
-      $row = new DataRow();
-          $row->getTMTeamId($conn, $tm_id);
-          if($row->team_id > 0){
-            $row->value = $value;
-            $row->input_id= $input_id;
-            echo $row->fixedInsertQuery()." ";
-            if($conn->query($row->fixedInsertQuery())){
-              $row->insertMessage("Stadium Capacity");
+foreach ($leagueURL as $url) {
+
+ 
+    $html = file_get_html($url);
+
+
+      foreach($html->find('table[class=items]') as $div){
+          echo $div;
             }
+            echo "<br>";
           }
-      echo "<br>";
-     }
-    
-  }
+        
+      
 
-}
 
+  
 
 
 

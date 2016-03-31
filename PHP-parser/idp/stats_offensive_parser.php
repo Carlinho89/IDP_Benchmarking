@@ -48,6 +48,9 @@ foreach ($urls as $url) {
   }
 
 
+echo "Done Parsing<br>";
+echo '<a href="home.html#six" class="btn btn-info" role="button">Continue</a>'
+
 
 
 ?>

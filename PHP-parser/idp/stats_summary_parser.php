@@ -8,15 +8,6 @@ Parameters extracted:
 
 shotsPerGame, possession, passSuccess, RedCards, 
 
-Notice: the limit of execution time for php doesn't give a chance of running the file only once. 
-My suggestion  is to parse  2 leagues at a time. This can be done be commenting/uncommenting the strings set in the $urls array
-ex: This will parse serieA and premier. 
-$urls=array();
-$urls[]="stats_serieA_"; 
-$urls[]="stats_premier_"; 
-//$urls[]="stats_liga_"; 
-//$urls[]="stats_bundesliga_";
-Re run the script with the first two commented and the last two uncommented to add liga and bundes
 
 
 //<div id="stage-team-stats" class="ws-panel stat-table">
@@ -63,7 +54,8 @@ foreach ($urls as $url) {
     }
     
   }
-
+echo "Done Parsing<br>";
+echo '<a href="home.html#four" class="btn btn-info" role="button">Continue</a>'
 
 
 

@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
     <title>Benchmarking DB Doc</title>
 
     <!-- Bootstrap -->
@@ -13,489 +13,616 @@
     <!-- Custom styles for this template -->
     <link href="css/blog.css" rel="stylesheet">
 
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
   </head>
   <body>
-      <nav class="navbar navbar-default navbar-fixed-top" role="navigation" style="margin-bottom:120px;">
-     <!-- Brand and toggle get grouped for better mobile display -->
-     <div class="navbar-header">
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation" style="margin-bottom:120px;">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
        
-       <a class="navbar-brand" href="#">Benchmarking Football Clubs Database Documentation</a>
+        <a class="navbar-brand" href="#">Benchmarking Football Clubs Database Documentation</a>
      </div>
-
-   </nav>
+    </nav>
 
     <div class="container-fluid" style="margin-top:50px;">
-          <div class="row">
+      <div class="row">
+        <div class=" col-sm-3 col-md-3">
+          <div class= "well">
+            <ul  class="nav nav-list">
+              <li style="cursor: pointer;">
+                <a href="#intro">Intro</a>
+              </li>
+            </ul>
+            <ul  class="nav nav-list">
+              <li style="cursor: pointer;">
+                <a href="#requirements">Requirements</a>
+              </li>
+            </ul>
+            <ul  class="nav nav-list">
+              <li style="cursor: pointer;">
+                <a href="#datasources">Data Sources</a>
+              </li>
+            </ul>
+            <ul  class="nav nav-list">
+              <li style="cursor: pointer;">
+                <a href="#dbstruct">DB Structure</a>
+              </li>
+            </ul>
+            <ul  class="nav nav-list">
+              <li style="cursor: pointer;">
+                <a href="#handout">Handout</a>
+              </li>
+            </ul>
+            <ul  class="nav nav-list">
+              <li style="cursor: pointer;">
+                <a href="#populating">Populating HTML</a>
+              </li>
+            </ul>
+            <ul  class="nav nav-list">
+              <li style="cursor: pointer;">
+                <a href="#start">Getting Started</a>
+              </li>
+            </ul>
+            <ul  class="nav nav-list">
+              <li style="cursor: pointer;">
+                <a href="#start">Building DataSet</a>
+              </li>
+            </ul>
+            <ul  class="nav nav-list">
+              <li style="cursor: pointer;">
+                <a href="#extending">Extending DataSet</a>
+              </li>
+            </ul>
+           
+          </div><!--/.well -->
+        </div>
+
+
+        <div class="col-sm-9 col-md-9">
+          <div class="jumbotron">
+            <h1 id = "intro" style="font-family: Open Sans,Calibri,Candara,Arial,sans-serif; font-weight: 300;">Benchmarking Football Clubs Database Documentation</h1>
+
+            <br><br>
+
+            <h2></h2>
+            <p>The following documentation explains how to retrieve data and manage the database for the project BenchMarking of Soccer Teams. At the moment the database holds informations on the four main european leagues 
+            (Italian, English, Spanish, German) from year 2010 until 2015(partial). The data for season 2015 will be used as study case to show how to update the content. Furthermore an explanation on how to create the whole db from scratch will be given.</p>
+            <br>
+          </div>
+          <h2 id="requirements">Requirements</h2>
+          <br>
+          <p class="well">
+          The parsers are written in PHP and store the data in a MySQL database. Once populated the db can be exported to an sql file and then imported in the h2 database used by the Play application. 
+          The following steps assume that your machine can run PHP scripts and can connect to a running MySQL database. The easiest way is to install the XAMPP (for Windows, check LAMPP or MAMPP for other OS) distribution which gives both on a local Apache server.
+          </p>
+          <br>
+          
+          
+          <h2 id="datasources">Data Sources</h2>
+          <br>
+          <div class="well">
+            The football data has been gathered from two web pages of soccer statistics:
             
-            <div class=" col-sm-3 col-md-3">
-                      <div class= "well">
-                      <ul  class="nav nav-list">
-                        <li style="cursor: pointer;">
-                          <a href="#intro">Intro</a>
-                        </li>
-                      </ul>
-                      <ul  class="nav nav-list">
-                        <li style="cursor: pointer;">
-                          <a href="#requirements">Requirements</a>
-                        </li>
-                      </ul>
-                      <ul  class="nav nav-list">
-                        <li style="cursor: pointer;">
-                          <a href="#datasources">Data Sources</a>
-                        </li>
-                      </ul>
-                      <ul  class="nav nav-list">
-                        <li style="cursor: pointer;">
-                          <a href="#dbstruct">DB Structure</a>
-                        </li>
-                      </ul>
-                      <ul  class="nav nav-list">
-                        <li style="cursor: pointer;">
-                          <a href="#handout">Handout</a>
-                        </li>
-                      </ul>
-                      <ul  class="nav nav-list">
-                        <li style="cursor: pointer;">
-                          <a href="#populating">Populating HTML</a>
-                        </li>
-                      </ul>
-                      <ul  class="nav nav-list">
-                        <li style="cursor: pointer;">
-                          <a href="#start">Getting Started</a>
-                        </li>
-                      </ul>
-                      <ul  class="nav nav-list">
-                        <li style="cursor: pointer;">
-                          <a href="#requirements">Requirements</a>
-                        </li>
-                      </ul>
-                      <ul  class="nav nav-list">
-                        <li style="cursor: pointer;">
-                          <a href="#requirements">Requirements</a>
-                        </li>
-                      </ul>
-                      <ul  class="nav nav-list">
-                        <li style="cursor: pointer;">
-                          <a href="#requirements">Requirements</a>
-                        </li>
-                      </ul>
-                      <ul  class="nav nav-list">
-                        <li style="cursor: pointer;">
-                          <a href="#requirements">Requirements</a>
-                        </li>
-                      </ul>
-                      <ul  class="nav nav-list">
-                        <li style="cursor: pointer;">
-                          <a href="#requirements">Requirements</a>
-                        </li>
-                      </ul>
-                      <ul  class="nav nav-list">
-                        <li style="cursor: pointer;">
-                          <a href="#requirements">Requirements</a>
-                        </li>
-                      </ul>
-                      </div><!--/.well -->
-                    </div>
+            <ul>
+              <li>
+                <p>
+                  <b>whoscored.com:</b> this page has been used to parse most of the inputs regarding  sportive data (ex: ball possession, games won,..). The content from this web site has been cached locally since there was no recognizable pattern in the url; it is saved in the html files handed out with the parser.
+                </p>
+              </li>
+              <li>
+                <p>
+                  <b>transfermarkt.com:</b> this page was used to parse the social and monetary values for the teams. The data here is crawled directly from the web source since it was easy to iterate through the actual urls in order to get data from different years in a single parse.
+                </p>
+              </li>
+            </ul>
+            <p>
+              Notice that the use of different sources also implies a phase of transformation of the data: most of the teams have different names in the two websites and surprisingly also transfermarkt doesn't have a fixed naming for teams among it's own pages. 
+              To overcome the problem the teams from transfermarkt have been saved with their id which, luckily enough, is saved as an attribute to the link holding the logo of the team. 
+            </p>
+          </div>       
+          <br>
 
 
-            <div class="col-sm-9 col-md-9">
-              <div class="jumbotron">
-                <h1 id = "intro" style="font-family: Open Sans,Calibri,Candara,Arial,sans-serif;
-    font-weight: 300;">Benchmarking Football Clubs Database Documentation</h1>
+          <h2 id="dbstruct">DB Structure (paste all create tables) (draw UML diagram of DB) (update the sql file handed out)</h2>
+          <br>
+          <p class="well">
+          The file "benchmarkingfootballteams.sql" holds structure and data of the latest db version. In this section we'll present the sql for creating the tables with a didactical purpose.
+          </p>
+          <br>
+          <ul>
+            <li>
+               <h3>INPUTS</h3>
+                    <p class="well note">
+                        Holds Id, name and type of the inputs. All the inserts on this table will be done by the parsers.
+                    </p>
+                    <pre>CREATE TABLE IF NOT EXISTS `inputs` (
+  `id` int(11) NOT NULL,
+  `name` varchar(50) NOT NULL,
+  `type` varchar(20) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;         
+                    </pre><br>
+            </li>
 
-                <br><br>
+             <li>
+               <h3>LEAGUES</h3>
+                    <p class="well note">
+                        Holds id, name, number of teams and logo of the league. This table has been populated manually. If you want to change the id of the leagues remember also to change the parsers function setLeagueId() accordingly in helper.php.
+                    </p>
+                    <pre>CREATE TABLE IF NOT EXISTS `leagues` (
+  `id` int(11) NOT NULL,
+  `name` varchar(50) NOT NULL,
+  `teamsNumber` int(11) NOT NULL,
+  `logo` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-                <h2></h2>
-                <p>The following documentation explains how to retrieve data and manage the database for the project BenchMarking of Soccer Teams. At the moment the database holds informations on the four main european leagues 
-                (Italian, English, Spanish, German) from year 2010 until 2015(partial). The data for season 2015 will be used as study case to show how to update the content. Furthermore an explanation on how to create the whole db from scratch will be given.</p>
-                <br>
-              </div>
-              <h2 id="requirements">Requirements</h2>
-              <br>
-              <p class="well">
-              The parsers are written in PHP and store the data in a MySQL database. Once populated the db can be exported to an sql file and then imported in the h2 database used by the Play application. 
-              The following steps assume that your machine can run PHP scripts and can connect to a running MySQL database. The easiest way is to install the XAMPP (for Windows, check LAMPP or MAMPP for other OS) distribution which gives both on a local Apache server.
-              </p>
-              <br>
-              
-              
-              <h2 id="datasources">Data Sources</h2>
-              <br>
-              <div class="well">
-                The football data has been gathered from two web pages of soccer statistics:
-                
+INSERT INTO `leagues` (`id`, `name`, `teamsNumber`, `logo`) VALUES
+(1, 'Serie A', 20, 'SerieA500.png'),
+(2, 'Premier League', 20, 'Premier500.png'),
+(3, 'Liga', 20, 'Liga500.png'),
+(4, 'Bundes Liga', 18, 'Bundes500.png');
+
+ALTER TABLE `leagues`
+  ADD PRIMARY KEY (`id`);         
+                      </pre><br>
+              </li>
+
+               <li>
+                 <h3>TEAMS</h3>
+                      <p class="well note">
+                          Holds name and logo of teams. The PHP scripts for parsing whoscored.com will populate the first two columns (id and name). The remaining fields will be populated by the tm_conversion.php script.
+                      </p>
+                      <pre>CREATE TABLE IF NOT EXISTS `teams` (
+  `id` int(11) NOT NULL,
+  `name` varchar(50) NOT NULL,
+  `tm_id` int(50) NOT NULL,
+  `logo` text NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
+
+  ALTER TABLE `teams`
+    ADD PRIMARY KEY (`id`);         
+                      </pre><br>
+              </li>
+
+              <li>
+                 <h3>SEASONAL DATA</h3>
+                      <p class="well note">
+                          This is the table holding the inputs data for teams. Every input should be specified for a team and a season only once, hence a unique constraint has been added on the columns team_id, input_id, year. This table is populated by the parsers
+                      </p>
+                      <pre>CREATE TABLE IF NOT EXISTS `seasonal_data` (
+  `id` int(11) NOT NULL,
+  `team_id` int(11) NOT NULL,
+  `team_name` varchar(50) NOT NULL,
+  `year` int(11) NOT NULL,
+  `league_id` int(11) NOT NULL,
+  `input_id` int(11) NOT NULL,
+  `value` float NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
+
+ALTER TABLE `seasonal_data`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `unique_index` (`team_id`,`year`,`input_id`);
+      
+                      </pre><br>
+              </li>
+
+              <li>
+                 <h3>FIXED DATA</h3>
+                      <p class="well note">
+                          Some of the inputs are not ment to change seasonally. By now this is only the case for the Stadium Capacity input but any data of this type should be stored here.
+                      </p>
+                      <pre>CREATE TABLE IF NOT EXISTS `fixed_data` (
+  `id` int(11) NOT NULL,
+  `team_id` int(11) NOT NULL,
+  `team_name` varchar(50) NOT NULL,
+  `league_id` int(11) NOT NULL,
+  `input_id` int(11) NOT NULL,
+  `value` float NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;         
+                      </pre><br>
+            </li>
+
+
+          </ul>
+
+            <h2 id="handout">Handout</h2>
+            <br>
+            <ul>
+              <li>
+                <h3>SQL</h3>
                 <ul>
                   <li>
-                    <p>
-                      <b>whoscored.com:</b> this page has been used to parse most of the inputs regarding  sportive data (ex: ball possession, games won,..). The content from this web site has been cached locally since there was no recognizable pattern in the url; it is saved in the html files handed out with the parser.
-                    </p>
-                  </li>
-                  <li>
-                    <p>
-                      <b>transfermarkt.com:</b> this page was used to parse the social and monetary values for the teams. The data here is crawled directly from the web source since it was easy to iterate through the actual urls in order to get data from different years in a single parse.
-                    </p>
+                    <h4>benchmarkingfootballteams.sql <small>SQL export of the latest db</small></h4>
                   </li>
                 </ul>
-                <p>
-                  Notice that the use of different sources also implies a phase of transformation of the data: most of the teams have different names in the two websites and surprisingly also transfermarkt doesn't have a fixed naming for teams among it's own pages. 
-                  To overcome the problem the teams from transfermarkt have been saved with their id which, luckily enough, is saved as an attribute to the link holding the logo of the team. 
-                </p>
-              </div>       
-              <br>
-
-
-              <h2 id="dbstruct">DB Structure (paste all create tables) (draw UML diagram of DB) (update the sql file handed out)</h2>
-              <br>
-              <p class="well">
-              The file "benchmarkingfootballteams.sql" holds structure and data of the latest db version. In this section we'll present the sql for creating the tables with a didactical purpose.
-              </p>
-              <br>
-              <ul>
-                <li>
-                   <h3>INPUTS</h3>
-                        <p class="well note">
-                            Holds Id, name and type of the inputs. All the inserts on this table will be done by the parsers.
-                        </p>
-                        <pre>CREATE TABLE IF NOT EXISTS `inputs` (
-    `id` int(11) NOT NULL,
-    `name` varchar(50) NOT NULL,
-    `type` varchar(20) NOT NULL
-  ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;         
-                        </pre><br>
-                </li>
-
-                 <li>
-                   <h3>LEAGUES</h3>
-                        <p class="well note">
-                            Holds id, name, number of teams and logo of the league. This table has been populated manually. If you want to change the id of the leagues remember also to change the parsers function setLeagueId() accordingly in helper.php.
-                        </p>
-                        <pre>CREATE TABLE IF NOT EXISTS `leagues` (
-    `id` int(11) NOT NULL,
-    `name` varchar(50) NOT NULL,
-    `teamsNumber` int(11) NOT NULL,
-    `logo` text NOT NULL
-  ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-  INSERT INTO `leagues` (`id`, `name`, `teamsNumber`, `logo`) VALUES
-  (1, 'Serie A', 20, 'SerieA500.png'),
-  (2, 'Premier League', 20, 'Premier500.png'),
-  (3, 'Liga', 20, 'Liga500.png'),
-  (4, 'Bundes Liga', 18, 'Bundes500.png');
-
-  ALTER TABLE `leagues`
-    ADD PRIMARY KEY (`id`);         
-                        </pre><br>
-                </li>
-
-                 <li>
-                   <h3>TEAMS</h3>
-                        <p class="well note">
-                            Holds name and logo of teams. The PHP scripts for parsing whoscored.com will populate the first two columns (id and name). The remaining fields will be populated by the tm_conversion.php script.
-                        </p>
-                        <pre>CREATE TABLE IF NOT EXISTS `teams` (
-    `id` int(11) NOT NULL,
-    `name` varchar(50) NOT NULL,
-    `tm_id` int(50) NOT NULL,
-    `logo` text NOT NULL
-  ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
-
-    ALTER TABLE `teams`
-      ADD PRIMARY KEY (`id`);         
-                        </pre><br>
-                </li>
-
-                <li>
-                   <h3>SEASONAL DATA</h3>
-                        <p class="well note">
-                            This is the table holding the inputs data for teams. Every input should be specified for a team and a season only once, hence a unique constraint has been added on the columns team_id, input_id, year. This table is populated by the parsers
-                        </p>
-                        <pre>CREATE TABLE IF NOT EXISTS `seasonal_data` (
-    `id` int(11) NOT NULL,
-    `team_id` int(11) NOT NULL,
-    `team_name` varchar(50) NOT NULL,
-    `year` int(11) NOT NULL,
-    `league_id` int(11) NOT NULL,
-    `input_id` int(11) NOT NULL,
-    `value` float NOT NULL
-  ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
-
-  ALTER TABLE `seasonal_data`
-    ADD PRIMARY KEY (`id`),
-    ADD UNIQUE KEY `unique_index` (`team_id`,`year`,`input_id`);
-        
-                        </pre><br>
-                </li>
-
-                <li>
-                   <h3>FIXED DATA</h3>
-                        <p class="well note">
-                            Some of the inputs are not ment to change seasonally. By now this is only the case for the Stadium Capacity input but any data of this type should be stored here.
-                        </p>
-                        <pre>CREATE TABLE IF NOT EXISTS `fixed_data` (
-    `id` int(11) NOT NULL,
-    `team_id` int(11) NOT NULL,
-    `team_name` varchar(50) NOT NULL,
-    `league_id` int(11) NOT NULL,
-    `input_id` int(11) NOT NULL,
-    `value` float NOT NULL
-  ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;         
-                        </pre><br>
-                </li>
-
-
-              </ul>
-
-
-
-
-                        
-                       
-
-
-
-
-              <h2 id="handout">Handout</h2>
-              <br>
-              <ul>
-                <li>
-                  <h3>SQL</h3>
-                  <ul>
-                    <li>
-                      <h4>benchmarkingfootballteams.sql <small>SQL export of the latest db</small></h4>
-                    </li>
-                  </ul>
-                </li>
-                <li>
-                  <h3>HTML <small>as mentioned before for whoscored the html code has been saved in local files renamed so to be easily iterated by the parser. Three files have been saved for each season/league. Also for transfermarkt the stadium data has been saved locally.</small></h3>
-                  <ul>
-                    <li>
-                      <h4>stats_LEAGUENAME_YEAR.html <small>holds generic, offensive and defensive stats for the season</small></h4>
-                    </li>
-                    <li>
-                      <h4>passes_LEAGUENAME_YEAR.html <small>holds stats on the teams passes (accuracy, number, ...)</small></h4>
-                    </li>
-                    <li>
-                      <h4>results_LEAGUENAME_YEAR.html <small>holds result stats like victory, losses, draws and goals scored/received</small></h4>
-                    </li>
-                    <li>
-                      <h4>stadiums.html <small>holds stadium capacity data for major and minor leagues. This data comes from transfermarkt</small></h4>
-                    </li>
-                    <li>
-                      <h4>home.html <small>this file</small></h4>
-                    </li>
-                  </ul>
-                </li>
-                <li>
-                  <h3>PHP <small>all the files are commented.</small></h3>
-                  <ul>
-                    <li>
-                      <h4>simplehtmldom_1_5 folder <small>holds the library used to parse html content</small></h4>
-                    </li>
-                    <li>
-                      <h4>helper.php <small>this file is required in every parser. It holds helper functions and classes to parse html.</small></h4>
-                    </li>
-                    <li>
-                      <h4>stats_summary_parser.php <small>parses data from the summary table of whoscored saved in the stats_LEAGUENAME_YEAR.html</small></h4>
-                    </li>
-                    <li>
-                      <h4>stats_defensive_parser.php <small>parses the defensive data from the same file</small></h4>
-                    </li>
-                    <li>
-                      <h4>stats_offensive_parser.php <small>holds generic, offensive and defensive stats for the season</small></h4>
-                    </li>
-                    <li>
-                      <h4>passes_parser.php <small>parses passing data saved in the passes_LEAGUENAME_YEAR.html from whoscored</small></h4>
-                    </li>
-                    <li>
-                      <h4>result_parser.php <small>parses passing data saved in the results_LEAGUENAME_YEAR.html from whoscored</small></h4>
-                    </li>
-                    <li>
-                      <h4>tm_conversion.php 
-                        <small>this file connects data from the two websites. The approach was to use the final rank (position) of each team in the last five years and has to be ran before the other parsers from transfermarkt or the data won't be associated to the correct teams.
-                          <ol>
-                            2 remarks:
-                            <li>
-                              Consistency: the file is using a static and an online source to compare the rank of teams. This means that the last results_league_year.html files (at the moment the ones where year = 2015) should be exactly up to the date for the match to work (example if Barcelona was second at the moment in which the html was saved and is now first the two ranks wont match).
-                            </li>
-                            <li>
-                              TM error: unfortunately the two websites don't agree on all final ranks. If you take a look at the final rank for years 2011 in Spain the two websites have a different order for teams with the same points at the end of the season. To overcome this problem some 'Insert' statements have been hardcoded at the end of the file. We know this is a bad practice but it was the only way to keep the process automatic.
-                            </li>
-
-
-                          </ol>
-                        </small></h4>
-                    </li>
-                    <li>
-                      <h4>tm_stats.php <small>retrieves Social and Monetary data from TM. This file has to be ran for one league at a time; in the final handout it might be split in 4 files to do so without editing the code.</small></h4>
-                    </li>
-                    <li>
-                      <h4>tm_stadiums.php <small>as described in HTML section, this file parses online content to be saved in the stadiums.html file. The latter should be given up to date so this file is not ment to be run now (data on stadiums of all teams that have been in the mayor league from 2010-16 are already saved in the html) but can be usefull for future extensions.</small></h4>
-                    </li>
-                    <li>
-                      <h4>stadiums_parser.php <small>parses the stadium content saved in the stadiums.html file to create the Stadium Capacity input for all teams. This input is saved in the Fixed_Data table since it doesn't change over seasons.</small></h4>
-                    </li>
-
-                  </ul>
-                </li>
-              </ul>
-
-              
-              <br>
-
-
-              <h2 id="populating">Populating HTML</h2>
-              <p class="well">
-                As explained previously some of the html content has been saved in local files to be parsed easily. Stats from 2010 to 2014 are saved already but if you want to update data from 2015 or any new season follow the next steps. The example considers only one league, repeat the same steps for the other leagues also.
-              </p>
-                <ol> 
-                  <h3>Steps to save html files for whoscored</h3>
-
+              </li>
+              <li>
+                <h3>HTML <small>as mentioned before for whoscored the html code has been saved in local files renamed so to be easily iterated by the parser. Three files have been saved for each season/league. Also for transfermarkt the stadium data has been saved locally.</small></h3>
+                <ul>
                   <li>
-                    Visit whoscored.com and select the interested league.
-                    <img src="screenshots\1.jpg" class="img-responsive" alt="Responsive image">
-                    <br>
-                  </li>
-                  <br>
-                  <li>
-                    You will be brought to the statistics of current season of the league. On this page is the standings table. View the page source code (ex in Chrome press  <kbd>ctrl+shift+i </kbd>).
-                    <br>
-                  </li>
-                  <br>
-                  <br>
-                  <h4>RESULTS TABLE</h4>
-                  <li>
-                    Highlight the source code for the table. Look for 
-                    <code>div id="standings-NUMBER" style="display: block;"</code>  withhere NUMBER changes with every season, league.
-                    <img src="screenshots\3.jpg" class="img-responsive" alt="Responsive image">
-                    <br>
+                    <h4>stats_LEAGUENAME_YEAR.html <small>holds generic, offensive and defensive stats for the season</small></h4>
                   </li>
                   <li>
-                    Right click on the line and copy the content (it will copy also contained code) and paste it to a blank file.
-                    <img src="screenshots\4.jpg" class="img-responsive" alt="Responsive image">
-                    <br>
+                    <h4>passes_LEAGUENAME_YEAR.html <small>holds stats on the teams passes (accuracy, number, ...)</small></h4>
                   </li>
                   <li>
-                    Save the file with the right naming. In the example we are getting results from Liga in 2015; thee file name would be results_liga_2015.html
-                    <br>
-                  </li>
-                  <br>
-                  <br>
-                  <h4>STATS TABLE</h4>
-                  <li>
-                    Scroll back to the top of the page and select Team Statistics.
-                    <img src="screenshots\6.jpg" class="img-responsive" alt="Responsive image">
-                    <br>
+                    <h4>results_LEAGUENAME_YEAR.html <small>holds result stats like victory, losses, draws and goals scored/received</small></h4>
                   </li>
                   <li>
-                    On this page is the Team Statistics table with 4 tabs: Summary (shown by default), Defensive, Offensive, Detailed.
-                    <br>
-                    <br>
+                    <h4>stadiums.html <small>holds stadium capacity data for major and minor leagues. This data comes from transfermarkt</small></h4>
                   </li>
                   <li>
-                    Click on Defensive, wait for the data to load. Repeat the operation for the Offensive tab. This step is fundamental for the source code to display all the information we want to parse. Keep this in mind if you decide to add other pages to parse: some data are only loaded asynchronously after an event (click in our case) so we have to trigger the event in order to have the data in the source code.
-                    <img src="screenshots\8.jpg" class="img-responsive" alt="Responsive image">
-                    <br>
+                    <h4>home.html <small>this file</small></h4>
+                  </li>
+                </ul>
+              </li>
+              <li>
+                <h3>PHP <small>all the files are commented.</small></h3>
+                <ul>
+                  <li>
+                    <h4>simplehtmldom_1_5 folder <small>holds the library used to parse html content</small></h4>
                   </li>
                   <li>
-                    View the source code for the page like in step 2
-                    <br>
+                    <h4>create_tables.php <small>first script to run to populate the db with the correct tables</small></h4>
                   </li>
                   <li>
-                    
-                    Highlight the source code for the table. Look for:
-                    <code>
-                    div id="stage-team-stats" class="ws-panel stat-table"</code>
-                    Notice this div is holding all the three tables we need. Don't highlight divs with id stage-team-stats-summary (or offensive,difensive) cause it would be missing part of the info we are looking for.
-                    <img src="screenshots\10.jpg" class="img-responsive" alt="Responsive image">
-                    <br>
+                    <h4>helper.php <small>this file is required in every parser. It holds helper functions and classes to parse html.</small></h4>
                   </li>
                   <li>
-                    repeat steps 4 and 5. This time the file should be saved as stats_liga_2015.html to follow the example. In the general case substitute league name and year.
-                    <br>
-                  </li>
-                  <br>
-                  <br>
-                  <h4>PASSES TABLE</h4>
-                  <li>
-                    On the same page is the  Situational Statistics table. Click on the Pass Types tab (wait for content to load).
-                    <img src="screenshots\12.jpg" class="img-responsive" alt="Responsive image">
-                    <br>
+                    <h4>stats_summary_parser.php <small>parses data from the summary table of whoscored saved in the stats_LEAGUENAME_YEAR.html</small></h4>
                   </li>
                   <li>
-                    Again highlight the code for the table. Look for:
-                    <code>div id="stage-situation-stats" class="ws-panel stat-table"</code>
-                    .Repeat steps 4 and 5. This time use the following naming scheme: passes_LEAGUENAME_YEAR.html (passes_liga_2015.html in the example).
-                    <img src="screenshots\13.jpg" class="img-responsive" alt="Responsive image">
-                    <br>
-                  </li>
-                </ol>
-
-                <ol>
-                  <h3>Steps to save html content for transfermarkt</h3>
-                  <h4>STADIUMS</h4>
-                  <li>
-                   Launch the php file tm_stadiums.php. This will parse a list of links to stadiums data from different major and minor leagues. Minor leagues where needed here because transfermarkt doesn't organize this data by season: there is only information on the actual season so all teams that in the last six years have left major league should be found in the minor leagues. If you are adding new teams, remember to also add links to the league it comes from at the top of this file in order to get it's stadium capacity input.
-                   <br>
+                    <h4>stats_defensive_parser.php <small>parses the defensive data from the same file</small></h4>
                   </li>
                   <li>
-                    Once the tm_stadiums.php file has finished executing, view the source code and copy and paste it in the stadiums.html file. This will then be parsed by the stadiums_parser.php.
-                    <br>
-                    </li>
-                 </ol>
+                    <h4>stats_offensive_parser.php <small>holds generic, offensive and defensive stats for the season</small></h4>
+                  </li>
+                  <li>
+                    <h4>passes_parser.php <small>parses passing data saved in the passes_LEAGUENAME_YEAR.html from whoscored</small></h4>
+                  </li>
+                  <li>
+                    <h4>result_parser.php <small>parses passing data saved in the results_LEAGUENAME_YEAR.html from whoscored</small></h4>
+                  </li>
+                  <li>
+                    <h4>tm_conversion.php 
+                      <small>this file connects data from the two websites. The approach was to use the final rank (position) of each team in the last five years and has to be ran before the other parsers from transfermarkt or the data won't be associated to the correct teams.
+                        <ol>
+                          2 remarks:
+                          <li>
+                            Consistency: the file is using a static and an online source to compare the rank of teams. This means that the last results_league_year.html files (at the moment the ones where year = 2015) should be exactly up to the date for the match to work (example if Barcelona was second at the moment in which the html was saved and is now first the two ranks wont match).
+                          </li>
+                          <li>
+                            TM error: unfortunately the two websites don't agree on all final ranks. If you take a look at the final rank for years 2011 in Spain the two websites have a different order for teams with the same points at the end of the season. To overcome this problem some 'Insert' statements have been hardcoded at the end of the file. We know this is a bad practice but it was the only way to keep the process automatic.
+                          </li>
 
 
+                        </ol>
+                      </small></h4>
+                  </li>
+                  <li>
+                    <h4>tm_stats.php <small>retrieves Social and Monetary data from TM. This file has to be ran for one league at a time; in the final handout it might be split in 4 files to do so without editing the code.</small></h4>
+                  </li>
+                  <li>
+                    <h4>tm_stadiums.php <small>as described in HTML section, this file parses online content to be saved in the stadiums.html file. The latter should be given up to date so this file is not ment to be run now (data on stadiums of all teams that have been in the mayor league from 2010-16 are already saved in the html) but can be usefull for future extensions.</small></h4>
+                  </li>
+                  <li>
+                    <h4>stadiums_parser.php <small>parses the stadium content saved in the stadiums.html file to create the Stadium Capacity input for all teams. This input is saved in the Fixed_Data table since it doesn't change over seasons.</small></h4>
+                  </li>
 
-                
-              
-              <br>
+                </ul>
+              </li>
+            </ul>
+
+            
+            <br>
 
 
-              <h2 id = "start">Getting Started</h2>
-              <br>
-              
-              <p class="well">
-                The complete database is saved in the benchmarkingfootballteams.sql file and  can be easily imported in any sql database. This is the fastest way to populate the data. 
-                The project, though, will be over before the 2015-2016 season will end. If you want to add up to date information on this season follow the steps in the Populating HTML section and run the parsers again. 
-                Notice: in order for the update to work first delete all existing data from season 2015 by running <code>DELETE FROM `seasonal_data` WHERE `year` = 2015</code> in the sql console then run the scripts.
-              </p>
-             
-             
-             
-              <br>
-              <h2>Contributing</h2>
-              <p class="well">
-                  Take care to maintain the existing coding style. Add <strong>Enter Unit Testing Framework</strong> unit tests for any new or changed functionality. Lint and test your code using <strong>Enter Build Tool Here</strong>.
-              </p>
-              <p class="well">
-                  <span class="note">
-                      After you have verified your code, send a pull request to the <em>Enter Project Name Here</em> develop branch.  After you send a pull request, you will hear back from me shortly after I review your code.  You’ll find source code in the <code>src</code> subdirectory!
-                  </span>
-              </p>
-              <br>
-              <h2>Extending</h2>
-              <p class="well">
-                  If you find that you need a feature that <em>Enter Project Name Here</em> does not currently support, either let me know via the <a href="#" target="_blank">Github issue tracker</a>, or <a href="#" target="_blank">fork the project</a> and and easily extend <em>Enter Project Name Here</em>!
-              </p>
-          <br>
-        <h2>Copyright</h2>
+            <h2 id="populating">Populating HTML</h2>
             <p class="well">
-                Copyright © 2013 Greg Franko
+              As explained previously some of the html content has been saved in local files to be parsed easily. Stats from 2010 to 2014 are saved already but if you want to update data from 2015 or any new season follow the next steps. The example considers only one league, repeat the same steps for the other leagues also.
             </p>
-          </div>
-          </div><!--/row-->
+              <ol> 
+                <h3>Steps to save html files for whoscored</h3>
+
+                <li class="well">
+                  Visit whoscored.com and select the interested league.
+                  <img src="screenshots\1.jpg" class="img-responsive" alt="Responsive image">
+                  <br>
+                </li>
+                <br>
+                <li class="well">
+                  You will be brought to the statistics of current season of the league. On this page is the standings table. View the page source code (ex in Chrome press  <kbd>ctrl+shift+i </kbd>).
+                  <br>
+                </li>
+                <br>
+                <br>
+                <h4>RESULTS TABLE</h4>
+                <li class="well">
+                  Highlight the source code for the table. Look for 
+                  <code>div id="standings-NUMBER" style="display: block;"</code>  where NUMBER changes with every season, league.
+                  <img src="screenshots\3.jpg" class="img-responsive" alt="Responsive image">
+                  <br>
+                </li>
+                <li class="well">
+                  Right click on the line and copy the content (it will copy also contained code) and paste it to a blank file.
+                  <img src="screenshots\4.jpg" class="img-responsive" alt="Responsive image">
+                  <br>
+                </li>
+                <li class="well">
+                  Save the file with the right naming. In the example we are getting results from Liga in 2015; thee file name would be results_liga_2015.html
+                  <br>
+                </li>
+                <br>
+                <br>
+                <h4>STATS TABLE</h4>
+                <li class="well">
+                  Scroll back to the top of the page and select Team Statistics.
+                  <img src="screenshots\6.jpg" class="img-responsive" alt="Responsive image">
+                  <br>
+                </li>
+                <li class="well">
+                  On this page is the Team Statistics table with 4 tabs: Summary (shown by default), Defensive, Offensive, Detailed.
+                  <br>
+                  <br>
+                </li>
+                <li class="well">
+                  Click on Defensive, wait for the data to load. Repeat the operation for the Offensive tab. This step is fundamental for the source code to display all the information we want to parse. Keep this in mind if you decide to add other pages to parse: some data are only loaded asynchronously after an event (click in our case) so we have to trigger the event in order to have the data in the source code.
+                  <img src="screenshots\8.jpg" class="img-responsive" alt="Responsive image">
+                  <br>
+                </li>
+                <li class="well">
+                  View the source code for the page like in step 2
+                  <br>
+                </li>
+                <li class="well">
+                  
+                  Highlight the source code for the table. Look for:
+                  <code>
+                  div id="stage-team-stats" class="ws-panel stat-table"</code>
+                  Notice this div is holding all the three tables we need. Don't highlight divs with id stage-team-stats-summary (or offensive,difensive) cause it would be missing part of the info we are looking for.
+                  <img src="screenshots\10.jpg" class="img-responsive" alt="Responsive image">
+                  <br>
+                </li>
+                <li class="well">
+                  repeat steps 4 and 5. This time the file should be saved as stats_liga_2015.html to follow the example. In the general case substitute league name and year.
+                  <br>
+                </li>
+                <br>
+                <br>
+                <h4>PASSES TABLE</h4>
+                <li class="well">
+                  On the same page is the  Situational Statistics table. Click on the Pass Types tab (wait for content to load).
+                  <img src="screenshots\12.jpg" class="img-responsive" alt="Responsive image">
+                  <br>
+                </li>
+                <li class="well">
+                  Again highlight the code for the table. Look for:
+                  <code>div id="stage-situation-stats" class="ws-panel stat-table"</code>
+                  .Repeat steps 4 and 5. This time use the following naming scheme: passes_LEAGUENAME_YEAR.html (passes_liga_2015.html in the example).
+                  <img src="screenshots\13.jpg" class="img-responsive" alt="Responsive image">
+                  <br>
+                </li>
+              </ol>
+
+              <ol>
+                <h3>Steps to save html content for transfermarkt</h3>
+                <h4>STADIUMS</h4>
+                <li class="well">
+                 Launch the php file tm_stadiums.php. This will parse a list of links to stadiums data from different major and minor leagues. Minor leagues where needed here because transfermarkt doesn't organize this data by season: there is only information on the actual season so all teams that in the last six years have left major league should be found in the minor leagues. If you are adding new teams, remember to also add links to the league it comes from at the top of this file in order to get it's stadium capacity input.
+                 <br>
+                </li>
+                <li class="well">
+                  Once the tm_stadiums.php file has finished executing, view the source code and copy and paste it in the stadiums.html file. This will then be parsed by the stadiums_parser.php.
+                  <br>
+                  </li>
+               </ol>            
+            <br>
+
+
+            <h2 id = "start">Getting Started</h2>
+            <br>
+            
+            <p class="well">
+              The complete database is saved in the benchmarkingfootballteams.sql file and  can be easily imported in any sql database. This is the fastest way to populate the data. 
+              The project, though, will be over before the 2015-2016 season will end. If you want to add up to date information on this season follow the steps in the Populating HTML section and run the parsers again. 
+              Notice: in order for the update to work first delete all existing data from season 2015 by running <code>DELETE FROM `seasonal_data` WHERE `year` = 2015</code> in the sql console then run the scripts.
+              If instead you want to build the dataset from scratch or just want to run any of the parsers again follow the steps in the next section.
+                <br>
+            </p>
+           
+           
+           
+            <br>
+            <h2 id = "start">Building DataSet</h2>
+            <p class="well">
+                This section will go over all the steps to create the database for the project. There will be data from 6 seasons, for a total of 118 teams each with 25 inputs for every season played in their maximum league. 
+                The links to the parsers will be given directly from this page so you can use this section also to rerun some of the scripts (maybe after having modified them or to update the data).
+            </p>
+
+
+            <div class="alert alert-warning" role="alert">
+                  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                  <span class="sr-only">Attention:</span>
+                  The following section requires a PHP and MySQL server running. If you dont have it please read section <a href="#requirements">Requirements</a>
+                </div>
+            <ol> 
+              <li  class="well">
+                Open the MySQL admin tool and create a new database. Name it as you prefer.  
+                <br>
+              </li>
+              <li  class="well">
+                Open the helper.php file. Right at the top are the parameters needed for the connection to the db. By default the file is using a sever on localhost and the db name is idpdoc. Change all the parameters according to your setup and insert as $dbname the name of the database you created in 1.
+
+                <br>
+              </li>
+              <li id="two" class="well">
+                Run the <a href="create_tables.php"> create_tables.php </a> script to populate the database. You will find a link back to this page at the end of the file. Please check that all statements have been executed.
+
+                <br>
+              </li>
+
+              <li id="three" class="well">
+                Run the <a href="result_parser.php"> result_parser.php </a> to save the values for Games Won/Lost/Drawn, Goals Scored/Against and Rank and to save all teams. The script might take a minute to execute. Please don't refresh.
+                By the end of this script you should have: <br>
+                6 rows in inputs <br>
+                4 rows in leagues <br>
+                2,808 rows in seasonal_data <br>
+                118 rows in teams <br>
+
+                <br>
+              </li>
+
+              <li id="four" class="well">
+                Next run the <a href="stats_summary_parser.php"> stats_summary_parser.php </a> to save the values for Shots Per Game, Ball Possession, Pass Success and Red Cards. The script might take a minute to execute. Please don't refresh.
+                By the end of this script you should have: <br>
+                10 rows in inputs <br>
+                4,680 rows in seasonal_data <br>
+                
+
+                <br>
+              </li>
+
+              <li id="five" class="well">
+                Next run the <a href="stats_defensive_parser.php"> stats_defensive_parser.php </a> to save the values for Shots Conceded Per Game, Tackles Per Game, Interceptions Per Game. The script might take a minute to execute. Please don't refresh.
+                By the end of this script you should have: <br>
+                13 rows in inputs <br>
+                6,084 rows in seasonal_data <br>
+                
+
+                <br>
+              </li>
+
+              <li id="six" class="well">
+                Next run the <a href="stats_offensive_parser.php"> stats_offensive_parser.php </a> to save the values for Shots On Target Per Game, Dribbles Won Per Game. The script might take a minute to execute. Please don't refresh.
+                By the end of this script you should have: <br>
+                15 rows in inputs <br>
+                7,020 rows in seasonal_data <br>
+                
+
+                <br>
+              </li>
+
+
+              <li id="seven" class="well">
+                Next run the <a href="passes_parser.php"> passes_parser.php </a> to save the values for Cross Per Game, Through Balls Per Game, Long Balls Per Game and Short Pass Per Game. The script might take a minute to execute. Please don't refresh.
+                By the end of this script you should have: <br>
+                19 rows in inputs <br>
+                8,892 rows in seasonal_data <br>
+                
+
+                <br>
+              </li>
+
+              <div class="alert alert-warning" role="alert">
+                  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                  <span class="sr-only">Attention:</span>
+                  The next step requires that the results data from 2015 is up to date in the html files. If this is not the case please read section <a href="#populating">Populating HTML</a> and execute step 4 again before going on.
+                </div>
+
+                 
+                
+
+                <br>
+              <li id="eight" class="well">
+                Next run the <a href="tm_conversion.php"> tm_conversion.php </a> to save logo and transfermarkt id for every team. After the execution the teams table should be filled in completely but no new inputs or seasonal data are added.
+                Remember to have an internet connection on because the parser uses online data from transfermarkt.com
+
+                <br>
+              </li>
+
+              <li  class="well">
+                Now we can run the parsers for transfermarkt. Since the content is gathered online this script has to be ran more than once. To make this process easy we created four different files for the different leagues.
+
+                <br>
+              </li>
+              <li id="nine" class="well">
+                Run <a href="tm_stats_serieA.php"> tm_stats_serieA.php </a> to save Number Of Players, Average Age, Number Of Foreign Players, Team Value (MLN €), Average Player Value (MLN €) for serieA.
+                By the end of this script you should have: <br>
+                24 rows in inputs <br>
+                9,492 rows in seasonal_data <br>
+
+                <br>
+              </li>
+
+              <li id="ten" class="well">
+                Run <a href="tm_stats_premier.php"> tm_stats_premier.php </a> to save Number Of Players, Average Age, Number Of Foreign Players, Team Value (MLN €), Average Player Value (MLN €) for Premier League.
+                By the end of this script you should have: <br>
+                24 rows in inputs <br>
+                10,092 rows in seasonal_data <br>
+
+                <br>
+              </li>
+
+              <li id="eleven" class="well">
+                Run <a href="tm_stats_liga.php"> tm_stats_liga.php </a> to save Number Of Players, Average Age, Number Of Foreign Players, Team Value (MLN €), Average Player Value (MLN €) for spanish Liga.
+                By the end of this script you should have: <br>
+                24 rows in inputs <br>
+                10,692 rows in seasonal_data <br>
+
+                <br>
+              </li>
+
+              <li id="twelve" class="well">
+                Run <a href="tm_stats_bundes.php"> tm_stats_bundes.php </a> to save Number Of Players, Average Age, Number Of Foreign Players, Team Value (MLN €), Average Player Value (MLN €) for BundesLiga.
+                By the end of this script you should have: <br>
+                24 rows in inputs <br>
+                11,232 rows in seasonal_data <br>
+
+                <br>
+              </li>
+
+              <li id="thirteen" class="well">
+                Finally let's parse the data for Stadium Capacity. This data has been saved in the stadiums.html file by running the stadiums_parser.php. In the handout the stadiums.html file will be given with data already but the parser is left for further expansions(ex: a new team enters a league next year and the parser doesn't have info on it's stadium).<br>
+                Run <a href="tm_stadiums.php"> tm_stadiums.php </a> to save Stadium Capacity in the fixed_data table for all teams.
+                By the end of this script you should have: <br>
+                25 rows in inputs <br>
+                11,232 rows in seasonal_data <br>
+                118 rows in fixed_data<br>
+                <br>
+              </li>
+              <br>
+            </ol>
+
+
+
+
+            
+            <br>
+            <h2 id= "extending">Extending DataSet</h2>
+            <p class="well">
+                The two sources present data in different ways so different approaches have been used for parsing.
+            </p>
+
+            <ul>
+              <li class="well">
+                <h3>whoscored</h3>
+                <p>
+                  The html files already have some values which are not parsed. The web page also has other tables which have not been taken in consideration. In both cases by looking at the php parsers and reading this section it should be easy to understand how to proceed.<br>
+                  Vertical Parsing:<br>
+                  Tables in whoscored have a first column which holds team names and other columns holding values for different kinds of inputs. Luckily the class of the cell (td) in the sourcecode can be used to parse the contents. As example take one results_LEAGUENAME_YEAR.html file. You can notice that every "td" (html tag for a table's cell) has a class describing the content (tn= team name, p=played, w=won, d=draw ecc). The parser creates a first array holding team names by looking for td with class tn (team names) with the getTeams() method. Sequently a copy of the resulting array is passed to every call to the parseInput() method which also takes as parameter the class of the input we want to parse (ex w for wins). <br>
+                  The approach is generic and can work for any numeric valued input written  on the page. Some tables may have different elements inside the td: look at red cards in the stats_summary_parser.php.<br>
+
+                </p>
+              </li>
+
+              <li class="well">
+                <h3>transfermarkt</h3>
+                <p>
+                  Only a couple of pages were parsed from this web site. But having saved the id of each team in the database (through tm_conversion.php) parsing any other page should be easy, as long as it has the team logo (that's where the team id is stored).<br>
+                  Horizontal Parsing:<br>
+                 The data in these tables was not described by a class attribute stating which value each cell is holding. For this reason instead of parsing one column (input) at the time for multiple teams we parse multiple inputs for one row (team) at a time. The different inputs are recognized by their positon in the row.. <br>
+
+                </p>
+              </li>
+            </ul>
+        <br>
+         
+        </div>
+      </div><!--/row-->
               
-        </div><!--/.fluid-container-->
+    </div><!--/.fluid-container-->
 
 
     <footer class="blog-footer">
-      <p>Blog template built for <a href="http://getbootstrap.com">Bootstrap</a> by <a href="https://twitter.com/mdo">@mdo</a>.</p>
-      <p>
+      
         <a href="#">Back to top</a>
       </p>
     </footer>

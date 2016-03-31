@@ -77,7 +77,9 @@ foreach ($leagueURL as $url) {
 
   $sql = "UPDATE `teams` SET `tm_id`=940, logo='940.png' WHERE `name` LIKE 'Celta Vigo'";
   $conn->query($sql);
-  echo "<h1>Done</h1>";
+  echo "Done Parsing<br>";
+echo '<a href="home.html#eight" class="btn btn-info" role="button">Continue</a>';
+
   
 } else{
   echo "Impossible to run the script. You must run result_parser.php first. If you did, check if the input Rank has been parsed. If it has been saved with a different name modify findRankID() in this script.";

@@ -41,11 +41,13 @@ foreach ($urls as $url) {
           parseInput($conn,"Rank", "td[class=o]", $html, $dataArray, "Sporty" );
 
 
-  echo "<br><b>Done Parsing Stats from ".$url.$year.".html </b> <br>";
+  echo "<br><b>Done Parsing Stats from results".$url.$year.".html </b> <br>";
   }
 
 }
+echo "Done Parsing<br>";
 
+echo '<a href="home.html#three" class="btn btn-info" role="button">Continue</a>';
 
 
 

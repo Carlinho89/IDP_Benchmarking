@@ -186,14 +186,14 @@ USAGE:
 EXPANDING DATASET 
 
 Vertical Parsing vs horizontal
--from whoscored: the html files already have some values which are not parsed. The web page also has other tables which have not been taken in consideration. In both cases by looking at the php parsers and reading steps above it should be easy to understand how to proceed. 
+-from whoscored: the html files already have some values which are not parsed. The web page also has other tables which have not been taken in consideration. In both cases by looking at the php parsers and reading this section it should be easy to understand how to proceed. 
 Vertical Parsing
-Tables in whoscored have a first column which holds team names and other columns holding values for different kinds of inputs. Luckily the class of the cell in the sourcecode can be used to parse the contents. As example take one results_LEAGUENAME_YEAR.html file. You can notice that every <td> (html tag for a table's cell) has a class describing the content (tn= team name, p=played, w=won, d=draw ecc). The parser creates a first array holding team names by looking for td with class tn (team names) with the getTeams() method. Sequently a copy of the resulting array is passed to every call to the parseInput() method which also takes as parameter the class of the input we want to parse (ex w for wins). 
+Tables in whoscored have a first column which holds team names and other columns holding values for different kinds of inputs. Luckily the class of the cell (td) in the sourcecode can be used to parse the contents. As example take one results_LEAGUENAME_YEAR.html file. You can notice that every <td> (html tag for a table's cell) has a class describing the content (tn= team name, p=played, w=won, d=draw ecc). The parser creates a first array holding team names by looking for td with class tn (team names) with the getTeams() method. Sequently a copy of the resulting array is passed to every call to the parseInput() method which also takes as parameter the class of the input we want to parse (ex w for wins). 
 The approach is generic and can work for any numeric valued input written  on the page. Some tables may have different elements inside the td: look at red cards in the stats_summary_parser.php.
 
 -from transfermarkt: only a couple of pages were parsed from this web site. But having saved the id of each team in the database (through tm_conversion.php) parsing any other page should be easy, as long as it has the team logo (that's where the team id is stored). 
 Horizontal Parsing
-The data in these tables was not described by a class attribute stating which value each cell is holding. For this reason instead of parsing one column (input) at the time for multiple teams we parse multiple inputs for one row at a time. The different inputs are recognized by their positon in the row.
+The data in these tables was not described by a class attribute stating which value each cell is holding. For this reason instead of parsing one column (input) at the time for multiple teams we parse multiple inputs for one row (team) at a time. The different inputs are recognized by their positon in the row.
 
 
 HOW TO:
