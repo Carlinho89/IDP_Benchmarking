@@ -42,7 +42,9 @@ public class Input extends Model {
      */
     public static List<Input> getByType(String type){
         List<Input> inputs = (List<Input>) find.where().ilike("type", type).findList();
-
+        if (inputs == null){
+            System.out.println("input is null");
+        }
         return inputs;
     }
 

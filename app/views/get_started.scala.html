@@ -1,5 +1,4 @@
-@import scala.collection.immutable.HashMap
-@(allInputs : List[Input])(objVal : Double)(allVars : HashMap[String, Double])
+@(sportyInputs : List[Input])(socialInputs : List[Input])(monetaryInputs : List[Input])
 
 @main("Get Started") {
 
@@ -48,7 +47,7 @@
 
 <div id="section1" class="container-fluid text-center">
   <h1 >Choose a League</h1>
-  <p>Objective value is @objVal</p>
+  <p>Objective value is </p>
    
  
   
@@ -126,7 +125,7 @@
           <h2 class="panel-title">Sportive</h2>
         </div>
         <div class="panel-body" style="color: black;">
-          @for(input <- allInputs){
+          @for(input <- socialInputs){
             <div class="checkbox checkbox-success">
                 <input class="styled" type="checkbox" >
                 <label >
@@ -135,6 +134,26 @@
             </div>
 
                 
+            }
+            @for(input <- sportyInputs){
+                <div class="checkbox checkbox-success">
+                    <input class="styled" type="checkbox" >
+                    <label >
+                    @input.name
+                    </label>
+                </div>
+
+
+            }
+            @for(input <- monetaryInputs){
+                <div class="checkbox checkbox-success">
+                    <input class="styled" type="checkbox" >
+                    <label >
+                    @input.name
+                    </label>
+                </div>
+
+
             }
         </div>
       </div>
@@ -145,16 +164,7 @@
              <h2 class="panel-title">Social</h2>
            </div>
            <div class="panel-body" style="color: black;">
-             @for(input <- allInputs){
-               <div class="checkbox checkbox-info">
-                   <input class="styled" type="checkbox" >
-                   <label>
-                        @input.name
-                   </label>
-               </div>
 
-                   
-               }
            </div>
          </div>
        </div>
@@ -163,17 +173,7 @@
             <div class="panel-heading">
               <h1 class="panel-title">Monetary</h1>
             </div>
-            <div class="panel-body" style="color: black;">
-              @for(input <- allInputs){
-                <div class="checkbox checkbox-warning">
-                    <input class="styled" type="checkbox" >
-                    <label>
-                         @input.name
-                    </label>
-                </div>
-
-                    
-                }
+            
             </div>
           </div>
         </div>
