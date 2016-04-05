@@ -13,12 +13,12 @@ import java.util.List;
 public class Team extends Model {
 
     @Id
-    public String id;
+    public int id;
 
     public String name;
-    public String transfermarktName;
-    public String logo;
-
+    public int tm_id;
+    public int logo;
+    public int league_id;
     /**
      * Query to DB to get a "Team" by ID
      * @param id the id

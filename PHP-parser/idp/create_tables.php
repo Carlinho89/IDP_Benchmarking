@@ -22,7 +22,7 @@ if ($conn->query($sql)){
 echo "<br><br>";
 
 
-echo $sql = 'CREATE TABLE IF NOT EXISTS `inputs` (
+echo $sql = 'CREATE TABLE IF NOT EXISTS `input` (
   `id` int(11) NOT NULL,
   `name` varchar(50) NOT NULL,
   `type` varchar(20) NOT NULL
@@ -35,7 +35,7 @@ if ($conn->query($sql)){
 echo "<br><br>";
 
 
-echo $sql = 'CREATE TABLE IF NOT EXISTS `leagues` (
+echo $sql = 'CREATE TABLE IF NOT EXISTS `league` (
   `id` int(11) NOT NULL,
   `name` varchar(50) NOT NULL,
   `teamsNumber` int(11) NOT NULL,
@@ -66,7 +66,7 @@ if ($conn->query($sql)){
 echo "<br><br>";
 
 
-echo $sql = 'CREATE TABLE IF NOT EXISTS `teams` (
+echo $sql = 'CREATE TABLE IF NOT EXISTS `team` (
   `id` int(11) NOT NULL,
   `name` varchar(50) NOT NULL,
   `tm_id` int(50) NOT NULL,
@@ -93,7 +93,7 @@ if ($conn->query($sql)){
 echo "<br><br>";
 
 
-echo $sql = 'ALTER TABLE `inputs`
+echo $sql = 'ALTER TABLE `input`
   ADD PRIMARY KEY (`id`);';
 
 if ($conn->query($sql)){
@@ -103,7 +103,7 @@ if ($conn->query($sql)){
 echo "<br><br>";
 
 
-echo $sql = 'ALTER TABLE `leagues`
+echo $sql = 'ALTER TABLE `league`
   ADD PRIMARY KEY (`id`);';
 
 if ($conn->query($sql)){
@@ -123,7 +123,7 @@ if ($conn->query($sql)){
 }
 echo "<br><br>";
 
-echo $sql = 'ALTER TABLE `teams`
+echo $sql = 'ALTER TABLE `team`
   ADD PRIMARY KEY (`id`);';
 
 if ($conn->query($sql)){
@@ -155,7 +155,7 @@ if ($conn->query($sql)){
 }
 echo "<br><br>";
 
-echo $sql = 'ALTER TABLE `inputs`
+echo $sql = 'ALTER TABLE `input`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;';
 
 if ($conn->query($sql)){
@@ -163,7 +163,7 @@ if ($conn->query($sql)){
 
 }
 echo "<br><br>";
-echo $sql = 'ALTER TABLE `teams`
+echo $sql = 'ALTER TABLE `team`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;';
 
 if ($conn->query($sql)){
@@ -173,7 +173,7 @@ if ($conn->query($sql)){
 }
 echo "<br><br>";
 
-echo $sql = "INSERT INTO `leagues` (`id`, `name`, `teamsNumber`, `logo`) VALUES
+echo $sql = "INSERT INTO `league` (`id`, `name`, `teamsNumber`, `logo`) VALUES
 (1, 'Serie A', 20, 'SerieA500.png'),
 (2, 'Premier League', 20, 'Premier500.png'),
 (3, 'Liga', 20, 'Liga500.png'),

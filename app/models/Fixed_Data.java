@@ -12,13 +12,13 @@ import java.util.List;
 @Entity
 public class Fixed_Data extends Model{
     @Id
-    public String id;
+    public int id;
 
-    public String team_id;
+    public int team_id;
     public String team_name;
-    public String league_id;
-    public String input_id;
-    public String value;
+    public int league_id;
+    public int input_id;
+    public float value;
 
     /**
      * Query to DB to get a "Fixed_Data" by ID

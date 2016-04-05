@@ -122,19 +122,20 @@
           <br>
 
 
-          <h2 id="dbstruct">DB Structure (paste all create tables) (draw UML diagram of DB) (update the sql file handed out)</h2>
+          <h2 id="dbstruct">DB Structure </h2>
           <br>
+          <img src="screenshots\uml.jpg" class="img-responsive" alt="Responsive image">
           <p class="well">
           The file "benchmarkingfootballteams.sql" holds structure and data of the latest db version. In this section we'll present the sql for creating the tables with a didactical purpose.
           </p>
           <br>
           <ul>
             <li>
-               <h3>INPUTS</h3>
+               <h3>input</h3>
                     <p class="well note">
                         Holds Id, name and type of the inputs. All the inserts on this table will be done by the parsers.
                     </p>
-                    <pre>CREATE TABLE IF NOT EXISTS `inputs` (
+                    <pre>CREATE TABLE IF NOT EXISTS `input` (
   `id` int(11) NOT NULL,
   `name` varchar(50) NOT NULL,
   `type` varchar(20) NOT NULL
@@ -143,41 +144,41 @@
             </li>
 
              <li>
-               <h3>LEAGUES</h3>
+               <h3>league</h3>
                     <p class="well note">
                         Holds id, name, number of teams and logo of the league. This table has been populated manually. If you want to change the id of the leagues remember also to change the parsers function setLeagueId() accordingly in helper.php.
                     </p>
-                    <pre>CREATE TABLE IF NOT EXISTS `leagues` (
+                    <pre>CREATE TABLE IF NOT EXISTS `league` (
   `id` int(11) NOT NULL,
   `name` varchar(50) NOT NULL,
   `teamsNumber` int(11) NOT NULL,
   `logo` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO `leagues` (`id`, `name`, `teamsNumber`, `logo`) VALUES
+INSERT INTO `league` (`id`, `name`, `teamsNumber`, `logo`) VALUES
 (1, 'Serie A', 20, 'SerieA500.png'),
 (2, 'Premier League', 20, 'Premier500.png'),
 (3, 'Liga', 20, 'Liga500.png'),
 (4, 'Bundes Liga', 18, 'Bundes500.png');
 
-ALTER TABLE `leagues`
+ALTER TABLE `league`
   ADD PRIMARY KEY (`id`);         
                       </pre><br>
               </li>
 
                <li>
-                 <h3>TEAMS</h3>
+                 <h3>team</h3>
                       <p class="well note">
                           Holds name and logo of teams. The PHP scripts for parsing whoscored.com will populate the first two columns (id and name). The remaining fields will be populated by the tm_conversion.php script.
                       </p>
-                      <pre>CREATE TABLE IF NOT EXISTS `teams` (
+                      <pre>CREATE TABLE IF NOT EXISTS `team` (
   `id` int(11) NOT NULL,
   `name` varchar(50) NOT NULL,
   `tm_id` int(50) NOT NULL,
   `logo` text NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
 
-  ALTER TABLE `teams`
+  ALTER TABLE `team`
     ADD PRIMARY KEY (`id`);         
                       </pre><br>
               </li>
@@ -462,10 +463,10 @@ ALTER TABLE `seasonal_data`
               <li id="three" class="well">
                 Run the <a href="result_parser.php"> result_parser.php </a> to save the values for Games Won/Lost/Drawn, Goals Scored/Against and Rank and to save all teams. The script might take a minute to execute. Please don't refresh.
                 By the end of this script you should have: <br>
-                6 rows in inputs <br>
-                4 rows in leagues <br>
+                6 rows in input <br>
+                4 rows in league <br>
                 2,808 rows in seasonal_data <br>
-                118 rows in teams <br>
+                118 rows in team <br>
 
                 <br>
               </li>
@@ -473,7 +474,7 @@ ALTER TABLE `seasonal_data`
               <li id="four" class="well">
                 Next run the <a href="stats_summary_parser.php"> stats_summary_parser.php </a> to save the values for Shots Per Game, Ball Possession, Pass Success and Red Cards. The script might take a minute to execute. Please don't refresh.
                 By the end of this script you should have: <br>
-                10 rows in inputs <br>
+                10 rows in input <br>
                 4,680 rows in seasonal_data <br>
                 
 
@@ -483,7 +484,7 @@ ALTER TABLE `seasonal_data`
               <li id="five" class="well">
                 Next run the <a href="stats_defensive_parser.php"> stats_defensive_parser.php </a> to save the values for Shots Conceded Per Game, Tackles Per Game, Interceptions Per Game. The script might take a minute to execute. Please don't refresh.
                 By the end of this script you should have: <br>
-                13 rows in inputs <br>
+                13 rows in input <br>
                 6,084 rows in seasonal_data <br>
                 
 
@@ -493,7 +494,7 @@ ALTER TABLE `seasonal_data`
               <li id="six" class="well">
                 Next run the <a href="stats_offensive_parser.php"> stats_offensive_parser.php </a> to save the values for Shots On Target Per Game, Dribbles Won Per Game. The script might take a minute to execute. Please don't refresh.
                 By the end of this script you should have: <br>
-                15 rows in inputs <br>
+                15 rows in input <br>
                 7,020 rows in seasonal_data <br>
                 
 
@@ -504,7 +505,7 @@ ALTER TABLE `seasonal_data`
               <li id="seven" class="well">
                 Next run the <a href="passes_parser.php"> passes_parser.php </a> to save the values for Cross Per Game, Through Balls Per Game, Long Balls Per Game and Short Pass Per Game. The script might take a minute to execute. Please don't refresh.
                 By the end of this script you should have: <br>
-                19 rows in inputs <br>
+                19 rows in input <br>
                 8,892 rows in seasonal_data <br>
                 
 
@@ -536,7 +537,7 @@ ALTER TABLE `seasonal_data`
               <li id="nine" class="well">
                 Run <a href="tm_stats_serieA.php"> tm_stats_serieA.php </a> to save Number Of Players, Average Age, Number Of Foreign Players, Team Value (MLN €), Average Player Value (MLN €) for serieA.
                 By the end of this script you should have: <br>
-                24 rows in inputs <br>
+                24 rows in input <br>
                 9,492 rows in seasonal_data <br>
 
                 <br>
@@ -545,7 +546,7 @@ ALTER TABLE `seasonal_data`
               <li id="ten" class="well">
                 Run <a href="tm_stats_premier.php"> tm_stats_premier.php </a> to save Number Of Players, Average Age, Number Of Foreign Players, Team Value (MLN €), Average Player Value (MLN €) for Premier League.
                 By the end of this script you should have: <br>
-                24 rows in inputs <br>
+                24 rows in input <br>
                 10,092 rows in seasonal_data <br>
 
                 <br>
@@ -554,7 +555,7 @@ ALTER TABLE `seasonal_data`
               <li id="eleven" class="well">
                 Run <a href="tm_stats_liga.php"> tm_stats_liga.php </a> to save Number Of Players, Average Age, Number Of Foreign Players, Team Value (MLN €), Average Player Value (MLN €) for spanish Liga.
                 By the end of this script you should have: <br>
-                24 rows in inputs <br>
+                24 rows in input <br>
                 10,692 rows in seasonal_data <br>
 
                 <br>
@@ -563,7 +564,7 @@ ALTER TABLE `seasonal_data`
               <li id="twelve" class="well">
                 Run <a href="tm_stats_bundes.php"> tm_stats_bundes.php </a> to save Number Of Players, Average Age, Number Of Foreign Players, Team Value (MLN €), Average Player Value (MLN €) for BundesLiga.
                 By the end of this script you should have: <br>
-                24 rows in inputs <br>
+                24 rows in input <br>
                 11,232 rows in seasonal_data <br>
 
                 <br>
@@ -573,7 +574,7 @@ ALTER TABLE `seasonal_data`
                 Finally let's parse the data for Stadium Capacity. This data has been saved in the stadiums.html file by running the stadiums_parser.php. In the handout the stadiums.html file will be given with data already but the parser is left for further expansions(ex: a new team enters a league next year and the parser doesn't have info on it's stadium).<br>
                 Run <a href="tm_stadiums.php"> tm_stadiums.php </a> to save Stadium Capacity in the fixed_data table for all teams.
                 By the end of this script you should have: <br>
-                25 rows in inputs <br>
+                25 rows in input <br>
                 11,232 rows in seasonal_data <br>
                 118 rows in fixed_data<br>
                 <br>

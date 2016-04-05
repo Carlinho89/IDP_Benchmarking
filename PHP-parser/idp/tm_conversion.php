@@ -36,7 +36,7 @@ foreach ($leagueURL as $url) {
             if($position>0){
           
               echo "$position---$tm_id<img src='img/$tm_id.png'  height='25' width='25'><br>";
-               echo $sql="UPDATE `teams` SET `tm_id`=$tm_id, logo='".$tm_id.".png' WHERE id in (SELECT `team_id` FROM `seasonal_data` WHERE `input_id` = $rank_id and `year` = $i and value= $position and `league_id` = $league_id)";
+               echo $sql="UPDATE `team` SET `tm_id`=$tm_id, logo='".$tm_id.".png' WHERE id in (SELECT `team_id` FROM `seasonal_data` WHERE `input_id` = $rank_id and `year` = $i and value= $position and `league_id` = $league_id)";
               //echo "<br>";
              $conn->query($sql);
             }
@@ -57,25 +57,25 @@ foreach ($leagueURL as $url) {
   }
 
   echo "<h1>Manual update of spanish teams..</h1>";
-  $sql = "UPDATE `teams` SET `tm_id`=1049, logo='1049.png' WHERE `name` LIKE 'Valencia'";
+  $sql = "UPDATE `team` SET `tm_id`=1049, logo='1049.png' WHERE `name` LIKE 'Valencia'";
   $conn->query($sql);
 
-  $sql = "UPDATE `teams` SET `tm_id`=368, logo='368.png' WHERE `name` LIKE 'Sevilla'";
+  $sql = "UPDATE `team` SET `tm_id`=368, logo='368.png' WHERE `name` LIKE 'Sevilla'";
   $conn->query($sql);
 
-  $sql = "UPDATE `teams` SET `tm_id`=142, logo='142.png' WHERE `name` LIKE 'Zaragoza'";
+  $sql = "UPDATE `team` SET `tm_id`=142, logo='142.png' WHERE `name` LIKE 'Zaragoza'";
   $conn->query($sql);
 
-  $sql = "UPDATE `teams` SET `tm_id`=150, logo='150.png' WHERE `name` LIKE 'Real Betis'";
+  $sql = "UPDATE `team` SET `tm_id`=150, logo='150.png' WHERE `name` LIKE 'Real Betis'";
   $conn->query($sql);
 
-  $sql = "UPDATE `teams` SET `tm_id`=367, logo='367.png' WHERE `name` LIKE 'Rayo Vallecano'";
+  $sql = "UPDATE `team` SET `tm_id`=367, logo='367.png' WHERE `name` LIKE 'Rayo Vallecano'";
   $conn->query($sql);
 
-  $sql = "UPDATE `teams` SET `tm_id`=16795, logo='16795.png' WHERE `name` LIKE 'Granada'";
+  $sql = "UPDATE `team` SET `tm_id`=16795, logo='16795.png' WHERE `name` LIKE 'Granada'";
   $conn->query($sql);
 
-  $sql = "UPDATE `teams` SET `tm_id`=940, logo='940.png' WHERE `name` LIKE 'Celta Vigo'";
+  $sql = "UPDATE `team` SET `tm_id`=940, logo='940.png' WHERE `name` LIKE 'Celta Vigo'";
   $conn->query($sql);
   echo "Done Parsing<br>";
 echo '<a href="home.html#eight" class="btn btn-info" role="button">Continue</a>';
@@ -94,7 +94,7 @@ function to find the id for the input Rank.
 If you change the name of the input change it in the query below also
 **/
 function findRankID($conn){
-$sql = "SELECT id FROM `inputs` WHERE `name` LIKE 'Rank'";
+$sql = "SELECT id FROM `input` WHERE `name` LIKE 'Rank'";
       $rank_id=-1;
       $result = $conn->query($sql);
       if ($result->num_rows > 0){

@@ -95,14 +95,14 @@ class DataRow
 
     public function getTeamId($conn,$league_id){
       
-      $sql = "SELECT id FROM `teams` WHERE `name` LIKE '".$this->team_name."' ";
+      $sql = "SELECT id FROM `team` WHERE `name` LIKE '".$this->team_name."' ";
       $result = $conn->query($sql);
       if ($result->num_rows > 0) {
         
           $row = $result->fetch_assoc();
           $this->team_id = $row['id'];
       } else {
-        $sql2="INSERT INTO `teams`  VALUES (NULL, '".$this->team_name."','', '',$league_id)";
+        $sql2="INSERT INTO `team`  VALUES (NULL, '".$this->team_name."','', '',$league_id)";
         
         $conn->query($sql2);
         $this->team_id = $conn->insert_id;
@@ -113,7 +113,7 @@ class DataRow
     }
 
      public function getTMTeamId($conn, $tm_id){
-      $sql = "SELECT * FROM `teams` WHERE `tm_id` = $tm_id";
+      $sql = "SELECT * FROM `team` WHERE `tm_id` = $tm_id";
       $result = $conn->query($sql);
       if ($result->num_rows > 0) {
           $row = $result->fetch_assoc();
@@ -171,13 +171,13 @@ function setTMLeagueId($url){
 //Retrieves the input id if exists, creates a new one of the defined type otherwise
 function getInputId($conn, $name, $type){
 
-  $sql = "SELECT id FROM `inputs` WHERE `name` LIKE '".$name."' ";
+  $sql = "SELECT id FROM `input` WHERE `name` LIKE '".$name."' ";
   $result = $conn->query($sql);
   if ($result->num_rows > 0) {
       $row = $result->fetch_assoc();
       return $row['id'];
   } else {
-    $sql2="INSERT INTO `inputs` (`id`, `name`, `type`) VALUES (NULL, '".$name."', '".$type."');";
+    $sql2="INSERT INTO `input` (`id`, `name`, `type`) VALUES (NULL, '".$name."', '".$type."');";
     $conn->query($sql2);
     return $conn->insert_id;
     

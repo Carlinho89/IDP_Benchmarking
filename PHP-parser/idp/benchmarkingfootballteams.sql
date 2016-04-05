@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost:3306
--- Creato il: Mar 31, 2016 alle 07:18
+-- Creato il: Apr 04, 2016 alle 12:16
 -- Versione del server: 5.6.26
 -- Versione PHP: 5.5.29
 
@@ -162,20 +162,20 @@ INSERT INTO `fixed_data` (`id`, `team_id`, `team_name`, `league_id`, `input_id`,
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `inputs`
+-- Struttura della tabella `input`
 --
 
-CREATE TABLE IF NOT EXISTS `inputs` (
+CREATE TABLE IF NOT EXISTS `input` (
   `id` int(11) NOT NULL,
   `name` varchar(50) NOT NULL,
   `type` varchar(20) NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8;
 
 --
--- Dump dei dati per la tabella `inputs`
+-- Dump dei dati per la tabella `input`
 --
 
-INSERT INTO `inputs` (`id`, `name`, `type`) VALUES
+INSERT INTO `input` (`id`, `name`, `type`) VALUES
 (1, 'Games Won', 'Sporty'),
 (2, 'Games Drawn', 'Sporty'),
 (3, 'Games Lost', 'Sporty'),
@@ -205,21 +205,21 @@ INSERT INTO `inputs` (`id`, `name`, `type`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `leagues`
+-- Struttura della tabella `league`
 --
 
-CREATE TABLE IF NOT EXISTS `leagues` (
+CREATE TABLE IF NOT EXISTS `league` (
   `id` int(11) NOT NULL,
   `name` varchar(50) NOT NULL,
-  `teamsNumber` int(11) NOT NULL,
+  `teamNumber` int(11) NOT NULL,
   `logo` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dump dei dati per la tabella `leagues`
+-- Dump dei dati per la tabella `league`
 --
 
-INSERT INTO `leagues` (`id`, `name`, `teamsNumber`, `logo`) VALUES
+INSERT INTO `league` (`id`, `name`, `teamNumber`, `logo`) VALUES
 (1, 'Serie A', 20, 'SerieA500.png'),
 (2, 'Premier League', 20, 'Premier500.png'),
 (3, 'Liga', 20, 'Liga500.png'),
@@ -11491,10 +11491,10 @@ INSERT INTO `seasonal_data` (`id`, `team_id`, `team_name`, `year`, `league_id`, 
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `teams`
+-- Struttura della tabella `team`
 --
 
-CREATE TABLE IF NOT EXISTS `teams` (
+CREATE TABLE IF NOT EXISTS `team` (
   `id` int(11) NOT NULL,
   `name` varchar(50) NOT NULL,
   `tm_id` int(50) NOT NULL,
@@ -11503,10 +11503,10 @@ CREATE TABLE IF NOT EXISTS `teams` (
 ) ENGINE=InnoDB AUTO_INCREMENT=119 DEFAULT CHARSET=utf8;
 
 --
--- Dump dei dati per la tabella `teams`
+-- Dump dei dati per la tabella `team`
 --
 
-INSERT INTO `teams` (`id`, `name`, `tm_id`, `logo`, `league_id`) VALUES
+INSERT INTO `team` (`id`, `name`, `tm_id`, `logo`, `league_id`) VALUES
 (1, 'AC Milan', 5, '5.png', 1),
 (2, 'Inter', 46, '46.png', 1),
 (3, 'Napoli', 6195, '6195.png', 1),
@@ -11638,15 +11638,15 @@ ALTER TABLE `fixed_data`
   ADD UNIQUE KEY `unique_index` (`team_id`,`input_id`);
 
 --
--- Indici per le tabelle `inputs`
+-- Indici per le tabelle `input`
 --
-ALTER TABLE `inputs`
+ALTER TABLE `input`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indici per le tabelle `leagues`
+-- Indici per le tabelle `league`
 --
-ALTER TABLE `leagues`
+ALTER TABLE `league`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -11657,9 +11657,9 @@ ALTER TABLE `seasonal_data`
   ADD UNIQUE KEY `unique_index` (`team_id`,`year`,`input_id`);
 
 --
--- Indici per le tabelle `teams`
+-- Indici per le tabelle `team`
 --
-ALTER TABLE `teams`
+ALTER TABLE `team`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -11672,9 +11672,9 @@ ALTER TABLE `teams`
 ALTER TABLE `fixed_data`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=119;
 --
--- AUTO_INCREMENT per la tabella `inputs`
+-- AUTO_INCREMENT per la tabella `input`
 --
-ALTER TABLE `inputs`
+ALTER TABLE `input`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=26;
 --
 -- AUTO_INCREMENT per la tabella `seasonal_data`
@@ -11682,9 +11682,9 @@ ALTER TABLE `inputs`
 ALTER TABLE `seasonal_data`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=11233;
 --
--- AUTO_INCREMENT per la tabella `teams`
+-- AUTO_INCREMENT per la tabella `team`
 --
-ALTER TABLE `teams`
+ALTER TABLE `team`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=119;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

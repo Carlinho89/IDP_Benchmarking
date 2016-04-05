@@ -12,7 +12,7 @@ import java.util.List;
 @Entity
 public class Input extends Model {
     @Id
-    public String id;
+    public int id;
 
     public String name;
     public String type;

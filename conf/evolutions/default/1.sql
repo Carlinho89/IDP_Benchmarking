@@ -4,46 +4,47 @@
 # --- !Ups
 
 create table fixed_data (
-  id                        varchar(255) not null,
-  team_id                   varchar(255),
+  id                        integer not null,
+  team_id                   integer,
   team_name                 varchar(255),
-  league_id                 varchar(255),
-  input_id                  varchar(255),
-  value                     varchar(255),
+  league_id                 integer,
+  input_id                  integer,
+  value                     float,
   constraint pk_fixed_data primary key (id))
 ;
 
 create table input (
-  id                        varchar(255) not null,
+  id                        integer not null,
   name                      varchar(255),
   type                      varchar(255),
   constraint pk_input primary key (id))
 ;
 
 create table league (
-  id                        varchar(255) not null,
+  id                        integer not null,
   name                      varchar(255),
-  team_number               varchar(255),
+  team_number               integer,
   logo                      varchar(255),
   constraint pk_league primary key (id))
 ;
 
 create table seasonal_data (
-  id                        varchar(255) not null,
-  team_id                   varchar(255),
+  id                        integer not null,
+  team_id                   integer,
   team_name                 varchar(255),
-  year                      varchar(255),
-  league_id                 varchar(255),
-  input_id                  varchar(255),
-  value                     varchar(255),
+  year                      integer,
+  league_id                 integer,
+  input_id                  integer,
+  value                     float,
   constraint pk_seasonal_data primary key (id))
 ;
 
 create table team (
-  id                        varchar(255) not null,
+  id                        integer not null,
   name                      varchar(255),
-  transfermarkt_name        varchar(255),
-  logo                      varchar(255),
+  tm_id                     integer,
+  logo                      integer,
+  league_id                 integer,
   constraint pk_team primary key (id))
 ;
 

@@ -12,10 +12,10 @@ import java.util.List;
 @Entity
 public class League extends Model {
     @Id
-    public String id;
+    public int id;
 
     public String name;
-    public String teamNumber;
+    public int teamNumber;
     public String logo;
 
     /**
