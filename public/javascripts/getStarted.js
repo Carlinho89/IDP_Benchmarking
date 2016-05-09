@@ -27,10 +27,14 @@ $(".league").on('click', function(event){
    event.preventDefault();
   //save the value of the selected league
   query.leagueID=$(this).attr('val');
+  query.leagueName=$(this).attr('alt');
+   updateResume(query);
 
   //Scroll to next section
    var hash="#chooseSeason";
    scrollTo(hash);
+
+  
 });
 
 
@@ -43,6 +47,7 @@ $( "#seasonSelect" )
     });
 
     query.season=parseInt(str);    
+     updateResume(query);
     var hash="#chooseInputs";
     scrollTo(hash);
   });
@@ -50,14 +55,33 @@ $( "#seasonSelect" )
 
 //Events to manage the list of inputs selected  
 $("#chooseInputs input").on('click', function(event){
+    var names = [];
     var selected = [];
       $('#chooseInputs input:checked').each(function() {
           selected.push(parseInt($(this).attr('value')));
+          names.push($(this).attr('name'));
+
           
       });
     query.selectedInputs=selected;
-    
+    query.selectedInputsNames=names;
+    updateResume(query);
     });
+
+//Events to manage the list of inputs selected  
+$("#chooseOutputs input").on('click', function(event){
+    var names = [];
+    var selected = [];
+      $('#chooseOutputs input:checked').each(function() {
+          selected.push(parseInt($(this).attr('value')));
+          names.push($(this).attr('name'));
+
+          
+      });
+    query.selectedOutputs=selected;
+    query.selectedOutputsNames=names;
+    updateResume(query);
+  });
 
  
 
@@ -82,6 +106,11 @@ $("#resume input").on('click', function(event){
    if(typeof query.leagueID === "undefined"){
     //alert("choose a leagueID");
      hash="#chooseLeague";
+   }
+
+   if(typeof query.selectedOutputs === "undefined"  || query.selectedOutputs.length < 1){
+    // alert("choose >2 Inputs");
+     hash="#chooseOutputs";
    }
    
 
@@ -146,4 +175,58 @@ function post(path, params, method) {
 
     document.body.appendChild(form);
     form.submit();
+}
+
+
+//Function to display a resume of the selected parameters in the Resume tab
+function updateResume(query){
+  console.log(query);
+  var resume="";
+
+  var league="League: ";
+   if(typeof query.leagueID === "undefined" ){
+    league+="NOT SELECTED<br>";
+      
+   } else {
+    league+=query.leagueName + "<br>";
+    
+   }
+  resume+=league;
+
+   var year="Season: ";
+   if(typeof query.season === "undefined" ){
+    year+="NOT SELECTED<br>";
+      
+   } else {
+    year+=query.season + "<br>";
+    
+   }
+  resume+=year;
+
+
+  var inputs="Inputs: ";
+    if(typeof query.selectedInputs === "undefined"){
+    inputs+="NOT SELECTED<br>";
+      
+    } else {
+      for (var i = query.selectedInputsNames.length - 1; i >= 0; i--) {
+        inputs+= query.selectedInputsNames[i]+", "
+      }
+      inputs+="<br>";    
+   }
+  resume+=inputs;
+
+   var outputs="Outputs: ";
+    if(typeof query.selectedOutputs === "undefined"){
+    outputs+="NOT SELECTED<br>";
+      
+    } else {
+      for (var i = query.selectedOutputsNames.length - 1; i >= 0; i--) {
+        outputs+= query.selectedOutputsNames[i]+", "
+      }
+      outputs+="<br>";    
+   }
+  resume+=outputs;
+
+  document.getElementById("selection-summary").innerHTML = resume;
 }
