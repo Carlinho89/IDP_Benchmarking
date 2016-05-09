@@ -15,7 +15,7 @@ public class League extends Model {
     public int id;
 
     public String name;
-    public int teamNumber;
+    public int team_number;
     public String logo;
 
     /**

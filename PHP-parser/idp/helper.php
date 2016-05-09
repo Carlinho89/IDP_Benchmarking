@@ -36,8 +36,8 @@ Setting connection to db. remember to change dbname
 **/
   $servername = "localhost";
   $username = "root";
-  $password = "toxik89";
-  $dbname = "idpdoc";
+  $password = "";
+  $dbname = "idp";
 
   $conn = new mysqli($servername, $username, $password, $dbname);
   // Check connection
@@ -112,7 +112,7 @@ class DataRow
 
     }
 
-     public function getTMTeamId($conn, $tm_id){
+    public function getTMTeamId($conn, $tm_id){
       $sql = "SELECT * FROM `team` WHERE `tm_id` = $tm_id";
       $result = $conn->query($sql);
       if ($result->num_rows > 0) {
@@ -126,6 +126,15 @@ class DataRow
         
 
       }
+
+    }
+    //method to check if a row in Transfermarkt has been inserted, in order to avoid useless computational time
+    public function TMrowInserted($conn){
+      $sql="SELECT count(*) as count FROM `seasonal_data` WHERE `team_id` = $this->team_id AND `year` = $this->year AND `league_id` = $this->league_id";
+      if ($conn->query($sql)->fetch_object()->count < 24){
+        return true;
+      } 
+      return false;
 
     }
 }
@@ -169,7 +178,7 @@ function setTMLeagueId($url){
 
 
 //Retrieves the input id if exists, creates a new one of the defined type otherwise
-function getInputId($conn, $name, $type){
+function getInputId($conn, $name, $type, $isOutput, $value_type){
 
   $sql = "SELECT id FROM `input` WHERE `name` LIKE '".$name."' ";
   $result = $conn->query($sql);
@@ -177,7 +186,8 @@ function getInputId($conn, $name, $type){
       $row = $result->fetch_assoc();
       return $row['id'];
   } else {
-    $sql2="INSERT INTO `input` (`id`, `name`, `type`) VALUES (NULL, '".$name."', '".$type."');";
+ 
+    $sql2="INSERT INTO `input` (`id`, `name`, `type`, `output`, `value_type`  ) VALUES (NULL, '".$name."', '".$type."',".$isOutput.", '".$value_type."');";
     $conn->query($sql2);
     return $conn->insert_id;
     
@@ -218,11 +228,13 @@ $selector- selector string (css style) to find the element in the html to parse
 $table- node of the table holding the data
 $dataArray- basis array which holds team name, id and year. It is set with the getTeams(..) method.
 $type- type of the input being parsed. Might be Sporty or Social or Monetary
+$isOutput- boolean to indicate if the input can be used as output
+$value_type- type of the value saved (number, percentage)
 
 */
-function parseInput($conn, $name, $selector, $table, $dataArray, $type){
+function parseInput($conn, $name, $selector, $table, $dataArray, $type, $isOutput, $value_type){
   $inputArray = $dataArray;
-  $input_id=getInputId($conn,$name, $type);
+  $input_id=getInputId($conn,$name, $type, $isOutput, $value_type);
     $i=0; 
     foreach($table->find("$selector") as $element){
       

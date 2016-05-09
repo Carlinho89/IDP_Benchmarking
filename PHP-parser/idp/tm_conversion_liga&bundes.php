@@ -1,13 +1,13 @@
 <?php
 
 require('helper.php');
-error_reporting(0); 
+//error_reporting(0); 
 
 
 $leagueURL= array();
-$leagueURL[]="http://www.transfermarkt.it/serie-a/tabelle/wettbewerb/IT1?saison_id=";
-$leagueURL[]="http://www.transfermarkt.it/premier-league/tabelle/wettbewerb/GB1/saison_id/";
-//$leagueURL[]="http://www.transfermarkt.it/primera-division/tabelle/wettbewerb/ES1/saison_id/";
+//$leagueURL[]="http://www.transfermarkt.it/serie-a/tabelle/wettbewerb/IT1?saison_id=";
+//$leagueURL[]="http://www.transfermarkt.it/premier-league/tabelle/wettbewerb/GB1/saison_id/";
+$leagueURL[]="http://www.transfermarkt.it/primera-division/tabelle/wettbewerb/ES1/saison_id/";
 //$leagueURL[]="http://www.transfermarkt.it/1-bundesliga/tabelle/wettbewerb/L1/saison_id/";
 $inserted_id= array();
 
@@ -29,10 +29,10 @@ foreach ($leagueURL as $url) {
         foreach($div->find('table') as $table){
           //echo $table;
           foreach($table->find('tr') as $tr){
-             $position= $tr->find('td',0)->plaintext * 1;
-           
-              $tm_id=$tr->find('a[class=vereinprofil_tooltip]',0)->id;
-
+             echo $position= $tr->find('td',0)->plaintext * 1;
+           echo "         ";
+              echo $tm_id=$tr->find('a[class=vereinprofil_tooltip]',0)->id;
+              echo "         ";
             if($position>0 && !in_array($tm_id, $inserted_id)){
           
               echo "$position---$tm_id<img src='img/$tm_id.png'  height='25' width='25'><br>";
@@ -66,6 +66,9 @@ foreach ($leagueURL as $url) {
   $sql = "UPDATE `team` SET `tm_id`=368, logo='368.png' WHERE `name` LIKE 'Sevilla'";
   $conn->query($sql);
 
+  $sql = "UPDATE `team` SET `tm_id`=13, logo='13.png' WHERE `name` LIKE 'Atletico Madrid'";
+  $conn->query($sql);
+
   $sql = "UPDATE `team` SET `tm_id`=142, logo='142.png' WHERE `name` LIKE 'Zaragoza'";
   $conn->query($sql);
 
@@ -81,9 +84,21 @@ foreach ($leagueURL as $url) {
   $sql = "UPDATE `team` SET `tm_id`=940, logo='940.png' WHERE `name` LIKE 'Celta Vigo'";
   $conn->query($sql);
 
-echo '</div><div class="col-md-6">';
+  $sql = "UPDATE `team` SET `tm_id`=681, logo='681.png' WHERE `name` LIKE 'Real Sociedad'";
+  $conn->query($sql);
+
+   $sql = "UPDATE `team` SET `tm_id`=3368, logo='3368.png' WHERE `name` LIKE 'Levante'";
+  $conn->query($sql);
+
+   $sql = "UPDATE `team` SET `tm_id`=472, logo='472.png' WHERE `name` LIKE 'Las Palmas'";
+   $sql = "UPDATE `team` SET `tm_id`=1084, logo='1084.png' WHERE `name` LIKE 'Malaga'";
+  $conn->query($sql);
+
+  
+
+  echo '</div><div class="col-md-6">';
   echo "Done Parsing<br>";
-echo '<a href="home.html#eight" class="btn btn-info" role="button">Continue</a>';
+echo '<a href="home.html#eight2" class="btn btn-info" role="button">Continue</a>';
 echo '</div></div>';
 
   

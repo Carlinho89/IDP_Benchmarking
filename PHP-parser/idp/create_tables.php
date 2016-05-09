@@ -4,6 +4,7 @@
 
 
 require('helper.php');
+echo '<div class="row"><div class="col-md-6">';
 
 $tables= 0;
 echo $sql = 'CREATE TABLE IF NOT EXISTS `fixed_data` (
@@ -22,10 +23,12 @@ if ($conn->query($sql)){
 echo "<br><br>";
 
 
-echo $sql = 'CREATE TABLE IF NOT EXISTS `input` (
+echo $sql = 'CREATE TABLE `input` (
   `id` int(11) NOT NULL,
   `name` varchar(50) NOT NULL,
-  `type` varchar(20) NOT NULL
+  `type` varchar(20) NOT NULL,
+  `output` tinyint(1) NOT NULL,
+  `value_type` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;';
 
 if ($conn->query($sql)){
@@ -38,7 +41,7 @@ echo "<br><br>";
 echo $sql = 'CREATE TABLE IF NOT EXISTS `league` (
   `id` int(11) NOT NULL,
   `name` varchar(50) NOT NULL,
-  `teamsNumber` int(11) NOT NULL,
+  `team_number` int(11) NOT NULL,
   `logo` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;';
 
@@ -173,7 +176,7 @@ if ($conn->query($sql)){
 }
 echo "<br><br>";
 
-echo $sql = "INSERT INTO `league` (`id`, `name`, `teamsNumber`, `logo`) VALUES
+echo $sql = "INSERT INTO `league` (`id`, `name`, `team_Number`, `logo`) VALUES
 (1, 'Serie A', 20, 'SerieA500.png'),
 (2, 'Premier League', 20, 'Premier500.png'),
 (3, 'Liga', 20, 'Liga500.png'),
@@ -185,11 +188,12 @@ if ($conn->query($sql)){
 }
 echo "<br><br>";
 
-
+echo '</div><div class="col-md-6">';
 echo "$tables/15 statements executed";
 echo "<br><br>";
 
 echo '<a href="home.html#two" class="btn btn-info" role="button">Continue</a>';
+echo '</div></div>';
  ?>
 
 

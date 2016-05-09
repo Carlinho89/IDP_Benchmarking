@@ -21,12 +21,12 @@ public class Application extends Controller {
     }
 
     public Result getStarted() {
-
+/*
         CplexController cplexController = new CplexController();
-        cplexController.model1();
+        cplexController.model1(); */
 
         //return ok(get_started.render(Input.getById(1), Input.getByType("Social")));
-        return ok(get_started.render(Input.getByType("Sporty"),Input.getByType("Social"),Input.getByType("Monetary")));
+        return ok(get_started.render(Input.getByType("Sporty"),Input.getByType("Social"),Input.getByType("Monetary"), Input.getOutputs()));
 
     }
 

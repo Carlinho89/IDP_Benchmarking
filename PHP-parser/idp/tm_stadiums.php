@@ -10,13 +10,14 @@ Needs to be executed after the other scripts since it's using tm_id
 //Run more than once: parse max one league per run
 **/
 require('helper.php');
+error_reporting(0); 
 
 
 $html = file_get_html("stadiums.html");
-
+echo '<div class="row"><div class="col-md-6">';
 echo "<b>Parsing transfermarkt stadiums </b><br>";
 //result
-$input_id = getInputId($conn, "Stadium Capacity", "Social");
+$input_id = getInputId($conn, "Stadium Capacity", "Social",0, "number");
 
 foreach($html->find('table[class=items]') as $table){
 
@@ -47,12 +48,12 @@ foreach($html->find('table[class=items]') as $table){
   }
 
 }
-
+echo '</div><div class="col-md-6">';
 echo "Done Parsing<br>";
 
 echo '<a href="home.html#thirteen" class="btn btn-info" role="button">Continue</a>';
 
-
+echo '</div></div>';
 
 
 ?>

@@ -59,33 +59,10 @@ foreach ($leagueURL as $url) {
 
   }
 
-  echo "<h1>Manual update of spanish teams..</h1>";
-  $sql = "UPDATE `team` SET `tm_id`=1049, logo='1049.png' WHERE `name` LIKE 'Valencia'";
-  $conn->query($sql);
-
-  $sql = "UPDATE `team` SET `tm_id`=368, logo='368.png' WHERE `name` LIKE 'Sevilla'";
-  $conn->query($sql);
-
-  $sql = "UPDATE `team` SET `tm_id`=142, logo='142.png' WHERE `name` LIKE 'Zaragoza'";
-  $conn->query($sql);
-
-  $sql = "UPDATE `team` SET `tm_id`=150, logo='150.png' WHERE `name` LIKE 'Real Betis'";
-  $conn->query($sql);
-
-  $sql = "UPDATE `team` SET `tm_id`=367, logo='367.png' WHERE `name` LIKE 'Rayo Vallecano'";
-  $conn->query($sql);
-
-  $sql = "UPDATE `team` SET `tm_id`=16795, logo='16795.png' WHERE `name` LIKE 'Granada'";
-  $conn->query($sql);
-
-  $sql = "UPDATE `team` SET `tm_id`=940, logo='940.png' WHERE `name` LIKE 'Celta Vigo'";
-  $conn->query($sql);
-
-echo '</div><div class="col-md-6">';
+ echo '</div><div class="col-md-6">';
   echo "Done Parsing<br>";
 echo '<a href="home.html#eight" class="btn btn-info" role="button">Continue</a>';
 echo '</div></div>';
-
   
 } else{
   echo "Impossible to run the script. You must run result_parser.php first. If you did, check if the input Rank has been parsed. If it has been saved with a different name modify findRankID() in this script.";

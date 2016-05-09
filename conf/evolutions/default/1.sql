@@ -17,6 +17,8 @@ create table input (
   id                        integer not null,
   name                      varchar(255),
   type                      varchar(255),
+  output                    boolean,
+  value_type                varchar(255),
   constraint pk_input primary key (id))
 ;
 

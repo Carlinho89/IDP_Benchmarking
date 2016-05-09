@@ -1,4 +1,4 @@
-@(sporty : List[Input], social : List[Input], monetary : List[Input] )
+@(sporty : List[Input], social : List[Input], monetary : List[Input], output : List[Input] )
  
 @main("Get Started") {
 <script src="@routes.Assets.versioned("javascripts/getStarted.js")" type="text/javascript"></script>
@@ -10,7 +10,7 @@
     #chooseSeason {padding-top:50px;color: #fff; background-color: #673ab7;}
     #chooseInputs {padding-top:50px;color: #fff; background-color: #ff9800;}
     #resume {padding-top:50px;color: #fff; background-color: #00bcd4;}
-    #section42 {padding-top:50px;color: #fff; background-color: #009688;}
+    #chooseOutputs {padding-top:50px;color: #fff; background-color: #009688;}
     .navbar-inverse {margin-bottom: 0px;}
     .league-data {padding-top:20px;}
     </style>
@@ -36,12 +36,13 @@
           <li><a href="#chooseLeague">League</a></li>
           <li><a href="#chooseSeason">Season</a></li>
           <li><a href="#chooseInputs">Input</a></li>
-          <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Section 4 <span class="caret"></span></a>
+          <li><a href="#chooseOutputs">Output</a></li>
+          <!--<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Section 4 <span class="caret"></span></a>
             <ul class="dropdown-menu">
               <li><a href="#resume">Resume</a></li>
               <li><a href="#section42">Section 4-2</a></li>
             </ul>
-          </li>
+          </li>-->
         </ul>
       </div>
     </div>
@@ -162,7 +163,7 @@
         <div class="panel-body" style="color: black;">
           @for(input <- sporty){
             <div class="checkbox checkbox-success">
-                <input class="styled" type="checkbox" value="@input.id" >
+                <input class="styled" type="checkbox" value="@input.id" name="@input.name" >
                 <label >
                      @input.name
                 </label>
@@ -181,7 +182,7 @@
            <div class="panel-body" style="color: black;">
              @for(input <- social){
                <div class="checkbox checkbox-info">
-                   <input class="styled" type="checkbox" value="@input.id" >
+                   <input class="styled" type="checkbox" value="@input.id " name="@input.name">
                    <label>
                         @input.name
                    </label>
@@ -200,7 +201,7 @@
             <div class="panel-body" style="color: black;">
               @for(input <- monetary){
                 <div class="checkbox checkbox-warning">
-                    <input class="styled" type="checkbox" value="@input.id">
+                    <input class="styled" type="checkbox" value="@input.id" name="@input.name">
                     <label>
                          @input.name
                     </label>
@@ -210,7 +211,7 @@
                 }
             </div>
           </div>
-        </div>
+    </div>
 
   </div>
 
@@ -219,13 +220,37 @@
  
 </div>
 
-<div id="section42" class="container-fluid">
+<div id="chooseOutputs" class="container-fluid">
   <h1>Are we also choosing outputs? What are outputs?</h1>
+  <div class="row">
+      <div class="col-md-4">
+          <div class="panel panel-danger">
+              <div class="panel-heading">
+                  <h1 class="panel-title">Outputs</h1>
+              </div>
+              <div class="panel-body" style="color: black;">
+              @for(input <- output){
+                  <div class="checkbox checkbox-danger">
+                      <input class="styled" type="checkbox" value="@input.id" name="@input.name">
+                      <label >
+                      @input.name
+                      </label>
+                  </div>
+
+
+              }
+              </div>
+          </div>
+      </div>
+  </div>
+
+
 </div>
 
 <div id="resume" class="container-fluid">
   <h1>Resume</h1>
   <p>Summary of the parameters Selected:</p>
+    <p id="query"></p>
   <div id="selection-summary"></div> 
   <input class="btn btn-default" type="submit" value="Submit" id="submit">
 </div>

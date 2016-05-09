@@ -16,6 +16,8 @@ public class Input extends Model {
 
     public String name;
     public String type;
+    public boolean output;
+    public String value_type;
 
     public static Finder find = new Finder(Input.class);
     /**
@@ -46,6 +48,23 @@ public class Input extends Model {
             System.out.println("input is null");
         }
         return inputs;
+    }
+
+    /**
+     * Query DB for inputs which can be outputs
+     * @param
+     * @return
+     */
+
+    public static List<Input> getOutputs(){
+
+
+            return find.where()
+                    .eq("output", true)
+                    .findList();
+
+
+
     }
 
 }

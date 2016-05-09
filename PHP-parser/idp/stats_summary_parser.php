@@ -25,6 +25,10 @@ $urls[]="stats_bundesliga_";
 
 
 
+echo '<div class="row"><div class="col-md-6">';
+
+
+
 
 
 foreach ($urls as $url) {
@@ -42,21 +46,23 @@ foreach ($urls as $url) {
           $dataArray = getTeams($conn, $table, $year, $league_id, "tn");
         
 
-          parseInput($conn,"Shots Per Game", "td[class=shotsPerGame]", $table, $dataArray, "Sporty" );
+          parseInput($conn,"Shots Per Game", "td[class=shotsPerGame]", $table, $dataArray, "Sporty", 0,  "number" );
 
-          parseInput($conn,"Ball Possession", "td[class=possession]", $table, $dataArray, "Sporty" );
+          parseInput($conn,"Ball Possession", "td[class=possession]", $table, $dataArray, "Sporty", 0, "percentage" );
 
-          parseInput($conn,"Pass Success", "td[class=passSuccess]", $table, $dataArray, "Sporty" );
+          parseInput($conn,"Pass Success", "td[class=passSuccess]", $table, $dataArray, "Sporty", 0,  "percentage" );
 
-          parseInput($conn,"Red Cards", "span[class=red-card-box]", $table, $dataArray, "Sporty" );
+          parseInput($conn,"Red Cards", "span[class=red-card-box]", $table, $dataArray, "Sporty", 0, "number" );
 
      echo "<br><b>Done Parsing Stats from ".$url.$year.".html </b> <br>";
     }
     
   }
-echo "Done Parsing<br>";
-echo '<a href="home.html#four" class="btn btn-info" role="button">Continue</a>'
 
+echo '</div><div class="col-md-6">';
+echo "Done Parsing<br>";
+echo '<a href="home.html#four" class="btn btn-info" role="button">Continue</a>';
+echo '</div></div>';
 
 
 
