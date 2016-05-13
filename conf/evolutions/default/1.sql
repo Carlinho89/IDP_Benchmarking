@@ -45,7 +45,7 @@ create table team (
   id                        integer not null,
   name                      varchar(255),
   tm_id                     integer,
-  logo                      integer,
+  logo                      varchar(255),
   league_id                 integer,
   constraint pk_team primary key (id))
 ;

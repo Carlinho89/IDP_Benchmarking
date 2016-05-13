@@ -28,10 +28,14 @@ $(".league").on('click', function(event){
   //save the value of the selected league
   query.leagueID=$(this).attr('val');
   query.leagueName=$(this).attr('alt');
-   updateResume(query);
-
+  updateResume(query);
+  document.getElementById("chooseLeagueAlert").style.visibility = "hidden";
+    if(query.season > 0){
+        displayTeams(query);
+    }
   //Scroll to next section
    var hash="#chooseSeason";
+
    scrollTo(hash);
 
   
@@ -46,9 +50,12 @@ $( "#seasonSelect" )
       str = $( this ).text();
     });
 
-    query.season=parseInt(str);    
-     updateResume(query);
+    query.season=parseInt(str);
+    updateResume(query);
+    document.getElementById("chooseSeasonAlert").style.visibility = "hidden";
+      displayTeams(query);
     var hash="#chooseInputs";
+
     scrollTo(hash);
   });
    
@@ -66,6 +73,7 @@ $("#chooseInputs input").on('click', function(event){
     query.selectedInputs=selected;
     query.selectedInputsNames=names;
     updateResume(query);
+    document.getElementById("chooseInputsAlert").style.visibility = "hidden";
     });
 
 //Events to manage the list of inputs selected  
@@ -81,6 +89,7 @@ $("#chooseOutputs input").on('click', function(event){
     query.selectedOutputs=selected;
     query.selectedOutputsNames=names;
     updateResume(query);
+    document.getElementById("chooseOutputsAlert").style.visibility = "hidden";
   });
 
  
@@ -92,31 +101,40 @@ $("#chooseOutputs input").on('click', function(event){
 $("#resume input").on('click', function(event){
   // console.log(query);
    var hash="";
+   var alert="";
+
+   if(typeof query.selectedOutputs === "undefined"  || query.selectedOutputs.length < 1){
+     alert="chooseOutputsAlert";
+     hash="#chooseOutputs";
+   }
 
    if(typeof query.selectedInputs === "undefined"  || query.selectedInputs.length < 2){
-    // alert("choose >2 Inputs");
+     
      hash="#chooseInputs";
+     alert="chooseInputsAlert";
    }
 
    if(typeof query.season === "undefined"){
-    // alert("choose a season");
+     
      hash="#chooseSeason";
+     alert="chooseSeasonAlert";
    }
 
    if(typeof query.leagueID === "undefined"){
-    //alert("choose a leagueID");
+    alert="chooseLeagueAlert";
      hash="#chooseLeague";
    }
 
-   if(typeof query.selectedOutputs === "undefined"  || query.selectedOutputs.length < 1){
-    // alert("choose >2 Inputs");
-     hash="#chooseOutputs";
-   }
+   
    
 
    //if form is not compiled properly scrolls to
   if(hash != ""){
       scrollTo(hash);
+      document.getElementById(alert).style.visibility = "visible";
+      
+      // document.getElementById(hash+"Alert").innerHTML = error;
+      //alert(error);
     } else {
       var obj= {};
         obj.name="aa";
@@ -229,4 +247,19 @@ function updateResume(query){
   resume+=outputs;
 
   document.getElementById("selection-summary").innerHTML = resume;
+}
+
+
+function displayTeams(query){
+    appRoutes.controllers.Application.getLeagueTeamsBySeason(query.season,query.leagueID).ajax( {
+        success : function ( data ) {
+            $( "#teams" ).empty();
+            for(var i = 0; i<data.length; i++){
+                $( "#teams" ).append( '<img class="  img-thumbnail img-circle" src="/assets/images/team_logo/'+data[i].logo+'"  title="'+data[i].name+'" width="5%">' );
+               // console.log(data[i]);
+
+            }
+            $( "#teams" ).append("<br><br>");
+        }
+    });
 }

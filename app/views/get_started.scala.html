@@ -52,10 +52,13 @@
 <div id="chooseLeague" class="container-fluid text-center">
   <h1 >Choose a League</h1>
   <p>Should we allow multiple league selection?</p>
- 
+ <div id="chooseLeagueAlert" class="alert alert-danger" style="visibility: hidden;">
+    <strong>Necessary Field</strong> Please choose one of the leagues by clicking on the logo
+  </div>
  
   
   <div id="league" class="row">
+  
     <div class="col-sm-3 text-center">
       
         <h2 >Serie A</h2>
@@ -125,6 +128,9 @@
 <div id="chooseSeason" class="container-fluid text-center">
   <h1>Choose a Season</h1>
   <p>Should we allow multiple season selection?</p>
+   <div id="chooseSeasonAlert" class="alert alert-danger" style="visibility: hidden;">
+    <strong>Necessary Field</strong> Select one season from the dropdown menu
+  </div>
   <div class="row">
     <div class="col-md-4"></div>
     <div class="col-md-4">
@@ -139,21 +145,24 @@
           <option>2011</option>
           <option>2010</option>
           
-          
-          
-          
-          
         </select>
-      </div>  
+
     </div>
     <div class="col-md-4"></div>
   </div>
-  
+
+
+  </div>
+    <div id="teams" class="row"></div>
 </div>
 <div id="chooseInputs" class="container-fluid">
   <h1 class="text-center">Choose input parameters</h1>
   <p class="text-center">Is there a minimum quantity of parameters to choose?</p>
   <p class="text-center">Is the name self explicatory or should i add descriptions?</p>
+
+  <div id="chooseInputsAlert" class="alert alert-danger" style="visibility: hidden;">
+    <strong>Necessary Field</strong> Select at least two inputs
+  </div>
   <div class="row" >
     <div class="col-md-4">
       <div class="panel panel-success">
@@ -222,6 +231,9 @@
 
 <div id="chooseOutputs" class="container-fluid">
   <h1>Are we also choosing outputs? What are outputs?</h1>
+  <div id="chooseOutputsAlert" class="alert alert-danger" style="visibility: hidden;">
+    <strong>Necessary Field</strong> Select at least one output
+  </div>
   <div class="row">
       <div class="col-md-4">
           <div class="panel panel-danger">

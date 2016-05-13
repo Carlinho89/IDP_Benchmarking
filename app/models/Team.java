@@ -1,6 +1,6 @@
 package models;
 
-import com.avaje.ebean.Model;
+import com.avaje.ebean.*;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -17,7 +17,7 @@ public class Team extends Model {
 
     public String name;
     public int tm_id;
-    public int logo;
+    public String logo;
     public int league_id;
     /**
      * Query to DB to get a "Team" by ID
@@ -37,4 +37,23 @@ public class Team extends Model {
     }
 
 
+    /**
+     * Query to get all "Team" tuples for a certain year and league
+     * @return list with all the fetched objs
+     * "select * from team where id in (select distinct team_id from seasonal_data where year = 2010 and league_id=1 )"
+     */
+    public static List<Team> getAllbySeason(int year, int league_id){
+        RawSql rawSql = RawSqlBuilder.parse("select id, name, tm_id, logo, league_id from team where id in (select distinct team_id from seasonal_data where year = "+year+" and league_id="+league_id+" )")
+                .columnMapping("id", "id")
+                .columnMapping("name", "name")
+                .columnMapping("tm_id", "tm_id")
+                .columnMapping("logo", "logo")
+                .columnMapping("league_id", "league_id")
+                .create();
+
+        Query<Team> query = Ebean.find(Team.class);
+        query.setRawSql(rawSql);
+        List<Team> result = query.findList();
+        return result;
+    }
 }

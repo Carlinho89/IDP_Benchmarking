@@ -4,6 +4,10 @@ package controllers;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import models.Input;
+import models.Team;
+
+import play.Routes;
+import play.libs.Json;
 import play.mvc.BodyParser;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -30,6 +34,13 @@ public class Application extends Controller {
 
     }
 
+    public  Result getLeagueTeamsBySeason(int year, int league_id)
+    {
+        return ok(Json.toJson(Team.getAllbySeason(year, league_id)));
+    }
+
+
+
 
     @BodyParser.Of(BodyParser.Json.class)
     public  Result sayHello() {
@@ -48,5 +59,14 @@ public class Application extends Controller {
         JsonNode json = request().body().asJson();
         String a = json.path("leagueID").asText();
         return ok(index.render(a));
+    }
+
+
+    public  Result jsRoutes()
+    {
+        response().setContentType("text/javascript");
+        return ok(Routes.javascriptRouter("appRoutes", //appRoutes will be the JS object available in our view
+                routes.javascript.Application.getLeagueTeamsBySeason()
+               ));
     }
 }
