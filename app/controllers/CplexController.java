@@ -1,5 +1,7 @@
 package controllers;
 
+import com.avaje.ebean.RawSql;
+import com.avaje.ebean.RawSqlBuilder;
 import ilog.concert.IloException;
 import ilog.concert.IloLinearNumExpr;
 import ilog.concert.IloNumVar;
@@ -108,5 +110,41 @@ public class CplexController {
 
     public String[] createDMUArray(String league) {
         return League.getLeaguesNames();
+    }
+    /*
+    * The method is given a String which separates the selected tables by a comma.
+    * This string is then turned into an array from which the parameters are gained
+    * */
+    public double[][] createParameterArray(String league, int season, String choice)    {
+        String[]selection = choice.split(", ");
+        String[][] stringPara = new String[selection.length][];   //Create String-array because an ArrayList cannot be directly converted to double
+
+        for (int i = 0; i < selection.length; i++){
+        RawSql rawSql = RawSqlBuilder.parse("select "+ selection[i] + "from " + league + "where " + "").create();
+
+        }
+        /*
+        try{
+            for (int i = 0; i < selection.length; i++)    //Gather individual columns and put them directly into a 2D-array
+            {
+                rs = st.executeQuery("select " + selection[i] + " from " + league+ " where year = " + "'" + season + "'");   //Select only one column at a time
+
+                List columns = new ArrayList();   //Put ResultSet into an ArrayList. It is weird that only this approach seems to work. Requires testing later on.
+                while (rs.next()) {
+                    columns.add(rs.getString(1));
+                }
+                stringPara[i] = (String[]) columns.toArray(new String[columns.size()]);
+            }
+            double[][] parameter = new double[stringPara.length][stringPara[0].length];   //Create final array for return
+            for(int i = 0; i < stringPara.length; i++)
+                for (int j = 0; j < stringPara[i].length; j++)
+                    parameter[i][j] = Double.parseDouble(stringPara[i][j]);
+
+            return parameter;
+        } catch(Exception ex){
+            System.out.println("Error when creating Parameter-Array: " + ex); //What went wrong?
+            return null;
+        }
+        */
     }
 }

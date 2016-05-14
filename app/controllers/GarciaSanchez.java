@@ -33,7 +33,7 @@ public class GarciaSanchez {
         List<String[]>refList = new ArrayList<String[]>();
         boolean[][]ramifications = {{false, false},{false, true},{false, false}};
 
-        String league = "premier_league";
+        String league = "Premier League"; //"premier_league";
         int start = 2010;
         int seasons = 4;
 
@@ -41,6 +41,13 @@ public class GarciaSanchez {
             //Get DMUs
             String[] dmu = cplexConnection.createDMUArray(league);
             dmuList.add(dmu);
+
+            //Create Parameter-Arrays for Stage One
+            double [][]offIn = cplexConnection.createParameterArray(league, (start + i), selectionOffIn);
+            double [][]offOut = cplexConnection.createParameterArray(league, (start + i), selectionOffOut);
+            double [][]defIn = cplexConnection.createParameterArray(league, (start + i), selectionDefIn);
+            double [][]defOut = cplexConnection.createParameterArray(league, (start + i), selectionDefOut);
+
 
         }
 
