@@ -1,17 +1,17 @@
 <?php
 
 require('helper.php');
-
+error_reporting(0); 
 
 
 $leagueURL= array();
 $leagueURL[]="http://www.transfermarkt.it/serie-a/tabelle/wettbewerb/IT1?saison_id=";
 $leagueURL[]="http://www.transfermarkt.it/premier-league/tabelle/wettbewerb/GB1/saison_id/";
-$leagueURL[]="http://www.transfermarkt.it/primera-division/tabelle/wettbewerb/ES1/saison_id/";
-$leagueURL[]="http://www.transfermarkt.it/1-bundesliga/tabelle/wettbewerb/L1/saison_id/";
+//$leagueURL[]="http://www.transfermarkt.it/primera-division/tabelle/wettbewerb/ES1/saison_id/";
+//$leagueURL[]="http://www.transfermarkt.it/1-bundesliga/tabelle/wettbewerb/L1/saison_id/";
+$inserted_id= array();
 
-
-
+echo '<div class="row"><div class="col-md-6">';
 
 $rank_id=findRankID($conn);
 if($rank_id>0){
@@ -20,7 +20,7 @@ foreach ($leagueURL as $url) {
   $league_id = setTMLeagueId($url);
   for ($i = 2010; $i<=2015; $i++ ){
 
-    $html = file_get_html($url.$i);
+    $html = file_get_html_tm($url.$i);
     echo "<br><h1>$league_id----$i</h1></br>";
 
     //result
@@ -33,12 +33,15 @@ foreach ($leagueURL as $url) {
            
               $tm_id=$tr->find('a[class=vereinprofil_tooltip]',0)->id;
 
-            if($position>0){
+            if($position>0 && !in_array($tm_id, $inserted_id)){
           
               echo "$position---$tm_id<img src='img/$tm_id.png'  height='25' width='25'><br>";
-               echo $sql="UPDATE `team` SET `tm_id`=$tm_id, logo='".$tm_id.".png' WHERE id in (SELECT `team_id` FROM `seasonal_data` WHERE `input_id` = $rank_id and `year` = $i and value= $position and `league_id` = $league_id)";
+               $sql="UPDATE `team` SET `tm_id`=$tm_id, logo='".$tm_id.".png' WHERE id in (SELECT `team_id` FROM `seasonal_data` WHERE `input_id` = $rank_id and `year` = $i and value= $position and `league_id` = $league_id)";
               //echo "<br>";
-             $conn->query($sql);
+             if($conn->query($sql)){
+              $inserted_id[]=$tm_id;
+
+             }
             }
 
              
@@ -77,8 +80,11 @@ foreach ($leagueURL as $url) {
 
   $sql = "UPDATE `team` SET `tm_id`=940, logo='940.png' WHERE `name` LIKE 'Celta Vigo'";
   $conn->query($sql);
+
+echo '</div><div class="col-md-6">';
   echo "Done Parsing<br>";
 echo '<a href="home.html#eight" class="btn btn-info" role="button">Continue</a>';
+echo '</div></div>';
 
   
 } else{

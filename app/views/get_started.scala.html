@@ -1,237 +1,324 @@
-@(sporty : List[Input], social : List[Input], monetary : List[Input] )
- 
+@(sporty: List[Input], social: List[Input], monetary: List[Input], output: List[Input])
+
 @main("Get Started") {
-<script src="@routes.Assets.versioned("javascripts/getStarted.js")" type="text/javascript"></script>
-  <style>
+    <script src="@routes.Assets.versioned("javascripts/getStarted.js")" type="text/javascript"></script>
+    <style>
     body {
-        position: relative; 
+        position: relative;
     }
-    #chooseLeague {padding-top:50px;color: #fff; background-color: #1E88E5;}
-    #chooseSeason {padding-top:50px;color: #fff; background-color: #673ab7;}
-    #chooseInputs {padding-top:50px;color: #fff; background-color: #ff9800;}
-    #resume {padding-top:50px;color: #fff; background-color: #00bcd4;}
-    #section42 {padding-top:50px;color: #fff; background-color: #009688;}
-    .navbar-inverse {margin-bottom: 0px;}
-    .league-data {padding-top:20px;}
+
+    #chooseLeague {
+        padding-top: 50px;
+        color: #fff;
+        background-color: #1E88E5;
+    }
+
+    #chooseSeason {
+        padding-top: 50px;
+        color: #fff;
+        background-color: #673ab7;
+    }
+
+    #chooseTeam {
+        padding-top: 50px;
+    }
+
+    #chooseInputs {
+        padding-top: 50px;
+        color: #fff;
+        background-color: #ff9800;
+    }
+
+    #resume {
+        padding-top: 50px;
+        color: #fff;
+        background-color: #00bcd4;
+    }
+
+    #chooseOutputs {
+        padding-top: 50px;
+        color: #fff;
+        background-color: #009688;
+    }
+
+    .navbar-inverse {
+        margin-bottom: 0px;
+    }
+
+    .league-data {
+        padding-top: 20px;
+    }
     </style>
 
-    
 
-  <body >
 
-<nav class="navbar navbar-inverse navbar-fixed-top" id="scrollspy">
-  <div class="container-fluid">
-    <div class="navbar-header">
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>                        
-      </button>
-      <a class="navbar-brand" href="@routes.Application.index()">BenchMarking Football Clubs</a>
-      
-    </div>
-    <div>
-      <div class="collapse navbar-collapse" id="myNavbar">
-        <ul class="nav navbar-nav">
-          <li><a href="#chooseLeague">League</a></li>
-          <li><a href="#chooseSeason">Season</a></li>
-          <li><a href="#chooseInputs">Input</a></li>
-          <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Section 4 <span class="caret"></span></a>
+    <body >
+
+        <nav class="navbar navbar-inverse navbar-fixed-top" id="scrollspy">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="@routes.Application.index()">BenchMarking Football Clubs</a>
+
+                </div>
+                <div>
+                    <div class="collapse navbar-collapse" id="myNavbar">
+                        <ul class="nav navbar-nav">
+                            <li><a href="#chooseLeague">League</a></li>
+                            <li><a href="#chooseSeason">Season</a></li>
+                            <li><a href="#chooseInputs">Input</a></li>
+                            <li><a href="#chooseOutputs">Output</a></li>
+                                <!--<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Section 4 <span class="caret"></span></a>
             <ul class="dropdown-menu">
               <li><a href="#resume">Resume</a></li>
               <li><a href="#section42">Section 4-2</a></li>
             </ul>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</nav>    
+          </li>-->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </nav>
 
-<div id="chooseLeague" class="container-fluid text-center">
-  <h1 >Choose a League</h1>
-  <p>Should we allow multiple league selection?</p>
- 
- 
-  
-  <div id="league" class="row">
-    <div class="col-sm-3 text-center">
-      
-        <h2 >Serie A</h2>
-       
-        
-        <a  href="">
-          <img class="img-responsive img-thumbnail img-circle center-block league" src="@routes.Assets.at("images/SerieA500.png")" val=1 alt="SerieA" width="150" height="150" style="background-color:white;">
-        </a>
-        <p><strong>Italian Football League</strong></p>
-        <div class="league-data">
-         <p>League Value: <strong>2,49 Billion €</strong></p>
-         <p>Number of teams: <strong>20</strong></p>
-         <p>Number of Players: <strong>528</strong></p>
-         <p>Uefa Ranking: <strong>4th</strong></p>
-       </div>
-    </div>
-     <div class="col-sm-3 text-center">
-      
-        <h2 >Premier League</h2>
-        
-        <a href="">
-        
-        <img class="img-responsive img-thumbnail img-circle center-block league" src="@routes.Assets.at("images/Premier500.png")" val=2 alt="Premier" width="150" height="150" style="background-color:white;">
-        
-        </a>
-        <p><strong>English Football League</strong></p>
-         <div class="league-data">
-         <p>League Value: <strong>4,41 Billion €</strong></p>
-         <p>Number of teams: <strong>20</strong></p>
-         <p>Number of Players: <strong>525</strong></p>
-         <p>Uefa Ranking: <strong>3rd</strong></p>
-       </div>
-     </div>
+        <div id="chooseLeague" class="container-fluid text-center">
+            <h1 >Choose a League</h1>
 
-     <div class="col-sm-3 text-center">
-      
-        <h2 >Liga</h2>
-       
-        <a href="">
-        <img class="img-responsive img-thumbnail img-circle center-block league" src="@routes.Assets.at("images/Liga500.png")" val=3 alt="Liga" width="150" height="150" style="background-color:white;"> 
-        </a>
-        <p><strong>Spanish Football League</strong></p>
-        <div class="league-data">
-         <p>League Value: <strong>3,2 Billion €</strong></p>
-         <p>Number of teams: <strong>20</strong></p>
-         <p>Number of Players: <strong>484</strong></p>
-         <p>Uefa Ranking: <strong>1st</strong></p>
-       </div>
-     </div>
-       <div class="col-sm-3 text-center">
-        
-          <h2 >Bundes Liga</h2>
-         
-           <a href="">
-          <img class="img-responsive img-thumbnail img-circle center-block league" src="@routes.Assets.at("images/Bundes500c.png")" val=4 alt="Bundes" width="150" height="150" style="background-color:white;"> 
-          </a>
-           <p><strong>German Football League</strong></p>
-           <div class="league-data">
-            <p>League Value: <strong>2,38 Billion €</strong></p>
-            <p>Number of teams: <strong>18</strong></p>
-            <p>Number of Players: <strong>515</strong></p>
-            <p>Uefa Ranking: <strong>2nd</strong></p>
-          </div>
-       </div>
-  </div>
-</div>
-<div id="chooseSeason" class="container-fluid text-center">
-  <h1>Choose a Season</h1>
-  <p>Should we allow multiple season selection?</p>
-  <div class="row">
-    <div class="col-md-4"></div>
-    <div class="col-md-4">
-        <div class="form-group">
-        <label for="seasonSelect">Select season:</label>
-        <select class="form-control" id="seasonSelect">
-          <option>...</option>
-          <option>2015</option>
-          <option>2014</option>
-          <option>2013</option>
-          <option>2012</option>
-          <option>2011</option>
-          <option>2010</option>
-          
-          
-          
-          
-          
-        </select>
-      </div>  
-    </div>
-    <div class="col-md-4"></div>
-  </div>
-  
-</div>
-<div id="chooseInputs" class="container-fluid">
-  <h1 class="text-center">Choose input parameters</h1>
-  <p class="text-center">Is there a minimum quantity of parameters to choose?</p>
-  <p class="text-center">Is the name self explicatory or should i add descriptions?</p>
-  <div class="row" >
-    <div class="col-md-4">
-      <div class="panel panel-success">
-        <div class="panel-heading">
-          <h2 class="panel-title">Sportive</h2>
-        </div>
-        <div class="panel-body" style="color: black;">
-          @for(input <- sporty){
-            <div class="checkbox checkbox-success">
-                <input class="styled" type="checkbox" value="@input.id" >
-                <label >
-                     @input.name
-                </label>
+            <div id="chooseLeagueAlert" class="alert alert-danger" style="visibility: hidden;">
+                <strong>Necessary Field</strong> Please choose one of the leagues by clicking on the logo
             </div>
 
-                
-            }
-        </div>
-      </div>
-    </div>
-   <div class="col-md-4">
-         <div class="panel panel-info">
-           <div class="panel-heading">
-             <h2 class="panel-title">Social</h2>
-           </div>
-           <div class="panel-body" style="color: black;">
-             @for(input <- social){
-               <div class="checkbox checkbox-info">
-                   <input class="styled" type="checkbox" value="@input.id" >
-                   <label>
-                        @input.name
-                   </label>
-               </div>
 
-                   
-               }
-           </div>
-         </div>
-       </div>
-    <div class="col-md-4">
-          <div class="panel panel-warning">
-            <div class="panel-heading">
-              <h1 class="panel-title">Monetary</h1>
-            </div>
-            <div class="panel-body" style="color: black;">
-              @for(input <- monetary){
-                <div class="checkbox checkbox-warning">
-                    <input class="styled" type="checkbox" value="@input.id">
-                    <label>
-                         @input.name
-                    </label>
+            <div id="league" class="row">
+
+                <div class="col-sm-3 text-center">
+
+                    <h2 >Serie A</h2>
+
+
+                    <a href="">
+                        <img class="img-responsive img-thumbnail img-circle center-block league" src="@routes.Assets.at("images/SerieA500.png")" val=1 alt="SerieA" width="150" height="150" style="background-color: white;">
+                    </a>
+                    <p><strong>Italian Football League</strong></p>
+                    <div class="league-data">
+                        <p>League Value: <strong>2,49 Billion €</strong></p>
+                        <p>Number of teams: <strong>20</strong></p>
+                        <p>Number of Players: <strong>528</strong></p>
+                        <p>Uefa Ranking: <strong>4th</strong></p>
+                    </div>
+                </div>
+                <div class="col-sm-3 text-center">
+
+                    <h2 >Premier League</h2>
+
+                    <a href="">
+
+                        <img class="img-responsive img-thumbnail img-circle center-block league" src="@routes.Assets.at("images/Premier500.png")" val=2 alt="Premier" width="150" height="150" style="background-color: white;">
+
+                    </a>
+                    <p><strong>English Football League</strong></p>
+                    <div class="league-data">
+                        <p>League Value: <strong>4,41 Billion €</strong></p>
+                        <p>Number of teams: <strong>20</strong></p>
+                        <p>Number of Players: <strong>525</strong></p>
+                        <p>Uefa Ranking: <strong>3rd</strong></p>
+                    </div>
                 </div>
 
-                    
-                }
+                <div class="col-sm-3 text-center">
+
+                    <h2 >Liga</h2>
+
+                    <a href="">
+                        <img class="img-responsive img-thumbnail img-circle center-block league" src="@routes.Assets.at("images/Liga500.png")" val=3 alt="Liga" width="150" height="150" style="background-color: white;">
+                    </a>
+                    <p><strong>Spanish Football League</strong></p>
+                    <div class="league-data">
+                        <p>League Value: <strong>3,2 Billion €</strong></p>
+                        <p>Number of teams: <strong>20</strong></p>
+                        <p>Number of Players: <strong>484</strong></p>
+                        <p>Uefa Ranking: <strong>1st</strong></p>
+                    </div>
+                </div>
+                <div class="col-sm-3 text-center">
+
+                    <h2 >Bundes Liga</h2>
+
+                    <a href="">
+                        <img class="img-responsive img-thumbnail img-circle center-block league" src="@routes.Assets.at("images/Bundes500c.png")" val=4 alt="Bundes" width="150" height="150" style="background-color: white;">
+                    </a>
+                    <p><strong>German Football League</strong></p>
+                    <div class="league-data">
+                        <p>League Value: <strong>2,38 Billion €</strong></p>
+                        <p>Number of teams: <strong>18</strong></p>
+                        <p>Number of Players: <strong>515</strong></p>
+                        <p>Uefa Ranking: <strong>2nd</strong></p>
+                    </div>
+                </div>
             </div>
-          </div>
+        </div>
+        <div id="chooseSeason" class="container-fluid text-center">
+            <h1>Choose a Season</h1>
+            <div id="chooseSeasonAlert" class="alert alert-danger" style="visibility: hidden;">
+                <strong>Necessary Field</strong> Select one season from the dropdown menu
+            </div>
+            <div class="row">
+                <div class="col-md-4"></div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="seasonSelect">Select season:</label>
+                        <select class="form-control" id="seasonSelect">
+                            <option>...</option>
+                            <option>2015</option>
+                            <option>2014</option>
+                            <option>2013</option>
+                            <option>2012</option>
+                            <option>2011</option>
+                            <option>2010</option>
+
+                        </select>
+
+                    </div>
+                    <div class="col-md-4"></div>
+                </div>
+
+
+            </div>
+            <div id="chooseTeam">
+                <h1>Choose your favorite Team</h1>
+                <div id="chooseTeamAlert" class="alert alert-danger" style="visibility: hidden;">
+                    <strong>Necessary Field</strong> Select your favorite team
+                </div>
+                <div id="teams" class="row"></div>
+            </div>
+        </div>
+        <div id="chooseInputs" class="container-fluid">
+            <h1 class="text-center">Choose input parameters</h1>
+
+            <div id="chooseInputsAlert" class="alert alert-danger" style="visibility: hidden;">
+                <strong>Necessary Field</strong> Select at least two inputs
+            </div>
+            <div class="row" >
+                <div class="col-md-4">
+                    <div class="panel panel-success">
+                        <div class="panel-heading">
+                            <h2 class="panel-title">Sportive</h2>
+                        </div>
+                        <div class="panel-body" style="color: black;">
+                        @for(input <- sporty) {
+                            <div class="checkbox checkbox-success">
+                                <input class="styled" type="checkbox" value="@input.id" name="@input.name" >
+                                <label >
+                                @input.name
+                                </label>
+                            </div>
+
+
+                        }
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <h2 class="panel-title">Social</h2>
+                        </div>
+                        <div class="panel-body" style="color: black;">
+                        @for(input <- social) {
+                            <div class="checkbox checkbox-info">
+                                <input class="styled" type="checkbox" value="@input.id " name="@input.name">
+                                <label>
+                                @input.name
+                                </label>
+                            </div>
+
+
+                        }
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="panel panel-warning">
+                        <div class="panel-heading">
+                            <h1 class="panel-title">Monetary</h1>
+                        </div>
+                        <div class="panel-body" style="color: black;">
+                        @for(input <- monetary) {
+                            <div class="checkbox checkbox-warning">
+                                <input class="styled" type="checkbox" value="@input.id" name="@input.name">
+                                <label>
+                                @input.name
+                                </label>
+                            </div>
+
+
+                        }
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
         </div>
 
-  </div>
+        <div id="chooseOutputs" class="container-fluid">
+            <h1 class="text-center">Choose output  parameters</h1>
+
+            <div id="chooseOutputsAlert" class="alert alert-danger" style="visibility: hidden;">
+                <strong>Necessary Field</strong> Select at least one output
+            </div>
+            <div class="row">
+                <div class="col-md-4"></div>
+                <div class="col-md-4">
+                    <div class="panel panel-danger">
+                        <div class="panel-heading">
+                            <h1 class="panel-title">Outputs</h1>
+                        </div>
+                        <div class="panel-body" style="color: black;">
+                        @for(input <- output) {
+                            <div class="checkbox checkbox-danger">
+                                <input class="styled" type="checkbox" value="@input.id" name="@input.name">
+                                <label >
+                                @input.name
+                                </label>
+                            </div>
 
 
+                        }
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md.4"></div>
+            </div>
 
- 
-</div>
 
-<div id="section42" class="container-fluid">
-  <h1>Are we also choosing outputs? What are outputs?</h1>
-</div>
+        </div>
 
-<div id="resume" class="container-fluid">
-  <h1>Resume</h1>
-  <p>Summary of the parameters Selected:</p>
-  <div id="selection-summary"></div> 
-  <input class="btn btn-default" type="submit" value="Submit" id="submit">
-</div>
+        <div id="resume" class="container-fluid">
+            <div class="row">
+                <div class="col-md-4">
 
-</body>
-   
+                </div>
+                <div class="col-md-4">
+                    <h1  class="text-center">Resume</h1>
+                    <p  class="text-center">Summary of the parameters Selected:</p>
+                    <p id="query"></p>
+                    <div   class="text-center" id="selection-summary"></div>
+                    <input class="btn btn-default" type="submit" value="Submit" id="submit">
+                </div>
+                <div class="col-md-4">
+
+                </div>
+            </div>
+
+
+        </div>
+
+    </body>
 
 
 }

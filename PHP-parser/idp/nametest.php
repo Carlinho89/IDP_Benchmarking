@@ -13,13 +13,13 @@
 require('helper.php');
 
 
-$sql = "SELECT * FROM teams";
+$sql = "SELECT * FROM team";
 $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {
     // output data of each row
     while($row = $result->fetch_assoc()) {
-      echo "<br> year-$i league_id-$league_id tm_id-$tm_id position-$position ";
+     // echo "<br> year-$i league_id-$league_id tm_id-$tm_id position-$position ";
              
         echo "id: " . $row["id"]. " - Name: " . $row["name"]. "<img src='img/".$row["logo"]."'  height='25' width='25'><br>";
     }

@@ -13,7 +13,7 @@ $urls[]="stats_serieA_";
 $urls[]="stats_premier_"; 
 $urls[]="stats_liga_"; 
 $urls[]="stats_bundesliga_"; 
-
+echo '<div class="row"><div class="col-md-6">';
 
 
 
@@ -34,9 +34,9 @@ foreach ($urls as $url) {
         $dataArray = getTeams($conn, $table, $year, $league_id, "tn");
         
 
-          parseInput($conn,"Shots On Target Per Game", "td[class=shotOnTargetPerGame]", $table, $dataArray, "Sporty" );
+          parseInput($conn,"Shots On Target Per Game", "td[class=shotOnTargetPerGame]", $table, $dataArray, "Sporty", 0, "number"  );
 
-          parseInput($conn,"Dribbles Won Per Game", "td[class=dribbleWonPerGame]", $table, $dataArray, "Sporty" );
+          parseInput($conn,"Dribbles Won Per Game", "td[class=dribbleWonPerGame]", $table, $dataArray, "Sporty", 0, "number"  );
 
 
         
@@ -47,9 +47,10 @@ foreach ($urls as $url) {
     
   }
 
-
+echo '</div><div class="col-md-6">';
 echo "Done Parsing<br>";
-echo '<a href="home.html#six" class="btn btn-info" role="button">Continue</a>'
+echo '<a href="home.html#six" class="btn btn-info" role="button">Continue</a>';
+echo '</div></div>';
 
 
 

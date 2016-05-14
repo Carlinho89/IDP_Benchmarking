@@ -9,7 +9,7 @@ public class Global extends GlobalSettings {
     private String path = "lib/";
     @Override
     public void onStart(Application app) {
-
+        
         String os = System.getProperty("os.name").toLowerCase();
         System.out.println("OS is = " + os);
         if(os.contains("mac os x") || os.contains("mac")) {
@@ -43,7 +43,6 @@ public class Global extends GlobalSettings {
         }else {
             System.out.println("Something went wrong loadinc CPLEX libs");
 
-                }
     }
     @Override
     public void onStop(Application app) {

@@ -1,125 +1,190 @@
-$(document).ready(function(){
-  //the query object will hold all the parameters needed for the modeller
-  var query= {};
-  // Add scrollspy to <body>
-  $('body').scrollspy({target: ".navbar", offset: 50});   
-
+$(document).ready(function () {
+    //the query object will hold all the parameters needed for the modeller
+    var query = {};
+    // Add scrollspy to <body>
+    $('body').scrollspy({target: ".navbar", offset: 50});
 
 
 //Navigation Bar Events
 // Add smooth scrolling on all links inside the navbar
-$("#myNavbar a").on('click', function(event) {
+    $("#myNavbar a").on('click', function (event) {
 
-  // Prevent default anchor click behavior
-  event.preventDefault();
+        // Prevent default anchor click behavior
+        event.preventDefault();
 
-  // Store hash
-  var hash = this.hash;
-  scrollTo(hash);
-});
-
+        // Store hash
+        var hash = this.hash;
+        scrollTo(hash);
+    });
 
 
 //Auto scrolling events: after each section is completed 
 //screen scrolls to next section
 //League to Season
-$(".league").on('click', function(event){
-   event.preventDefault();
-  //save the value of the selected league
-  query.leagueID=$(this).attr('val');
+    $(".league").on('click', function (event) {
+        event.preventDefault();
+        //save the value of the selected league
+        query.leagueID = $(this).attr('val');
+        query.leagueName = $(this).attr('alt');
+        updateResume(query);
+        document.getElementById("chooseLeagueAlert").style.visibility = "hidden";
+        if (query.season > 0) {
+            displayTeams(query);
+        }
+        //Scroll to next section
+        var hash = "#chooseSeason";
 
-  //Scroll to next section
-   var hash="#chooseSeason";
-   scrollTo(hash);
-});
+        scrollTo(hash);
 
 
-//Season to Inputs
-$( "#seasonSelect" )
-  .change(function () {
-    var str = "";
-    $( "select option:selected" ).each(function() {
-      str = $( this ).text();
     });
 
-    query.season=parseInt(str);    
-    var hash="#chooseInputs";
-    scrollTo(hash);
-  });
-   
+
+//Season to Team
+    $("#seasonSelect").change(function () {
+        var str = "";
+        $("select option:selected").each(function () {
+            str = $(this).text();
+        });
+
+        query.season = parseInt(str);
+        updateResume(query);
+        document.getElementById("chooseSeasonAlert").style.visibility = "hidden";
+        displayTeams(query);
+        var hash = "#chooseTeam";
+
+        scrollTo(hash);
+    });
+
+
+//Team to input
+    $("#teams").on('click', '.favorite_team', function (event) {
+        event.preventDefault();
+        //save the value of the selected league
+        query.teamID = $(this).attr('val');
+        query.teamName = $(this).attr('title');
+        updateResume(query);
+        document.getElementById("chooseTeamAlert").style.visibility = "hidden";
+
+        //Scroll to next section
+        var hash = "#chooseInputs";
+
+        scrollTo(hash);
+
+
+    });
 
 //Events to manage the list of inputs selected  
-$("#chooseInputs input").on('click', function(event){
-    var selected = [];
-      $('#chooseInputs input:checked').each(function() {
-          selected.push(parseInt($(this).attr('value')));
-          
-      });
-    query.selectedInputs=selected;
-    
+    $("#chooseInputs input").on('click', function (event) {
+        var names = [];
+        var selected = [];
+        $('#chooseInputs input:checked').each(function () {
+            selected.push(parseInt($(this).attr('value')));
+            names.push($(this).attr('name'));
+
+
+        });
+        query.selectedInputs = selected;
+        query.selectedInputsNames = names;
+        updateResume(query);
+        document.getElementById("chooseInputsAlert").style.visibility = "hidden";
     });
 
- 
+//Events to manage the list of inputs selected  
+    $("#chooseOutputs input").on('click', function (event) {
+        var names = [];
+        var selected = [];
+        $('#chooseOutputs input:checked').each(function () {
+            selected.push(parseInt($(this).attr('value')));
+            names.push($(this).attr('name'));
+
+
+        });
+        query.selectedOutputs = selected;
+        query.selectedOutputsNames = names;
+        updateResume(query);
+        document.getElementById("chooseOutputsAlert").style.visibility = "hidden";
+    });
+
 
 //Validation for the selected parameters:
 //Checks if a league, a season and at least 2 inputs are selected
 //and scrolls back to the section if the info is missing
 //If all parameters are selected sends an asynchronous request to server side
-$("#resume input").on('click', function(event){
-  // console.log(query);
-   var hash="";
+    $("#resume input").on('click', function (event) {
+        // console.log(query);
+        var hash = "";
+        var alert = "";
 
-   if(typeof query.selectedInputs === "undefined"  || query.selectedInputs.length < 2){
-    // alert("choose >2 Inputs");
-     hash="#chooseInputs";
-   }
+        if (typeof query.selectedOutputs === "undefined" || query.selectedOutputs.length < 1) {
+            alert = "chooseOutputsAlert";
+            hash = "#chooseOutputs";
+        }
 
-   if(typeof query.season === "undefined"){
-    // alert("choose a season");
-     hash="#chooseSeason";
-   }
+        if (typeof query.selectedInputs === "undefined" || query.selectedInputs.length < 2) {
 
-   if(typeof query.leagueID === "undefined"){
-    //alert("choose a leagueID");
-     hash="#chooseLeague";
-   }
-   
+            hash = "#chooseInputs";
+            alert = "chooseInputsAlert";
+        }
 
-   //if form is not compiled properly scrolls to
-  if(hash != ""){
-      scrollTo(hash);
-    } else {
-      var obj= {};
-        obj.name="aa";
-        $.ajax({
-            type:  'POST',
-            contentType: 'application/json',
-            dataType: 'json',
-            data: JSON.stringify(query),
-            url: '/sayHello',
-           // async:false,
-            success: function(json) {
-                //console.log('/sayHello POST was successful.');
-                console.log(json);
-            },
-            error: function(error) {
-              console.log(error);
-            },
+        if (typeof query.teamID === "undefined") {
 
-        });
-     // post('/sayHello', {name: JSON.stringify(query)});
-    }
-  }); 
+            hash = "#chooseTeam";
+            alert = "chooseTeamAlert";
+        }
+
+        if (typeof query.season === "undefined") {
+
+            hash = "#chooseSeason";
+            alert = "chooseSeasonAlert";
+        }
+
+        if (typeof query.leagueID === "undefined") {
+            alert = "chooseLeagueAlert";
+            hash = "#chooseLeague";
+        }
+
+
+        //if form is not compiled properly scrolls to
+        if (hash != "") {
+            scrollTo(hash);
+            document.getElementById(alert).style.visibility = "visible";
+
+            // document.getElementById(hash+"Alert").innerHTML = error;
+            //alert(error);
+        } else {
+            var obj = {};
+            obj.name = "aa";
+            $.ajax({
+                type: 'POST',
+                contentType: 'application/json',
+                dataType: 'json',
+                data: JSON.stringify(query),
+                url: '/sayHello',
+                // async:false,
+                success: function (json) {
+                    //console.log('/sayHello POST was successful.');
+                    console.log(json);
+                },
+                error: function (error) {
+                    console.log(error);
+                },
+
+            });
+            // post('/sayHello', {name: JSON.stringify(query)});
+        }
+    });
 });
 
 
 //Commodity function to scroll to right section
-function scrollTo(hash){
-   $('html, body').animate({
-      scrollTop: $(hash).offset().top}, 800, 
-      function(){
-        window.location.hash = hash;
-      });
+function scrollTo(hash) {
+    $('html, body').animate({
+            scrollTop: $(hash).offset().top
+        }, 800,
+        function () {
+            window.location.hash = hash;
+        });
 }
 
 
@@ -133,17 +198,96 @@ function post(path, params, method) {
     form.setAttribute("method", method);
     form.setAttribute("action", path);
 
-    for(var key in params) {
-        if(params.hasOwnProperty(key)) {
+    for (var key in params) {
+        if (params.hasOwnProperty(key)) {
             var hiddenField = document.createElement("input");
             hiddenField.setAttribute("type", "hidden");
             hiddenField.setAttribute("name", key);
             hiddenField.setAttribute("value", params[key]);
 
             form.appendChild(hiddenField);
-         }
+        }
     }
 
     document.body.appendChild(form);
     form.submit();
+}
+
+
+//Function to display a resume of the selected parameters in the Resume tab
+function updateResume(query) {
+    console.log(query);
+    var resume = "";
+
+    var league = "League: ";
+    if (typeof query.leagueID === "undefined") {
+        league += "NOT SELECTED<br>";
+
+    } else {
+        league += query.leagueName + "<br>";
+
+    }
+    resume += league;
+
+    var year = "Season: ";
+    if (typeof query.season === "undefined") {
+        year += "NOT SELECTED<br>";
+
+    } else {
+        year += query.season + "<br>";
+
+    }
+    resume += year;
+
+    var favoriteTeam = "Selected Team: ";
+    if (typeof query.teamID === "undefined") {
+        favoriteTeam += "NOT SELECTED<br>";
+
+    } else {
+        favoriteTeam += query.teamName + "<br>";
+
+    }
+    resume += favoriteTeam;
+
+
+    var inputs = "Inputs: ";
+    if (typeof query.selectedInputs === "undefined") {
+        inputs += "NOT SELECTED<br>";
+
+    } else {
+        for (var i = query.selectedInputsNames.length - 1; i >= 0; i--) {
+            inputs += query.selectedInputsNames[i] + ", "
+        }
+        inputs += "<br>";
+    }
+    resume += inputs;
+
+    var outputs = "Outputs: ";
+    if (typeof query.selectedOutputs === "undefined") {
+        outputs += "NOT SELECTED<br>";
+
+    } else {
+        for (var i = query.selectedOutputsNames.length - 1; i >= 0; i--) {
+            outputs += query.selectedOutputsNames[i] + ", "
+        }
+        outputs += "<br>";
+    }
+    resume += outputs;
+
+    document.getElementById("selection-summary").innerHTML = resume;
+}
+
+
+function displayTeams(query) {
+    appRoutes.controllers.Application.getLeagueTeamsBySeason(query.season, query.leagueID).ajax({
+        success: function (data) {
+            $("#teams").empty();
+            for (var i = 0; i < data.length; i++) {
+                $("#teams").append('<a href=""><img class="  img-thumbnail img-circle favorite_team" src="/assets/images/team_logo/' + data[i].logo + '"  val="' + data[i].tm_id + '" title="' + data[i].name + '" width="5%"></a>');
+                // console.log(data[i]);
+
+            }
+            $("#teams").append("<br><br>");
+        }
+    });
 }

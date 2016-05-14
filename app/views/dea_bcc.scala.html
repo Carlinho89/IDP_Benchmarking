@@ -1,0 +1,82 @@
+
+@benchmarking {
+
+    <div class="panel panel-success">
+        <div class="panel-heading">
+            <h3 class="panel-title">BCC model</h3>
+        </div>
+
+
+
+        <div class="panel-body">
+            <p ><span  >&nbsp;</span></p>
+            <h3 ><span>Purpose: Realizes variable returns to scale</span></h3>
+            <p >
+                <span>
+                    One drawback of the CCR model is that it assumes constant returns to scale, meaning that an input-change results in the same proportional change in the output. However, in the football business one cannot always assume constant returns to scale. If output decreases or increases by more or less than that proportional change in the input, the economist talks about variable returns to scale.
+
+                    With the intention of realizing variable returns to scale in DEA, Banker, Charnes and Cooper (1984) introduced the BCC model by simply adding the “convexity constraint” to the “dual program” of the CCR model. In linear programming, it is possible to convert every “primal program” into a dual program with other decision variables. If properly converted, the objective values of primal and dual problem are the same. The next figure shows, how the CCR model is transformed into the BCC model:
+
+                </span>
+            </p>
+
+            <div class="well">
+                <img src="@routes.Assets.at("images/bcc.png")" class="img-thumbnail img-responsive center-block" >
+            </div>
+            <br>
+
+            <p >
+                <span>
+                    In contrast to the CCR model that calculates one single “overall technical efficiency” for each DMU, the BCC-model computes two different scores: the “pure technical efficiency” (BCC score) and the “scale efficiency” of a DMU. The former is calculated by solving the linear program created by adding the convexity constraint above to the CCR model and the latter is received by simply dividing the CCR-score through its corresponding BCC score:
+                </span>
+            </p>
+
+            <div class="well">
+                <img src="@routes.Assets.at("images/bcc-2.png")" class="img-thumbnail img-responsive center-block" >
+            </div>
+
+
+
+            <p >
+                <span>
+                    A DMU with a scale efficiency = 1 is said to be scale efficient. Its operating size is ideal, any changes in its size would make it less efficient.
+
+                    In the next figure, you can find a comparison of the two models' efficiency frontiers (simple single-input/single-output situation):
+
+                </span>
+            </p>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="well">
+                        <img src="@routes.Assets.at("images/bcc-3a.png")" class="img-thumbnail img-responsive center-block" >
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="well">
+                        <img src="@routes.Assets.at("images/bcc-3b.png")" class="img-thumbnail img-responsive center-block" >
+                    </div>
+                </div>
+            </div>
+
+            <h3 ><span>Efficient Reference Units</span></h3>
+            <p >
+                <span>
+
+
+                    DEA computes so called "Efficient Reference Units" for each inefficient DMU. Those Reference Units have an efficiency score of 1 and come closest to the input-output-combination of the considered inefficient DMU.
+
+                    See the two figures above: The efficient DMU A is Efficient Reference Unit for the inefficient DMU B.
+
+                    If you are comparing the input output combination of the inefficient DMU with those of its Reference Units, you can gain a deeper insight about what has to be improved in order to become efficient (input-reduction or output-increase).
+                </span>
+            </p>
+            
+        </div>
+
+    </div>
+}
+
+
+
+

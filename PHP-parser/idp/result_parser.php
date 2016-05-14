@@ -14,7 +14,7 @@ $urls[]="results_serieA_";
 $urls[]="results_premier_"; 
 $urls[]="results_liga_"; 
 $urls[]="results_bundesliga_"; 
-
+echo '<div class="row"><div class="col-md-6">';
 
 foreach ($urls as $url) {
   for ($year = 2010; $year<=2015; $year++ ){
@@ -28,27 +28,29 @@ foreach ($urls as $url) {
      $dataArray = getTeams($conn, $html, $year, $league_id, "team");
         
 
-          parseInput($conn,"Games Won", "td[class=w]", $html, $dataArray, "Sporty" );
+          parseInput($conn,"Games Won", "td[class=w]", $html, $dataArray, "Sporty", 1 , "number");
 
-          parseInput($conn,"Games Drawn", "td[class=d]", $html, $dataArray, "Sporty" );
+          parseInput($conn,"Games Drawn", "td[class=d]", $html, $dataArray, "Sporty", 0, "number" );
 
-          parseInput($conn,"Games Lost", "td[class=l]", $html, $dataArray, "Sporty" );
+          parseInput($conn,"Games Lost", "td[class=l]", $html, $dataArray, "Sporty", 0,  "number" );
 
-          parseInput($conn,"Goals Scored", "td[class=gf]", $html, $dataArray, "Sporty" );
+          parseInput($conn,"Goals Scored", "td[class=gf]", $html, $dataArray, "Sporty", 1, "number" );
 
-          parseInput($conn,"Goals Against", "td[class=ga]", $html, $dataArray, "Sporty" );
+          parseInput($conn,"Goals Against", "td[class=ga]", $html, $dataArray, "Sporty", 0 , "number" );
 
-          parseInput($conn,"Rank", "td[class=o]", $html, $dataArray, "Sporty" );
+          parseInput($conn,"Rank", "td[class=o]", $html, $dataArray, "Sporty", 1 , "number" );
 
 
   echo "<br><b>Done Parsing Stats from results".$url.$year.".html </b> <br>";
   }
 
 }
+
+echo '</div><div class="col-md-6">';
 echo "Done Parsing<br>";
 
 echo '<a href="home.html#three" class="btn btn-info" role="button">Continue</a>';
-
+echo '</div></div>';
 
 
 ?>

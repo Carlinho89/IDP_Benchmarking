@@ -133,13 +133,15 @@
             <li>
                <h3>input</h3>
                     <p class="well note">
-                        Holds Id, name and type of the inputs. All the inserts on this table will be done by the parsers.
+                        Holds Id, name and type of the inputs. The output parameter is a boolean indicating weather the input can be used as output also. The value_type describes if the type of the values saved (ex: number, percentage...) All the inserts on this table will be done by the parsers.
                     </p>
-                    <pre>CREATE TABLE IF NOT EXISTS `input` (
+                    <pre>CREATE TABLE `input` (
   `id` int(11) NOT NULL,
   `name` varchar(50) NOT NULL,
-  `type` varchar(20) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;         
+  `type` varchar(20) NOT NULL,
+  `output` tinyint(1) NOT NULL,
+  `value_type` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;        
                     </pre><br>
             </li>
 
@@ -151,11 +153,11 @@
                     <pre>CREATE TABLE IF NOT EXISTS `league` (
   `id` int(11) NOT NULL,
   `name` varchar(50) NOT NULL,
-  `teamsNumber` int(11) NOT NULL,
+  `team_number` int(11) NOT NULL,
   `logo` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO `league` (`id`, `name`, `teamsNumber`, `logo`) VALUES
+INSERT INTO `league` (`id`, `name`, `team_number`, `logo`) VALUES
 (1, 'Serie A', 20, 'SerieA500.png'),
 (2, 'Premier League', 20, 'Premier500.png'),
 (3, 'Liga', 20, 'Liga500.png'),
@@ -523,14 +525,20 @@ ALTER TABLE `seasonal_data`
 
                 <br>
               <li id="eight" class="well">
-                Next run the <a href="tm_conversion.php"> tm_conversion.php </a> to save logo and transfermarkt id for every team. After the execution the teams table should be filled in completely but no new inputs or seasonal data are added.
+                Next we will run the parsers to link whoscored teams to transfermarkt teams. We will have to run this script once for serieA and Premier and once for Liga and Bundes since the execution time limit in php doesn´t allow to prse all teams in one script.
+                So launch <a href="tm_conversion_seria&premier.php"> tm_conversion_seria&premier.php </a> to save logo and transfermarkt id for the first two leagues. Remember to have an internet connection on because the parser uses online data from transfermarkt.com
+
+                <br>
+              </li>
+              <li id="eight2" class="well">
+                So launch <a href="tm_conversion_liga&bundes.php"> tm_conversion_liga&bundes.php </a> to save logo and transfermarkt id for the remaining leagues. After the execution the teams table should be filled in completely but no new inputs or seasonal data are added.
                 Remember to have an internet connection on because the parser uses online data from transfermarkt.com
 
                 <br>
               </li>
 
               <li  class="well">
-                Now we can run the parsers for transfermarkt. Since the content is gathered online this script has to be ran more than once. To make this process easy we created four different files for the different leagues.
+                Now we can run the parsers for transfermarkt. Since the content is gathered online this script has to be ran more than once also. To make this process easy we created four different files for the different leagues but one league might still require too much time, so please refresh the page until the blue continue button comes out!
 
                 <br>
               </li>
@@ -571,7 +579,7 @@ ALTER TABLE `seasonal_data`
               </li>
 
               <li id="thirteen" class="well">
-                Finally let's parse the data for Stadium Capacity. This data has been saved in the stadiums.html file by running the stadiums_parser.php. In the handout the stadiums.html file will be given with data already but the parser is left for further expansions(ex: a new team enters a league next year and the parser doesn't have info on it's stadium).<br>
+                Finally let's parse the data for Stadium Capacity. This data has been saved in the stadiums.html file by running the stadiums_parser.php. In the handout the stadiums.html file will be given with data already but the parser is left for further expansions(ex: a new team enters a league next year and the parser doesn't have info on it's stadium). Don´t mind the "no team id matching" alerts, these are for the teams which have never been in first league in their countries, hence data on their stadiums is not saved.s<br>
                 Run <a href="tm_stadiums.php"> tm_stadiums.php </a> to save Stadium Capacity in the fixed_data table for all teams.
                 By the end of this script you should have: <br>
                 25 rows in input <br>

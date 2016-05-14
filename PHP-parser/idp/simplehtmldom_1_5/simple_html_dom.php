@@ -63,6 +63,62 @@ define('DEFAULT_TARGET_CHARSET', 'UTF-8');
 define('DEFAULT_BR_TEXT', "\r\n");
 define('DEFAULT_SPAN_TEXT', " ");
 define('MAX_FILE_SIZE', 600000);
+
+
+
+function curl_get_contents($url)
+{
+  $ch = curl_init();
+  curl_setopt($ch, CURLOPT_URL, $url);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+curl_setopt($ch,CURLOPT_USERAGENT,'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.13) Gecko/20080311 Firefox/2.0.0.13');
+$html = curl_exec($ch);
+  $data = curl_exec($ch);
+  curl_close($ch);
+  return $data;
+}
+
+function file_get_html_tm2($url, $use_include_path = false, $context=null, $offset = -1, $maxLen=-1, $lowercase = true, $forceTagsClosed=true, $target_charset = DEFAULT_TARGET_CHARSET, $stripRN=true, $defaultBRText=DEFAULT_BR_TEXT, $defaultSpanText=DEFAULT_SPAN_TEXT)
+{
+    $dom = new simple_html_dom;
+  $args = func_get_args();
+  $dom->load(call_user_func_array('curl_get_contents', $args), true);
+  return $dom;
+    //$dom = new simple_html_dom(null, $lowercase, $forceTagsClosed, $target_charset, $stripRN, $defaultBRText, $defaultSpanText);
+
+}
+
+function file_get_html_tm($url, $use_include_path = false, $context=null, $offset = -1, $maxLen=-1, $lowercase = true, $forceTagsClosed=true, $target_charset = DEFAULT_TARGET_CHARSET, $stripRN=true, $defaultBRText=DEFAULT_BR_TEXT, $defaultSpanText=DEFAULT_SPAN_TEXT)
+{
+    // We DO force the tags to be terminated.
+    $dom = new simple_html_dom(null, $lowercase, $forceTagsClosed, $target_charset, $stripRN, $defaultBRText, $defaultSpanText);
+    // For sourceforge users: uncomment the next line and comment the retreive_url_contents line 2 lines down if it is not already done.
+    
+    //Commented by me to circumvent 403 error
+    //$contents = file_get_contents($url, $use_include_path, $context, $offset);
+    
+    
+
+    // Paperg - use our own mechanism for getting the contents as we want to control the timeout.
+    //$contents = retrieve_url_contents($url);
+
+
+    //Added by Me to circumvent 403 error
+
+    $cont = stream_context_create(array("http" => array("header" => "User-Agent: Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36")));
+    $contents =file_get_contents($url, false, $cont);
+
+
+
+    if (empty($contents) || strlen($contents) > MAX_FILE_SIZE)
+    {
+        return false;
+    }
+    // The second parameter can force the selectors to all be lowercase.
+    $dom->load($contents, $lowercase, $stripRN);
+    return $dom;
+}
+
 // helper functions
 // -----------------------------------------------------------------------------
 // get html dom from file
@@ -72,9 +128,23 @@ function file_get_html($url, $use_include_path = false, $context=null, $offset =
     // We DO force the tags to be terminated.
     $dom = new simple_html_dom(null, $lowercase, $forceTagsClosed, $target_charset, $stripRN, $defaultBRText, $defaultSpanText);
     // For sourceforge users: uncomment the next line and comment the retreive_url_contents line 2 lines down if it is not already done.
+    
+    //Commented by me to circumvent 403 error
     $contents = file_get_contents($url, $use_include_path, $context, $offset);
+    
+    
+
     // Paperg - use our own mechanism for getting the contents as we want to control the timeout.
     //$contents = retrieve_url_contents($url);
+
+
+    //Added by Me to circumvent 403 error
+/*
+    $cont = stream_context_create(array("http" => array("header" => "User-Agent: Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36")));
+    $contents =file_get_contents($url, false, $cont);
+*/
+
+
     if (empty($contents) || strlen($contents) > MAX_FILE_SIZE)
     {
         return false;
