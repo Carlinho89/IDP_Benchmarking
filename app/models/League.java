@@ -15,7 +15,7 @@ public class League extends Model {
     public int id;
 
     public String name;
-    public int teamNumber;
+    public int team_number;
     public String logo;
 
     /**
@@ -35,6 +35,21 @@ public class League extends Model {
         return (List<League>) new Model.Finder(League.class).all();
     }
 
+    /**
+     * Query to DB to get all "Leagues" names
+     * @return the Leagues names fetched obj
+     */
+    public static String[] getLeaguesNames(){
+        List<String> leagues = new Model.Finder(League.class).select("name").findList();
+
+        String names[] = leagues.toArray(new String[leagues.size()]);
+        System.out.println("name count = " + names.length);
+        for (String n : names) {
+            System.out.println("n : " + n);
+        }
+
+        return names;
+    }
 
 
 }

@@ -4,6 +4,7 @@ import ilog.concert.IloException;
 import ilog.concert.IloLinearNumExpr;
 import ilog.concert.IloNumVar;
 import ilog.cplex.IloCplex;
+import models.League;
 
 import java.util.HashMap;
 
@@ -16,6 +17,7 @@ public class CplexController {
 
     public CplexController(){
         super();
+
 
         cplex = null;
         numVars = new HashMap<String, IloNumVar>();
@@ -103,4 +105,8 @@ public class CplexController {
         }
     }
 
+
+    public String[] createDMUArray(String league) {
+        return League.getLeaguesNames();
+    }
 }
