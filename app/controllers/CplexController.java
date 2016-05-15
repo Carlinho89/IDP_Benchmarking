@@ -1,14 +1,17 @@
 package controllers;
 
-import com.avaje.ebean.RawSql;
-import com.avaje.ebean.RawSqlBuilder;
+import com.avaje.ebean.*;
 import ilog.concert.IloException;
 import ilog.concert.IloLinearNumExpr;
 import ilog.concert.IloNumVar;
 import ilog.cplex.IloCplex;
+import models.Input;
 import models.League;
+import models.SeasonalData;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by carlodidomenico on 20/02/16.
@@ -115,36 +118,63 @@ public class CplexController {
     * The method is given a String which separates the selected tables by a comma.
     * This string is then turned into an array from which the parameters are gained
     * */
-    public double[][] createParameterArray(String league, int season, String choice)    {
-        String[]selection = choice.split(", ");
-        String[][] stringPara = new String[selection.length][];   //Create String-array because an ArrayList cannot be directly converted to double
+    public double[][] createParameterArray(String league, int season, List<Integer> choice)    {
+        Integer choices[] = choice.toArray(new Integer[choice.size()]);
+        List<List<SeasonalData>> results = new ArrayList<List<SeasonalData>>();
 
-        for (int i = 0; i < selection.length; i++){
-        RawSql rawSql = RawSqlBuilder.parse("select "+ selection[i] + "from " + league + "where " + "").create();
+        for (int i = 0; i < choice.size(); i++){
+            RawSql rawSql = RawSqlBuilder.parse("select id, team_id, team_name, year, league_id, input_id, value  " + "from seasonal_data " + "where year =" + season + "AND input_id = " + choices[i])
+                    .columnMapping("id","id")
+                    .columnMapping("team_id","team_id")
+                    .columnMapping("team_name","team_name")
+                    .columnMapping("year","year")
+                    .columnMapping("league_id","league_id")
+                    .columnMapping("input_id","input_id")
+                    .columnMapping("value","value")
+                    .create();
+            Query<SeasonalData> query = Ebean.find(SeasonalData.class);
+            query.setRawSql(rawSql);
+            List<SeasonalData> result = query.findList();
+            results.add(result);
+        }
 
+        double parameter [][] = new double[results.size()][results.get(0).size()];
+        for (int i=0; i < results.size(); i++){
+            for (int j=0; j < results.get(i).size(); j++){
+                parameter[i][j] = Double.parseDouble(String.valueOf(results.get(i).get(j).value));
+            }
         }
         /*
-        try{
-            for (int i = 0; i < selection.length; i++)    //Gather individual columns and put them directly into a 2D-array
-            {
-                rs = st.executeQuery("select " + selection[i] + " from " + league+ " where year = " + "'" + season + "'");   //Select only one column at a time
-
-                List columns = new ArrayList();   //Put ResultSet into an ArrayList. It is weird that only this approach seems to work. Requires testing later on.
-                while (rs.next()) {
-                    columns.add(rs.getString(1));
-                }
-                stringPara[i] = (String[]) columns.toArray(new String[columns.size()]);
+        int i, j = i = 0;
+        for (double[] p:parameter) {
+            System.out.println("i: " + i++);
+            for (double pp: p) {
+                System.out.println("j: " + j++);
+                System.out.println("value: " + pp );
+                j=0;
             }
-            double[][] parameter = new double[stringPara.length][stringPara[0].length];   //Create final array for return
-            for(int i = 0; i < stringPara.length; i++)
-                for (int j = 0; j < stringPara[i].length; j++)
-                    parameter[i][j] = Double.parseDouble(stringPara[i][j]);
+        }*/
 
-            return parameter;
-        } catch(Exception ex){
-            System.out.println("Error when creating Parameter-Array: " + ex); //What went wrong?
-            return null;
+        return parameter;
+    }
+
+    static public String ListToCSString(List<Integer> l){
+        String result = null;
+        List<Input> inputs = new ArrayList<Input>();
+        System.out.println("Debug: ListToCSString");
+        for (Integer id: l) {
+            Input input = (Input) new Model.Finder(Input.class).byId(id);
+            inputs.add(input);
+            System.out.println("Debug - ListToCSString : input-name is " + input.name);
         }
-        */
+
+        for (int i=0; i < inputs.size(); i++){
+            if (i != inputs.size()-1)
+                result += inputs.get(i).name + ", ";
+            else
+                result += inputs.get(i).name;
+        }
+
+        return result;
     }
 }
