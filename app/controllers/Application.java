@@ -4,13 +4,19 @@ package controllers;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import models.Input;
+import models.SimpleSolverQuery;
 import models.Team;
 
 import play.Routes;
+import play.api.libs.json.JsPath;
+import play.data.DynamicForm;
+import play.data.Form;
 import play.libs.Json;
 import play.mvc.BodyParser;
 import play.mvc.Controller;
 import play.mvc.Result;
+import scala.util.parsing.json.JSONObject;
+import scala.util.parsing.json.JSONObject$;
 import views.html.*;
 
 
@@ -68,25 +74,28 @@ public class Application extends Controller {
         return ok(Json.toJson(Team.getAllbySeason(year, league_id)));
     }
 
+    public  Result simpleSolver(){
+        DynamicForm form = Form.form().bindFromRequest();
 
-    @BodyParser.Of(BodyParser.Json.class)
-    public Result sayHello() {
-        JsonNode json = request().body().asJson();
-        String name = json.findPath("leagueID").textValue();
-        if (name == null) {
-            return badRequest("Missing parameter [name]" + request().body().asJson());
+
+
+        if (form.data().size() == 0) {
+            return badRequest("Expceting some data");
         } else {
-            return ok(json);
+            String response = form.get("query");
 
+            JsonNode json = Json.parse(response);
+            SimpleSolverQuery query = new SimpleSolverQuery(response);
+
+
+            return ok(""+query.teamID);
         }
     }
 
 
-    public Result showJSON() {
-        JsonNode json = request().body().asJson();
-        String a = json.path("leagueID").asText();
-        return ok(index.render(a));
-    }
+
+
+
 
 
     public Result jsRoutes() {

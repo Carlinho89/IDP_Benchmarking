@@ -153,25 +153,25 @@ $(document).ready(function () {
             // document.getElementById(hash+"Alert").innerHTML = error;
             //alert(error);
         } else {
-            var obj = {};
-            obj.name = "aa";
-            $.ajax({
-                type: 'POST',
-                contentType: 'application/json',
-                dataType: 'json',
-                data: JSON.stringify(query),
-                url: '/sayHello',
-                // async:false,
-                success: function (json) {
-                    //console.log('/sayHello POST was successful.');
-                    console.log(json);
-                },
-                error: function (error) {
-                    console.log(error);
-                },
 
-            });
-            // post('/sayHello', {name: JSON.stringify(query)});
+            var url = './simple-solver';
+           /* var form = $('<form action="' + url + '" method="post">' +
+                '<input type="text" name="query" value="' + JSON.stringify(query) + '" />' +
+                '</form>');
+            $('body').append(form);
+            form.submit();*/
+
+            var newForm = $('<form>', {
+                'method':'post',
+                'action': url,
+                'target': '_top'
+            }).append($('<input>', {
+                'name': 'query',
+                'value': JSON.stringify(query),
+                'type': 'hidden'
+            }));
+            $('body').append(newForm);
+            newForm.submit();
         }
     });
 });
@@ -216,7 +216,7 @@ function post(path, params, method) {
 
 //Function to display a resume of the selected parameters in the Resume tab
 function updateResume(query) {
-    console.log(query);
+    console.log(JSON.stringify(query));
     var resume = "";
 
     var league = "League: ";
