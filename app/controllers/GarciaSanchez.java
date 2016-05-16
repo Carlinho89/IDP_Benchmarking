@@ -53,7 +53,7 @@ public class GarciaSanchez {
 
         for(int i = 0; i < seasons; i++) { //3 seasons available
             //Get DMUs
-            String[] dmu = cplexConnection.createDMUArray(league);
+            String[] dmu = cplexConnection.createDMUArray(league, (start + i));
             dmuList.add(dmu);
 
             //Create Parameter-Arrays for Stage One
@@ -67,16 +67,12 @@ public class GarciaSanchez {
             String[] reference = new String[dmu.length];
 
             //Create DMUs for stage one and solve them
+
             DEA deaOff = new DEA(dmu, offIn, offOut);
             DEA deaDef = new DEA(dmu, defIn,defOut);
 
 
-            System.out.println("Debug: solOffCCR_started");
-            System.out.println(deaOff.justAString());
-
             double[][]solOffCCR = deaOff.solve_Dual_Basic_Output(false);
-            System.out.println("Debug: solOffCCR_done");
-
             double[][]solOffBCC = deaOff.solve_Dual_Basic_Output(true);
             double[][]solOffSBM = deaOff.solve_Dual_SBM_Output();
             reference = Evaluation.createReferenceSetDual(dmu, solOffBCC);
@@ -110,11 +106,13 @@ public class GarciaSanchez {
             double[]stageOneBCC = Evaluation.getEfficiency(deaBCC.getSolutionList().get(0));
             double[]stageTwoBCC = Evaluation.getEfficiency(deaBCC.getSolutionList().get(1));
 
+
+
+
             TwoStageDEA deaSBM = new TwoStageDEA(dmu, inputAthSBM, athOut, socOut, ramifications);
-            deaBCC.solveTwoStage("SBM");
+            deaSBM.solveTwoStage("SBM");
             double[]stageOneSBM = Evaluation.getEfficiency(deaSBM.getSolutionList().get(0));
             double[]stageTwoSBM = Evaluation.getEfficiency(deaSBM.getSolutionList().get(1));
-
             reference = ExcelOutput.combineStringArray(reference, Evaluation.createReferenceSetDual(dmu, deaBCC.getSolutionList().get(0)));
             reference = ExcelOutput.combineStringArray(reference, Evaluation.createReferenceSetDual(dmu, deaBCC.getSolutionList().get(1)));
 
@@ -126,7 +124,10 @@ public class GarciaSanchez {
             overFin = ExcelOutput.combineOverviewStage(overFin, overSoc);
             overList.add(overFin);
             refList.add(reference);
+
         }
+
+
 
         //Create Excel Output
         ExcelOutput.createEfficiencyOutput(league, dmuList, overList, refList);
@@ -136,8 +137,8 @@ public class GarciaSanchez {
         List<double[][]>malmList = new ArrayList<double[][]>();
         for(int i = 0; i < (seasons - 1); i++)
         {
-            String[] dmuOne = cplexConnection.createDMUArray(league);
-            String[] dmuTwo = cplexConnection.createDMUArray(league);
+            String[] dmuOne = cplexConnection.createDMUArray(league,(2011 + i));
+            String[] dmuTwo = cplexConnection.createDMUArray(league, (2010 + i + 1));
 
             //Create Parameters and MQI-Object for Stage 1
             double [][]offInOne = cplexConnection.createParameterArray(league, (2010 + i), selectionOffIn);

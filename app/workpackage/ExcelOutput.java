@@ -17,6 +17,11 @@ import java.util.List;
 
 public class ExcelOutput {
     //Purpose of this class is to update an existing excel file with pre-made diagrams that just wait to be filled.
+    private static String bundesliga = "Bundes Liga",
+                         liga = "Liga",
+                         premier = "Premier League";
+    
+    private static String pathToFile = "./DEA_Output.xlsx";
 
     public static void createEfficiencyOutput(String league, List<String[]>dmuList, List<double[][]>overList, List<String[]>refList)  {
         //Method that creates an Excel-Output from a given array of dmus and an efficiency-array (containing the results of some models)
@@ -26,17 +31,18 @@ public class ExcelOutput {
 
         Timestamp tstamp = new Timestamp(System.currentTimeMillis()); //Get current system time
 
+
         try {
-            FileInputStream report = new FileInputStream(new File("C:\\Football_DEA\\DEA_Output.xlsx"));   //Open file, might want to check directory
+            FileInputStream report = new FileInputStream(new File(pathToFile));   //Open file, might want to check directory
             XSSFWorkbook workbook = new XSSFWorkbook(report); //Create object POI can work with
 
             XSSFSheet sheet = null; //Object for sheet which is to be filled
             Cell cell = null;       //Object for editing cells
-            if(league.equals("bundesliga") == true)
+            if(league.equals(bundesliga) == true)
                 sheet = workbook.getSheetAt(0);   //Get 1st sheet for Bundesliga Data
-            else if(league.equals("premier_league") == true)
+            else if(league.equals(premier) == true)
                 sheet = workbook.getSheetAt(3);   //Get 1st sheet for Premier League Data
-            else if(league.equals("primera_division") == true)
+            else if(league.equals(liga) == true)
                 sheet = workbook.getSheetAt(6);   //Get 1st sheet for Primera Division Data
             else
                 sheet = workbook.getSheetAt(0);   //Get 1st sheet due to lack of other leagues. Needs modification later on.
@@ -100,11 +106,12 @@ public class ExcelOutput {
             report.close();
 
             //Communicate update to the .xls-File
-            FileOutputStream newReport =new FileOutputStream(new File("C:\\Football_DEA\\DEA_Output.xlsx"));
+            FileOutputStream newReport =new FileOutputStream(new File(pathToFile));
             workbook.write(newReport);
             newReport.close();
             //Debate addition of several seasons. Also, how do we ensure that the values are accurate and nothing gets swapped?
 
+            System.out.println("File correctly written");
         }catch(FileNotFoundException ex){
             System.out.println("Incorrect file name or file in wrong directory.");
         } catch (IOException ex) {
@@ -120,18 +127,18 @@ public class ExcelOutput {
         Timestamp tstamp = new Timestamp(System.currentTimeMillis()); //Get current system time
 
         try {
-            FileInputStream report = new FileInputStream(new File("C:\\Football_DEA\\DEA_Output.xlsx"));   //Open file, might want to check directory
+            FileInputStream report = new FileInputStream(new File(pathToFile));   //Open file, might want to check directory
             XSSFWorkbook workbook = new XSSFWorkbook(report); //Create object POI can work with
 
             XSSFSheet sheet = null; //Object for sheet which is to be filled
             Cell cell = null;       //Object for editing cells
 
             //Write out Malmquist-Results
-            if(league.equals("bundesliga") == true)
+            if(league.equals(bundesliga) == true)
                 sheet = workbook.getSheetAt(1);   //Get 1st sheet for Bundesliga Data
-            else if(league.equals("premier_league") == true)
+            else if(league.equals(premier) == true)
                 sheet = workbook.getSheetAt(4);   //Get 1st sheet for Premier League Data
-            else if(league.equals("primera_division") == true)
+            else if(league.equals(liga) == true)
                 sheet = workbook.getSheetAt(7);   //Get 1st sheet for Primera Division Data
             else
                 sheet = workbook.getSheetAt(1);   //Get 1st sheet due to lack of other leagues. Needs modification later on.
@@ -179,11 +186,12 @@ public class ExcelOutput {
             report.close();
 
             //Communicate update to the .xls-File
-            FileOutputStream newReport =new FileOutputStream(new File("C:\\Football_DEA\\DEA_Output.xlsx"));
+            FileOutputStream newReport =new FileOutputStream(new File(pathToFile));
             workbook.write(newReport);
             newReport.close();
             //Debate addition of several seasons. Also, how do we ensure that the values are accurate and nothing gets swapped?
 
+            System.out.println("File correctly written");
         }catch(FileNotFoundException ex){
             System.out.println("Incorrect file name or file in wrong directory.");
         } catch (IOException ex) {
@@ -202,11 +210,11 @@ public class ExcelOutput {
             Cell cell = null;       //Object for editing cells
 
             //Write out Data
-            if(league.equals("bundesliga") == true)
+            if(league.equals(bundesliga) == true)
                 sheet = workbook.getSheetAt(2);   //Get 1st sheet for Bundesliga Data
-            else if(league.equals("premier_league") == true)
+            else if(league.equals(premier) == true)
                 sheet = workbook.getSheetAt(5);   //Get 1st sheet for Premier League Data
-            else if(league.equals("primera_division") == true)
+            else if(league.equals(liga) == true)
                 sheet = workbook.getSheetAt(8);   //Get 1st sheet for Primera Division Data
             else
                 sheet = workbook.getSheetAt(2);   //Get 1st sheet due to lack of other leagues. Needs modification later on.
@@ -272,6 +280,7 @@ public class ExcelOutput {
             newReport.close();
             //Debate addition of several seasons. Also, how do we ensure that the values are accurate and nothing gets swapped?
 
+            System.out.println("File correctly written");
         }catch(FileNotFoundException ex){
             System.out.println("Incorrect file name or file in wrong directory.");
         } catch (IOException ex) {

@@ -8,6 +8,7 @@ import ilog.cplex.IloCplex;
 import models.Input;
 import models.League;
 import models.SeasonalData;
+import models.Team;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -111,8 +112,13 @@ public class CplexController {
     }
 
 
-    public String[] createDMUArray(String league) {
-        return League.getLeaguesNames();
+    public String[] createDMUArray(String league, int season) {
+        List<Team> teamsForSeason = Team.getAllbySeason(season, League.getIdByName(league));
+        String[] teamsNamesForSeason = new String[teamsForSeason.size()];
+        for (int i = 0; i < teamsForSeason.size(); i++) {
+            teamsNamesForSeason[i] = teamsForSeason.get(i).name;
+        }
+        return teamsNamesForSeason;
     }
     /*
     * The method is given a String which separates the selected tables by a comma.
@@ -120,10 +126,12 @@ public class CplexController {
     * */
     public double[][] createParameterArray(String league, int season, List<Integer> choice)    {
         Integer choices[] = choice.toArray(new Integer[choice.size()]);
-        List<List<SeasonalData>> results = new ArrayList<List<SeasonalData>>();
+        SeasonalData stringPara[][] = new SeasonalData[choice.size()][];
 
         for (int i = 0; i < choice.size(); i++){
-            RawSql rawSql = RawSqlBuilder.parse("select id, team_id, team_name, year, league_id, input_id, value  " + "from seasonal_data " + "where year =" + season + "AND input_id = " + choices[i])
+            RawSql rawSql = RawSqlBuilder.parse("select id, team_id, team_name, year, league_id, input_id, value  " +
+                    "from seasonal_data " +
+                    "where year =" + season + "AND input_id = " + choices[i] + "AND league_id = " + League.getIdByName(league))
                     .columnMapping("id","id")
                     .columnMapping("team_id","team_id")
                     .columnMapping("team_name","team_name")
@@ -134,38 +142,26 @@ public class CplexController {
                     .create();
             Query<SeasonalData> query = Ebean.find(SeasonalData.class);
             query.setRawSql(rawSql);
+
             List<SeasonalData> result = query.findList();
-            results.add(result);
+            stringPara[i] = result.toArray(new SeasonalData[result.size()]);
         }
 
-        double parameter [][] = new double[results.size()][results.get(0).size()];
-        for (int i=0; i < results.size(); i++){
-            for (int j=0; j < results.get(i).size(); j++){
-                parameter[i][j] = Double.parseDouble(String.valueOf(results.get(i).get(j).value));
-            }
-        }
-        /*
-        int i, j = i = 0;
-        for (double[] p:parameter) {
-            System.out.println("i: " + i++);
-            for (double pp: p) {
-                System.out.println("j: " + j++);
-                System.out.println("value: " + pp );
-                j=0;
-            }
-        }*/
+       double[][] parameter = new double[stringPara.length][stringPara[0].length];   //Create final array for return
+        for(int i = 0; i < stringPara.length; i++)
+            for (int j = 0; j < stringPara[i].length; j++)
+                parameter[i][j] = stringPara[i][j].value;
+
 
         return parameter;
     }
 
     static public String ListToCSString(List<Integer> l){
-        String result = null;
+        String result = "";
         List<Input> inputs = new ArrayList<Input>();
-        System.out.println("Debug: ListToCSString");
         for (Integer id: l) {
             Input input = (Input) new Model.Finder(Input.class).byId(id);
             inputs.add(input);
-            System.out.println("Debug - ListToCSString : input-name is " + input.name);
         }
 
         for (int i=0; i < inputs.size(); i++){

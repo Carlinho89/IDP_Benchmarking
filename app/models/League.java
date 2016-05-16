@@ -1,6 +1,6 @@
 package models;
 
-import com.avaje.ebean.Model;
+import com.avaje.ebean.*;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -52,6 +52,23 @@ public class League extends Model {
 
 
         return names;
+    }
+
+    public static int getIdByName(String league){
+        int result = -1;
+
+        RawSql rawSql = RawSqlBuilder.parse("select id, name, team_number, logo from league where name like '" + league + "'" )
+                .columnMapping("id", "id")
+                .columnMapping("name", "name")
+                .columnMapping("team_number", "team_number")
+                .columnMapping("logo", "logo")
+                .create();
+
+        Query<League> query = Ebean.find(League.class);
+        query.setRawSql(rawSql);
+        League resultLeague = query.findList().get(0);
+
+        return result = resultLeague.id;
     }
 
 

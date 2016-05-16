@@ -19,13 +19,10 @@ public class DEA {
     //Constructor
     public DEA(String[]dmu, double[][]input, double[][]output)
     {
-        System.err.println("Debug: DEA Constructor!");
         this.dmu = dmu;
         this.input = input;
         this.output = output;
     }
-
-    public String justAString(){return "just a string";}
 
     public double[][] solve_Linear_CCR_Input() throws IloException {
         double [][] solution = new double[dmu.length][input.length+output.length+1];
@@ -178,14 +175,10 @@ public class DEA {
     public double[][] solve_Dual_Basic_Output(boolean bcc) throws IloException {
         //CCR-Case: Modeled acc. to Cooper, Seiford et al. (2007), p. 58
         //BCC-Case: Modeled acc. Cooper, Seiford et al (2007), p. 93
-        System.out.println("Debug: solve_Dual_Basic_Output");
         double [][] solution = new double[dmu.length][dmu.length + 1];
-
-        System.out.println("Debug: solve_Dual_Basic_Output");
 
         for(int i = 0; i < dmu.length; i++)
         {
-            System.out.println("Debug");
 
             IloCplex cplex = new IloCplex();    //Create CPLEX-Instance
             cplex.setOut(null);                 //Set empty result

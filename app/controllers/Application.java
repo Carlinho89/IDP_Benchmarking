@@ -59,6 +59,7 @@ public class Application extends Controller {
         try {
             garciaSanchez.test();
         } catch (Exception e) {
+            //System.err.println(e);
             e.printStackTrace();
         }
 

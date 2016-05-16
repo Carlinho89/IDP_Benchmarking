@@ -52,12 +52,12 @@ public class ScenarioMQI {
         for(int i = 0; i < seasons - 1; i++)
         {
             //Get parameters of year one
-            this.dmuOld = connection.createDMUArray(league);
+            this.dmuOld = connection.createDMUArray(league, start + i);
             this.inputOld = connection.createParameterArray(league, start + i, inputStr);
             this.outputOld = connection.createParameterArray(league, start + i, outputStr);
 
             //Get parameters of year two
-            this.dmuNew = connection.createDMUArray(league);
+            this.dmuNew = connection.createDMUArray(league, start + i +1);
             this.inputNew = connection.createParameterArray(league, start + i + 1, inputStr);
             this.outputNew = connection.createParameterArray(league, start + i + 1, outputStr);
 
@@ -126,13 +126,13 @@ public class ScenarioMQI {
         for(int i = 0; i < (seasons - 1); i++)
         {
             //Get parameters of year one
-            this.dmuOld = connection.createDMUArray(league);
+            this.dmuOld = connection.createDMUArray(league, start + i);
             this.inputOld = connection.createParameterArray(league, start + i, inputStr);
             this.interOneOld = connection.createParameterArray(league, start + i, interOneStr);
             this.outputOld = connection.createParameterArray(league, start + i, outputStr);
 
             //Get parameters of year two
-            this.dmuNew = connection.createDMUArray(league);
+            this.dmuNew = connection.createDMUArray(league, start + i +1);
             this.inputNew = connection.createParameterArray(league, start + i + 1, inputStr);
             this.interOneNew = connection.createParameterArray(league, start + i, interOneStr);
             this.outputNew = connection.createParameterArray(league, start + i + 1, outputStr);

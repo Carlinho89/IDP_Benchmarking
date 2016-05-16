@@ -51,7 +51,7 @@ public class Scenario {
         for(int i = 0; i < seasons; i++)
         {
             //Create parameter-arrays to work from
-            this.dmu = connection.createDMUArray(league);
+            this.dmu = connection.createDMUArray(league, start + i);
             this.input = connection.createParameterArray(league, start + i, inputStr);
             this.output = connection.createParameterArray(league, start + i, outputStr);
 
@@ -112,7 +112,7 @@ public class Scenario {
         for(int i = 0; i < seasons; i++)
         {
             //Create parameter-arrays to work from
-            this.dmu = connection.createDMUArray(league);
+            this.dmu = connection.createDMUArray(league, start + i);
             this.input = connection.createParameterArray(league, start + i, inputStr);
             this.output = connection.createParameterArray(league, start + i, outputStr);
             this.interOne = connection.createParameterArray(league, start + i, interOneStr);
