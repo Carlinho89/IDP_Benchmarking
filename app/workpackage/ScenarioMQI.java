@@ -93,7 +93,7 @@ public class ScenarioMQI {
         if(data == true)
         {
             //Print out data that was used in the analysis
-            String[] paraNames = ExcelOutput.combineStringArray(CplexController.ListToCSString(inputStr).split(", "), CplexController.ListToCSString(outputStr).split(", "));
+            String[] paraNames = ExcelOutput.combineStringArray(CplexController.listToCSString(inputStr).split(", "), CplexController.listToCSString(outputStr).split(", "));
             this.paraValues = new ArrayList<>();  //Unify input and output list
             paraValues.add(paraIn);
             paraValues.add(paraOut);
@@ -202,10 +202,10 @@ public class ScenarioMQI {
 
         if(data == true)
         {
-            String[] paraNames = ExcelOutput.combineStringArray(CplexController.ListToCSString(inputStr).split(", "), CplexController.ListToCSString(interOneStr).split(", "));
+            String[] paraNames = ExcelOutput.combineStringArray(CplexController.listToCSString(inputStr).split(", "), CplexController.listToCSString(interOneStr).split(", "));
             if(interTwoStr != null)
-                paraNames = ExcelOutput.combineStringArray(paraNames, CplexController.ListToCSString(interTwoStr).split(", "));
-            paraNames = ExcelOutput.combineStringArray(paraNames, CplexController.ListToCSString(outputStr).split(", "));
+                paraNames = ExcelOutput.combineStringArray(paraNames, CplexController.listToCSString(interTwoStr).split(", "));
+            paraNames = ExcelOutput.combineStringArray(paraNames, CplexController.listToCSString(outputStr).split(", "));
             this.paraValues = new ArrayList<>();  //Unify input and output list
             paraValues.add(paraIn);
             paraValues.add(paraIntOne);

@@ -56,10 +56,11 @@ public class Application extends Controller {
 
     public Result getStarted() {
         GarciaSanchez garciaSanchez = new GarciaSanchez();
+        SolverController solverController = new SolverController();
         try {
-            garciaSanchez.test();
+            //garciaSanchez.test();
+            solverController.solve();
         } catch (Exception e) {
-            //System.err.println(e);
             e.printStackTrace();
         }
 

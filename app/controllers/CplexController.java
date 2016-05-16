@@ -156,7 +156,7 @@ public class CplexController {
         return parameter;
     }
 
-    static public String ListToCSString(List<Integer> l){
+    static public String listToCSString(List<Integer> l){
         String result = "";
         List<Input> inputs = new ArrayList<Input>();
         for (Integer id: l) {
@@ -173,4 +173,6 @@ public class CplexController {
 
         return result;
     }
+
+
 }

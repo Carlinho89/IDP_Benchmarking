@@ -80,11 +80,12 @@ public class Scenario {
         //Print out data that was used in the analysis
 
 
-        String[] paraNames = ExcelOutput.combineStringArray(CplexController.ListToCSString(inputStr).split(", "), CplexController.ListToCSString(outputStr).split(", "));
+        String[] paraNames = ExcelOutput.combineStringArray(CplexController.listToCSString(inputStr).split(", "), CplexController.listToCSString(outputStr).split(", "));
         this.paraValues = new ArrayList<>();  //Unify input and output list
         paraValues.add(paraIn);
         paraValues.add(paraOut);
-        ExcelOutput.createDataOutput(league, dmuList, paraNames, paraValues);    }
+        ExcelOutput.createDataOutput(league, dmuList, paraNames, paraValues);
+    }
 
     public Scenario(String league, List<Integer> inputStr, List<Integer> interOneStr, List<Integer> interTwoStr, List<Integer> outputStr, boolean[][]setting, boolean superEff, int start, int seasons)
     {
@@ -161,10 +162,10 @@ public class Scenario {
         ExcelOutput.createEfficiencyOutput(league, dmuList, overList, refList);
 
         //Print out data that was used in the analysis
-        String[] paraNames = ExcelOutput.combineStringArray(CplexController.ListToCSString(inputStr).split(", "), CplexController.ListToCSString(interOneStr).split(", "));
+        String[] paraNames = ExcelOutput.combineStringArray(CplexController.listToCSString(inputStr).split(", "), CplexController.listToCSString(interOneStr).split(", "));
         if(interTwoStr != null)
-            paraNames = ExcelOutput.combineStringArray(paraNames, CplexController.ListToCSString(interTwoStr).split(", "));
-        paraNames = ExcelOutput.combineStringArray(paraNames, CplexController.ListToCSString(outputStr).split(", "));
+            paraNames = ExcelOutput.combineStringArray(paraNames, CplexController.listToCSString(interTwoStr).split(", "));
+        paraNames = ExcelOutput.combineStringArray(paraNames, CplexController.listToCSString(outputStr).split(", "));
         this.paraValues = new ArrayList<>();  //Unify input and output list
         paraValues.add(paraIn);
         paraValues.add(paraIntOne);

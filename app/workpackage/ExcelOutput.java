@@ -20,7 +20,7 @@ public class ExcelOutput {
     private static String bundesliga = "Bundes Liga",
                          liga = "Liga",
                          premier = "Premier League";
-    
+
     private static String pathToFile = "./DEA_Output.xlsx";
 
     public static void createEfficiencyOutput(String league, List<String[]>dmuList, List<double[][]>overList, List<String[]>refList)  {
@@ -203,7 +203,7 @@ public class ExcelOutput {
         //Method to write out the used date into an Excel sheet
         Timestamp tstamp = new Timestamp(System.currentTimeMillis()); //Get current system time
         try {
-            FileInputStream report = new FileInputStream(new File("C:\\Football_DEA\\DEA_Output.xlsx"));   //Open file, might want to check directory
+            FileInputStream report = new FileInputStream(new File(pathToFile));   //Open file, might want to check directory
             XSSFWorkbook workbook = new XSSFWorkbook(report); //Create object POI can work with
 
             XSSFSheet sheet = null; //Object for sheet which is to be filled
@@ -275,7 +275,7 @@ public class ExcelOutput {
             report.close();
 
             //Communicate update to the .xls-File
-            FileOutputStream newReport =new FileOutputStream(new File("C:\\Football_DEA\\DEA_Output.xlsx"));
+            FileOutputStream newReport =new FileOutputStream(new File(pathToFile));
             workbook.write(newReport);
             newReport.close();
             //Debate addition of several seasons. Also, how do we ensure that the values are accurate and nothing gets swapped?
