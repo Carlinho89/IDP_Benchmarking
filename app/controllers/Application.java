@@ -2,37 +2,22 @@ package controllers;
 
 //CPLEX Libs
 
+import case_studies.CaseOne;
 import com.fasterxml.jackson.databind.JsonNode;
 import models.Input;
-import models.League;
-import models.SimpleSolverQuery;
+import models.SolverQuery;
 import models.Team;
-
 import play.Routes;
-import play.api.libs.json.JsPath;
 import play.data.DynamicForm;
 import play.data.Form;
 import play.libs.Json;
-import play.mvc.BodyParser;
 import play.mvc.Controller;
 import play.mvc.Result;
-import scala.util.parsing.json.JSONObject;
-import scala.util.parsing.json.JSONObject$;
 import views.html.*;
-import workpackage.Scenario;
-
-
-import java.util.ArrayList;
 
 public class Application extends Controller {
 
     public Result index() {
-
-        GarciaSanchez garciaSanchez = new GarciaSanchez();
-        try {
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
         return ok(index.render("Welcome"));
 
@@ -86,12 +71,18 @@ public class Application extends Controller {
             String response = form.get("query");
 
             JsonNode json = Json.parse(response);
-            SimpleSolverQuery query = new SimpleSolverQuery(response);
+            SolverQuery query = new SolverQuery(response);
 
-            SolverController solverController = new SolverController();
-            solverController.solve(query);
+            //SolverController solverController = new SolverController();
+            //solverController.solve(query);
+            System.out.println("CASE ONE");
+            CaseOne caseOne = new CaseOne();
+            caseOne.solve();
+            System.out.println("DONE CASE ONE");
 
-            return ok(""+query.teamID);
+
+
+            return ok(""+query.getTeamID());
         }
     }
 

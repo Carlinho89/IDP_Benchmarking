@@ -1,6 +1,6 @@
 package controllers;
 
-import models.SimpleSolverQuery;
+import models.SolverQuery;
 import workpackage.Scenario;
 
 import java.util.ArrayList;
@@ -11,14 +11,14 @@ import java.util.List;
  */
 public class SolverController {
 
-    public void solve(SimpleSolverQuery query){
-        List<Integer> inputs  = query.selectedInputs;
-        List<Integer> outputs = query.selectedOutputs;
-        int league = query.leagueID;
+    public void solve(SolverQuery query){
+        List<Integer> inputs  = query.getSelectedInputs();
+        List<Integer> outputs = query.getSelectedOutputs();
+        int league = query.getLeagueID();
 
         boolean orientation = false;
         boolean superEfficiency = false;
-        int start = query.season;
+        int start = query.getSeason();
         int seasons = 4;
 
         try {
