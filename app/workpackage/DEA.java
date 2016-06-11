@@ -4,8 +4,13 @@ package workpackage;
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-import ilog.concert.*;
-import ilog.cplex.*;
+
+import ilog.concert.IloException;
+import ilog.concert.IloLinearNumExpr;
+import ilog.concert.IloNumVar;
+import ilog.cplex.IloCplex;
+
+import java.util.Arrays;
 
 
 public class DEA {
@@ -53,7 +58,7 @@ public class DEA {
             for(int z = 0; z < output.length; z++)
                 objFunc.addTerm(output[z][i], sec[i][z]);
             cplex.addMaximize(objFunc);
-            //System.out.println(objFunc.toString());
+            System.out.println("Debug: Objective func: " + objFunc.toString());
 
             //Constraints
             IloLinearNumExpr leftside = cplex.linearNumExpr();  //Expression used for leftside-values of outputs
@@ -64,7 +69,7 @@ public class DEA {
                 leftside.addTerm(input[a][i], ori[i][a]);
 
             cplex.addEq(leftside, 1);
-            //System.out.println(leftside.toString() + " =1"); //Print out Constraint
+            System.out.println("Debug: Constraint: " + leftside.toString() + " =1"); //Print out Constraint
             leftside.clear();
 
             //Output Constraints
@@ -79,7 +84,7 @@ public class DEA {
                     leftside_in.addTerm(input[c][b], ori[i][c]);
                 }
                 cplex.addLe(cplex.diff(leftside, leftside_in), 0.00);  //Create actual constraint
-                //System.out.println(cplex.diff(leftside, leftside_in).toString() + "<=0"); //Print out Constraint
+                System.out.println("Debug: Constraint: " + cplex.diff(leftside, leftside_in).toString() + "<=0"); //Print out Constraint
                 leftside.clear();       //Clear expression for next iteration
                 leftside_in.clear();    //Clear expression for next iteration
             }
@@ -96,8 +101,8 @@ public class DEA {
                 solution[i][f + input.length - 1] = cplex.getValue(sec[i][f]);
             }
             solution[i][solution[i].length-1] = cplex.getObjValue();     //Put value of objective function into solution-matrix
-            //System.out.println(Arrays.toString(solution[i]));
-            //System.out.println("Finished " + dmu[i]);
+            System.out.println("Debug: Solution: " + Arrays.toString(solution[i]));
+            System.out.println("Debug: Finished " + dmu[i]);
         }
         return solution;
     }

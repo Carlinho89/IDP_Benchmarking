@@ -1,6 +1,8 @@
 package workpackage;
 import controllers.CplexController;
 import ilog.concert.IloException;
+import models.League;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -8,7 +10,7 @@ import java.util.logging.Logger;
 
 
 public class ScenarioMQI {
-    private String league;          //Which league are we looking at?
+    private int league;          //Which league are we looking at?
     private CplexController connection;   //Connect to database
     private String[] dmuOld;           //Array for selected DMUs of year one
     private double[][] inputOld;       //Array for selected inputs of year one
@@ -30,7 +32,7 @@ public class ScenarioMQI {
     private List<double[][]>overList;   //List over overview-arrays from results
     private List<double[][]>paraValues; //List containing the data used.
 
-    public ScenarioMQI(String league, List<Integer> inputStr, List<Integer> outputStr, boolean orientation, boolean data, int start, int seasons, int scale) throws Exception
+    public ScenarioMQI(int league, List<Integer> inputStr, List<Integer> outputStr, boolean orientation, boolean data, int start, int seasons, int scale) throws Exception
     {
         this.connection = new CplexController();  //Establish connection to database
 
@@ -88,7 +90,7 @@ public class ScenarioMQI {
             }
         }
         //Create Excel output
-        ExcelOutput.createMQIOutput(league, dmuList, overList);
+        ExcelOutput.createMQIOutput(League.getById(league).name, dmuList, overList);
 
         if(data == true)
         {
@@ -97,12 +99,12 @@ public class ScenarioMQI {
             this.paraValues = new ArrayList<>();  //Unify input and output list
             paraValues.add(paraIn);
             paraValues.add(paraOut);
-            ExcelOutput.createDataOutput(league, dataDMUList, paraNames, paraValues);
+            ExcelOutput.createDataOutput(League.getById(league).name, dataDMUList, paraNames, paraValues);
         }
 
     }
 
-    public ScenarioMQI(String league, List<Integer> inputStr, List<Integer> interOneStr, List<Integer> interTwoStr, List<Integer> outputStr, boolean[][] settings, boolean data, int start, int seasons, int scale) throws Exception
+    public ScenarioMQI(int league, List<Integer> inputStr, List<Integer> interOneStr, List<Integer> interTwoStr, List<Integer> outputStr, boolean[][] settings, boolean data, int start, int seasons, int scale) throws Exception
     {
         this.connection = new CplexController();  //Establish connection to database
 
@@ -198,7 +200,7 @@ public class ScenarioMQI {
         }
 
         //Create Excel output
-        ExcelOutput.createMQIOutput(league, dmuList, overList);
+        ExcelOutput.createMQIOutput(League.getById(league).name, dmuList, overList);
 
         if(data == true)
         {
@@ -212,7 +214,7 @@ public class ScenarioMQI {
             if(interTwoStr != null)
                 paraValues.add(paraIntTwo);
             paraValues.add(paraOut);
-            ExcelOutput.createDataOutput(league, dmuList, paraNames, paraValues);
+            ExcelOutput.createDataOutput(League.getById(league).name, dmuList, paraNames, paraValues);
         }
     }
 

@@ -1,6 +1,7 @@
 package workpackage;
 import controllers.CplexController;
 import ilog.concert.IloException;
+import models.League;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.logging.Logger;
 
 public class Scenario {
 
-    private final String league;          //Which league are we looking at?
+    private final int league;          //Which league are we looking at?
     private final CplexController connection;   //Connect to database
     private String[] dmu;           //Array for selected DMUs
     private double[][] input;       //Array for selected inputs
@@ -30,7 +31,7 @@ public class Scenario {
     private List<TwoStageDEA>twodeaList;  //List of TwoStageDEAs created while solving the scenario
     private List<ThreeStageDEA>threedeaList;  //List of ThreeStageDEAs created while solving the scenario
 
-    public Scenario(String league, List<Integer> inputStr, List<Integer> outputStr, boolean orientation, boolean superEff, int start, int seasons) throws Exception   //Single-Stage constructor
+    public Scenario(int league, List<Integer> inputStr, List<Integer> outputStr, boolean orientation, boolean superEff, int start, int seasons) throws Exception   //Single-Stage constructor
     {
         this.connection = new CplexController();  //Establish connection to database
 
@@ -75,7 +76,7 @@ public class Scenario {
             deaList.add(dea);
         }
         //Create Excel Output
-        ExcelOutput.createEfficiencyOutput(league, dmuList, overList, refList);
+        ExcelOutput.createEfficiencyOutput(League.getById(league).name, dmuList, overList, refList);
 
         //Print out data that was used in the analysis
 
@@ -84,10 +85,10 @@ public class Scenario {
         this.paraValues = new ArrayList<>();  //Unify input and output list
         paraValues.add(paraIn);
         paraValues.add(paraOut);
-        ExcelOutput.createDataOutput(league, dmuList, paraNames, paraValues);
+        ExcelOutput.createDataOutput(League.getById(league).name, dmuList, paraNames, paraValues);
     }
 
-    public Scenario(String league, List<Integer> inputStr, List<Integer> interOneStr, List<Integer> interTwoStr, List<Integer> outputStr, boolean[][]setting, boolean superEff, int start, int seasons)
+    public Scenario(int league, List<Integer> inputStr, List<Integer> interOneStr, List<Integer> interTwoStr, List<Integer> outputStr, boolean[][]setting, boolean superEff, int start, int seasons)
     {
         this.connection = new CplexController();  //Establish connection to database
 
@@ -159,7 +160,7 @@ public class Scenario {
             }
         }
         //Create Excel Output
-        ExcelOutput.createEfficiencyOutput(league, dmuList, overList, refList);
+        ExcelOutput.createEfficiencyOutput(League.getById(league).name, dmuList, overList, refList);
 
         //Print out data that was used in the analysis
         String[] paraNames = ExcelOutput.combineStringArray(CplexController.listToCSString(inputStr).split(", "), CplexController.listToCSString(interOneStr).split(", "));
@@ -172,7 +173,7 @@ public class Scenario {
         if(interTwoStr != null)
             paraValues.add(paraIntTwo);
         paraValues.add(paraOut);
-        ExcelOutput.createDataOutput(league, dmuList, paraNames, paraValues);
+        ExcelOutput.createDataOutput(League.getById(league).name, dmuList, paraNames, paraValues);
 
 
     }

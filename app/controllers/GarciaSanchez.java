@@ -1,6 +1,7 @@
 package controllers;
 
 import ilog.concert.IloException;
+import models.League;
 import workpackage.*;
 
 import java.util.ArrayList;
@@ -47,7 +48,7 @@ public class GarciaSanchez {
         List<String[]>refList = new ArrayList<String[]>();
         boolean[][]ramifications = {{false, false},{false, true},{false, false}};
 
-        String league = "Premier League"; //"premier_league";
+        int league = 2; //"premier_league";
         int start = 2010;
         int seasons = 4;
 
@@ -130,7 +131,7 @@ public class GarciaSanchez {
 
 
         //Create Excel Output
-        ExcelOutput.createEfficiencyOutput(league, dmuList, overList, refList);
+        ExcelOutput.createEfficiencyOutput(League.getById(league).name, dmuList, overList, refList);
 
         //Get MQI values
         List<String[]>dmuMalm = new ArrayList<String[]>();
@@ -161,7 +162,7 @@ public class GarciaSanchez {
             malmList.add(solMQI);
         }
         //Create Excel Output
-        ExcelOutput.createMQIOutput(league, dmuMalm, malmList);
+        ExcelOutput.createMQIOutput(League.getById(league).name, dmuMalm, malmList);
 
 
     }

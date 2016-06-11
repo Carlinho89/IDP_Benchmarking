@@ -6,7 +6,6 @@ import ilog.concert.IloLinearNumExpr;
 import ilog.concert.IloNumVar;
 import ilog.cplex.IloCplex;
 import models.Input;
-import models.League;
 import models.SeasonalData;
 import models.Team;
 
@@ -112,8 +111,8 @@ public class CplexController {
     }
 
 
-    public String[] createDMUArray(String league, int season) {
-        List<Team> teamsForSeason = Team.getAllbySeason(season, League.getIdByName(league));
+    public String[] createDMUArray(int league, int season) {
+        List<Team> teamsForSeason = Team.getAllbySeason(season, league);
         String[] teamsNamesForSeason = new String[teamsForSeason.size()];
         for (int i = 0; i < teamsForSeason.size(); i++) {
             teamsNamesForSeason[i] = teamsForSeason.get(i).name;
@@ -124,30 +123,30 @@ public class CplexController {
     * The method is given a String which separates the selected tables by a comma.
     * This string is then turned into an array from which the parameters are gained
     * */
-    public double[][] createParameterArray(String league, int season, List<Integer> choice)    {
-        Integer choices[] = choice.toArray(new Integer[choice.size()]);
+    public double[][] createParameterArray(int league, int season, List<Integer> choice)    {
         SeasonalData stringPara[][] = new SeasonalData[choice.size()][];
-
+        System.out.println("Fetching DB, choices number: " + choice.size());
         for (int i = 0; i < choice.size(); i++){
-            RawSql rawSql = RawSqlBuilder.parse("select id, team_id, team_name, year, league_id, input_id, value  " +
-                    "from seasonal_data " +
-                    "where year =" + season + "AND input_id = " + choices[i] + "AND league_id = " + League.getIdByName(league))
-                    .columnMapping("id","id")
-                    .columnMapping("team_id","team_id")
-                    .columnMapping("team_name","team_name")
-                    .columnMapping("year","year")
-                    .columnMapping("league_id","league_id")
-                    .columnMapping("input_id","input_id")
-                    .columnMapping("value","value")
-                    .create();
-            Query<SeasonalData> query = Ebean.find(SeasonalData.class);
-            query.setRawSql(rawSql);
-
-            List<SeasonalData> result = query.findList();
+            List<SeasonalData> result = SeasonalData.getBySeasonAndLeague(season, league, choice.get(i));
             stringPara[i] = result.toArray(new SeasonalData[result.size()]);
+            System.out.println("Done choice n" + i + " has n: " + result.size() + " elements");
         }
 
-       double[][] parameter = new double[stringPara.length][stringPara[0].length];   //Create final array for return
+        System.out.println("stringPara.length: " + stringPara.length);
+        System.out.println("stringPara[0].length: " + stringPara[0].length);
+
+        for (int i = 0; i < stringPara.length; i++) {
+            System.out.println("i: "+i);
+            for (int j = 0; j < stringPara[i].length; j++) {
+                System.out.println("j: "+j);
+                System.out.println("Team " + stringPara[i][j].team_name + " val: " + stringPara[i][j].value);
+
+            }
+
+        }
+
+
+        double[][] parameter = new double[stringPara.length][stringPara[0].length];   //Create final array for return
         for(int i = 0; i < stringPara.length; i++)
             for (int j = 0; j < stringPara[i].length; j++)
                 parameter[i][j] = stringPara[i][j].value;
@@ -159,8 +158,11 @@ public class CplexController {
     static public String listToCSString(List<Integer> l){
         String result = "";
         List<Input> inputs = new ArrayList<Input>();
+        //System.out.println("ListToCCSting size is: " + l.size());
         for (Integer id: l) {
+            //System.out.println("Id is: " + id);
             Input input = (Input) new Model.Finder(Input.class).byId(id);
+            //System.out.println("Name is: " + input.name);
             inputs.add(input);
         }
 
@@ -171,6 +173,7 @@ public class CplexController {
                 result += inputs.get(i).name;
         }
 
+        //System.out.println("result string is '" + result + "'");
         return result;
     }
 

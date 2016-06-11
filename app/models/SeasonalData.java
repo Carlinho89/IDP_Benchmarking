@@ -1,6 +1,6 @@
 package models;
 
-import com.avaje.ebean.Model;
+import com.avaje.ebean.*;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -36,6 +36,26 @@ public class SeasonalData extends Model {
      */
     public static List<SeasonalData> getAll(){
         return (List<SeasonalData>) new Model.Finder(SeasonalData.class).all();
+    }
+
+    public static List<SeasonalData> getBySeasonAndLeague(int season, int league_id, int input_id){
+        RawSql rawSql = RawSqlBuilder.parse("select id, team_id, team_name, year, league_id, input_id, value  " +
+                "from seasonal_data " +
+                "where year =" + season + "AND input_id = " + input_id + "AND league_id = " + league_id)
+                .columnMapping("id","id")
+                .columnMapping("team_id","team_id")
+                .columnMapping("team_name","team_name")
+                .columnMapping("year","year")
+                .columnMapping("league_id","league_id")
+                .columnMapping("input_id","input_id")
+                .columnMapping("value","value")
+                .create();
+        Query<SeasonalData> query = Ebean.find(SeasonalData.class);
+        query.setRawSql(rawSql);
+
+        List<SeasonalData> result = query.findList();
+
+        return result;
     }
 
 }

@@ -5,14 +5,21 @@ package controllers;
 import com.fasterxml.jackson.databind.JsonNode;
 import models.Input;
 import models.League;
+import models.SimpleSolverQuery;
 import models.Team;
 
 import play.Routes;
+import play.api.libs.json.JsPath;
+import play.data.DynamicForm;
+import play.data.Form;
 import play.libs.Json;
 import play.mvc.BodyParser;
 import play.mvc.Controller;
 import play.mvc.Result;
+import scala.util.parsing.json.JSONObject;
+import scala.util.parsing.json.JSONObject$;
 import views.html.*;
+import workpackage.Scenario;
 
 
 import java.util.ArrayList;
@@ -21,7 +28,14 @@ public class Application extends Controller {
 
     public Result index() {
 
+        GarciaSanchez garciaSanchez = new GarciaSanchez();
+        try {
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         return ok(index.render("Welcome"));
+
     }
 
     public Result benchmarking(String chapter) {
@@ -55,15 +69,6 @@ public class Application extends Controller {
     }
 
     public Result getStarted() {
-        GarciaSanchez garciaSanchez = new GarciaSanchez();
-        SolverController solverController = new SolverController();
-        try {
-            //garciaSanchez.test();
-            solverController.solve();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
         return ok(get_started.render(Input.getByType("Sporty"), Input.getByType("Social"), Input.getByType("Monetary"), Input.getOutputs()));
 
     }
@@ -72,25 +77,28 @@ public class Application extends Controller {
         return ok(Json.toJson(Team.getAllbySeason(year, league_id)));
     }
 
+    public  Result simpleSolver(){
+        DynamicForm form = Form.form().bindFromRequest();
 
-    @BodyParser.Of(BodyParser.Json.class)
-    public Result sayHello() {
-        JsonNode json = request().body().asJson();
-        String name = json.findPath("leagueID").textValue();
-        if (name == null) {
-            return badRequest("Missing parameter [name]" + request().body().asJson());
+        if (form.data().size() == 0) {
+            return badRequest("Expecting some data");
         } else {
-            return ok(json);
+            String response = form.get("query");
 
+            JsonNode json = Json.parse(response);
+            SimpleSolverQuery query = new SimpleSolverQuery(response);
+
+            SolverController solverController = new SolverController();
+            solverController.solve(query);
+
+            return ok(""+query.teamID);
         }
     }
 
 
-    public Result showJSON() {
-        JsonNode json = request().body().asJson();
-        String a = json.path("leagueID").asText();
-        return ok(index.render(a));
-    }
+
+
+
 
 
     public Result jsRoutes() {
