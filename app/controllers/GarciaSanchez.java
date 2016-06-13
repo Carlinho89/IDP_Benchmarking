@@ -161,6 +161,21 @@ public class GarciaSanchez {
             dmuMalm.add(mqiOff.dmu);
             malmList.add(solMQI);
         }
+
+
+        System.out.println("START");
+        for(int i = 0; i<malmList.size(); i++){
+            for(int j=0; j<malmList.get(i).length ;j++)
+                for(int k=0; k<malmList.get(i)[j].length ;k++){
+                    System.out.println("i:"+i+" j:"+j+" k:"+k+"----"+malmList.get(i)[j][k]);
+
+                }
+
+
+        }
+        System.out.println(dmuMalm);
+        System.out.println(malmList);
+
         //Create Excel Output
         ExcelOutput.createMQIOutput(League.getById(league).name, dmuMalm, malmList);
 
