@@ -15,6 +15,9 @@ import play.mvc.Controller;
 import play.mvc.Result;
 import views.html.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Application extends Controller {
 
     public Result index() {
@@ -54,6 +57,12 @@ public class Application extends Controller {
     }
 
     public Result getStarted() {
+
+        System.out.println("CASE ONE");
+        CaseOne caseOne = new CaseOne();
+        caseOne.solve();
+        System.out.println("DONE CASE ONE");
+
         return ok(get_started.render(Input.getByType("Sporty"), Input.getByType("Social"), Input.getByType("Monetary"), Input.getOutputs()));
 
     }
@@ -75,12 +84,6 @@ public class Application extends Controller {
 
             //SolverController solverController = new SolverController();
             //solverController.solve(query);
-            System.out.println("CASE ONE");
-            CaseOne caseOne = new CaseOne();
-            caseOne.solve();
-            System.out.println("DONE CASE ONE");
-
-
 
             return ok(""+query.getTeamID());
         }
