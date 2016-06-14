@@ -63,6 +63,13 @@ public class Application extends Controller {
         caseOne.solve();
         System.out.println("DONE CASE ONE");
 
+        GarciaSanchez gs = new GarciaSanchez();
+
+        try {
+            gs.test();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return ok(get_started.render(Input.getByType("Sporty"), Input.getByType("Social"), Input.getByType("Monetary"), Input.getOutputs()));
 
     }
@@ -84,6 +91,7 @@ public class Application extends Controller {
 
             //SolverController solverController = new SolverController();
             //solverController.solve(query);
+
 
             return ok(""+query.getTeamID());
         }
