@@ -3,36 +3,22 @@ package controllers;
 //CPLEX Libs
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.BaseJsonNode;
 import models.Input;
-import models.League;
-import models.SimpleSolverQuery;
+import models.SolverQuery;
 import models.Team;
-
 import play.Routes;
-import play.api.libs.json.JsPath;
 import play.data.DynamicForm;
 import play.data.Form;
 import play.libs.Json;
-import play.mvc.BodyParser;
 import play.mvc.Controller;
 import play.mvc.Result;
-import scala.util.parsing.json.JSONObject;
-import scala.util.parsing.json.JSONObject$;
 import views.html.*;
 import workpackage.Scenario;
-
-
-import java.util.ArrayList;
 
 public class Application extends Controller {
 
     public Result index() {
-
-        GarciaSanchez garciaSanchez = new GarciaSanchez();
-        try {
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
         return ok(index.render("Welcome"));
 
@@ -69,7 +55,24 @@ public class Application extends Controller {
     }
 
     public Result getStarted() {
+
+
         return ok(get_started.render(Input.getByType("Sporty"), Input.getByType("Social"), Input.getByType("Monetary"), Input.getOutputs()));
+
+    }
+
+    public Result showCharts() {
+
+        GarciaSanchez gs = new GarciaSanchez();
+        String jsonResult = "";
+        try {
+           jsonResult = gs.test();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        System.out.println(jsonResult);
+        return ok(show_charts.render(jsonResult));
 
     }
 
@@ -84,14 +87,24 @@ public class Application extends Controller {
             return badRequest("Expecting some data");
         } else {
             String response = form.get("query");
-
+            System.out.println("AAAAA"+response);
             JsonNode json = Json.parse(response);
-            SimpleSolverQuery query = new SimpleSolverQuery(response);
+            System.out.println(Json.stringify(json));
+
+
+            SolverQuery query = new SolverQuery(response);
 
             SolverController solverController = new SolverController();
             solverController.solve(query);
+           
 
-            return ok(""+query.teamID);
+
+            Scenario solvedScenario = solverController.solve(query);
+
+
+
+
+            return ok(""+query.getTeamID());
         }
     }
 

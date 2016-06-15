@@ -2,7 +2,7 @@ name := """IDP_Benchmarking_3"""
 
 version := "1.0-SNAPSHOT"
 
-lazy val root = (project in file(".")).enablePlugins(PlayJava, PlayEbean)
+lazy val root = (project in file(".")).enablePlugins(PlayScala, PlayJava, PlayEbean)
 
 scalaVersion := "2.11.6"
 
@@ -14,8 +14,10 @@ libraryDependencies ++= Seq(
 
 libraryDependencies ++= Seq(
   "org.webjars" %% "webjars-play" % "2.4.0-1",
-  "org.webjars" % "bootstrap" % "3.3.6"
-//"org.webjars" % "bootstrap" % "4.0.0-alpha.2"
+  "org.webjars" % "bootstrap" % "3.3.6",
+  "org.apache.poi" % "poi" % "3.10-FINAL",
+  "org.apache.poi" % "poi-ooxml" % "3.9",
+  "org.apache.commons" % "commons-math3" % "3.6"
 )
 
 unmanagedBase :=

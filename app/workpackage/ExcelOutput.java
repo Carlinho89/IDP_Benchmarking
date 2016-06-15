@@ -30,11 +30,12 @@ public class ExcelOutput {
         String[][]reference = fitStringOutput(dmuList, refList);
 
         Timestamp tstamp = new Timestamp(System.currentTimeMillis()); //Get current system time
-
+        FileInputStream report = null;
+        XSSFWorkbook workbook = null;
 
         try {
-            FileInputStream report = new FileInputStream(new File(pathToFile));   //Open file, might want to check directory
-            XSSFWorkbook workbook = new XSSFWorkbook(report); //Create object POI can work with
+            report = new FileInputStream(new File(pathToFile));   //Open file, might want to check directory
+            workbook = new XSSFWorkbook(report); //Create object POI can work with
 
             XSSFSheet sheet = null; //Object for sheet which is to be filled
             Cell cell = null;       //Object for editing cells
@@ -114,9 +115,16 @@ public class ExcelOutput {
             System.out.println("File correctly written");
         }catch(FileNotFoundException ex){
             System.out.println("Incorrect file name or file in wrong directory.");
-        } catch (IOException ex) {
+        }catch (IOException ex) {
             System.out.println("Error creating workbook-object.");
+        }catch (Exception ex){
+            ex.printStackTrace();
         }
+
+
+
+
+
     }
 
     public static void createMQIOutput(String league, List<String[]>dmuList, List<double[][]>malmList)  {

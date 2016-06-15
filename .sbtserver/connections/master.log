@@ -1,0 +1,37 @@
+New log file opened at Fri May 06 16:29:41 CEST 2016 by 5820@DESKTOP-QL69H60
+Taking next connection to: 54280
+New client attempting to connect on port: 54281-54280
+  Address = /192.168.1.101:54280
+This client on port 54281 has uuid 731781ff-192d-4a79-8dbc-2b5455110590 configName play-fork-run humanReadableName Play Fork Run protocolVersion 1 featureTags Vector()
+Connected Clients: play-fork-run-731781ff-192d-4a79-8dbc-2b5455110590
+Taking next connection to: 54280
+New client attempting to connect on port: 54285-54280
+  Address = /192.168.1.101:54280
+Handshake exception on socket: 54285
+sbt.impl.ipc.HandshakeException: Unable to perform handshake
+	at sbt.impl.ipc.Peer.handshake(IPC.scala:46)
+	at sbt.impl.ipc.MultiClientServer.<init>(IPC.scala:150)
+	at sbt.server.SbtServerSocketHandler$$anon$1.run(SbtServerSocketHandler.scala:43)
+Caused by: java.net.SocketException: Software caused connection abort: recv failed
+	at java.net.SocketInputStream.socketRead0(Native Method)
+	at java.net.SocketInputStream.socketRead(SocketInputStream.java:116)
+	at java.net.SocketInputStream.read(SocketInputStream.java:170)
+	at java.net.SocketInputStream.read(SocketInputStream.java:141)
+	at java.io.BufferedInputStream.fill(BufferedInputStream.java:246)
+	at java.io.BufferedInputStream.read(BufferedInputStream.java:265)
+	at java.io.DataInputStream.readInt(DataInputStream.java:387)
+	at sbt.impl.ipc.Peer.receive(IPC.scala:95)
+	at sbt.impl.ipc.Peer.handshake(IPC.scala:49)
+	... 2 more
+Taking next connection to: 54280
+New client attempting to connect on port: 54286-54280
+  Address = /192.168.1.101:54280
+This client on port 54286 has uuid 1cd75bec-f927-489c-88bf-d9065429c9c2 configName play-fork-run humanReadableName Play Fork Run protocolVersion 1 featureTags Vector()
+Connected Clients: play-fork-run-1cd75bec-f927-489c-88bf-d9065429c9c2
+Taking next connection to: 54280
+Checking to see if clients are empty...
+No non-daemon clients connected after 3 min. Shutting down.
+Server socket thread exiting.
+0 clients open, will close them...
+All client sockets have been closed.
+Closing the 5820@DESKTOP-QL69H60 logs at Fri May 06 16:34:33 CEST 2016, goodbye.

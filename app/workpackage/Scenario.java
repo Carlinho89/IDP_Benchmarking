@@ -49,7 +49,7 @@ public class Scenario {
         double[][]paraIn = null;    //Arrays for saving parameter values
         double[][]paraOut = null;
 
-        for(int i = 0; i < seasons; i++)
+        for(int i = 0; i <= seasons; i++)
         {
             //Create parameter-arrays to work from
             this.dmu = connection.createDMUArray(league, start + i);
@@ -76,16 +76,16 @@ public class Scenario {
             deaList.add(dea);
         }
         //Create Excel Output
-        ExcelOutput.createEfficiencyOutput(League.getById(league).name, dmuList, overList, refList);
+        //ExcelOutput.createEfficiencyOutput(League.getById(league).name, dmuList, overList, refList);
 
         //Print out data that was used in the analysis
 
 
-        String[] paraNames = ExcelOutput.combineStringArray(CplexController.listToCSString(inputStr).split(", "), CplexController.listToCSString(outputStr).split(", "));
+       // String[] paraNames = ExcelOutput.combineStringArray(CplexController.listToCSString(inputStr).split(", "), CplexController.listToCSString(outputStr).split(", "));
         this.paraValues = new ArrayList<>();  //Unify input and output list
         paraValues.add(paraIn);
         paraValues.add(paraOut);
-        ExcelOutput.createDataOutput(League.getById(league).name, dmuList, paraNames, paraValues);
+        //ExcelOutput.createDataOutput(League.getById(league).name, dmuList, paraNames, paraValues);
     }
 
     public Scenario(int league, List<Integer> inputStr, List<Integer> interOneStr, List<Integer> interTwoStr, List<Integer> outputStr, boolean[][]setting, boolean superEff, int start, int seasons)
