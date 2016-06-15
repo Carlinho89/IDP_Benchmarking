@@ -6,6 +6,8 @@ import workpackage.Scenario;
 import java.util.ArrayList;
 import java.util.List;
 
+import play.libs.Json;
+
 /**
  * Created by carlodidomenico on 16/05/16.
  */
@@ -14,7 +16,9 @@ public class SolverController {
     public void solve(SolverQuery query){
         List<Integer> inputs  = query.getSelectedInputs();
         List<Integer> outputs = query.getSelectedOutputs();
+        System.out.println(Json.stringify(outputs));
         int league = query.getLeagueID();
+
 
         boolean orientation = false;
         boolean superEfficiency = false;
@@ -33,7 +37,7 @@ public class SolverController {
             selectionOffOut.add(4);
 
 
-            Scenario garciaSanchez = new Scenario(league, selectionOffIn, selectionOffOut, orientation, superEfficiency, start, seasons);
+           // Scenario garciaSanchez = new Scenario(league, selectionOffIn, selectionOffOut, orientation, superEfficiency, start, seasons);
 
             //Scenario scenario = new Scenario(league, inputs, outputs, orientation, superEfficiency, start, seasons);
             //GarciaSanchez g = new GarciaSanchez();

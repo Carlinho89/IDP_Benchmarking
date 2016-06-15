@@ -1,7 +1,11 @@
 package controllers;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import ilog.concert.IloException;
 import models.League;
+import models.Team;
+import play.libs.Json;
+import scala.util.parsing.json.JSON;
 import workpackage.*;
 
 import java.util.ArrayList;
@@ -12,8 +16,10 @@ import java.util.List;
  */
 public class GarciaSanchez {
 
-    public void test() throws IloException, Exception{
+    public String test() throws IloException, Exception{
         CplexController cplexConnection = new CplexController();
+
+
 
         //Set parameter selection
         //Input for offensive efficiency: Shots on target Goal (id 14), shots per game (id 7), Crosses (id 16)
@@ -179,6 +185,9 @@ public class GarciaSanchez {
         //Create Excel Output
         ExcelOutput.createMQIOutput(League.getById(league).name, dmuMalm, malmList);
 
-
+        JsonNode jsnmalm= Json.toJson(malmList);
+        JsonNode jsndmu= Json.toJson(dmuMalm);
+        String result= "{\"dmu\":"+Json.stringify(jsndmu)+", \"malm\" : " +Json.stringify(jsnmalm) +"}";
+        return result;
     }
 }
