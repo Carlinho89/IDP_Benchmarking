@@ -84,7 +84,7 @@ public class DEA {
                     leftside_in.addTerm(input[c][b], ori[i][c]);
                 }
                 cplex.addLe(cplex.diff(leftside, leftside_in), 0.00);  //Create actual constraint
-                System.out.println("Debug: Constraint: " + cplex.diff(leftside, leftside_in).toString() + "<=0"); //Print out Constraint
+                //System.out.println("Debug: Constraint: " + cplex.diff(leftside, leftside_in).toString() + "<=0"); //Print out Constraint
                 leftside.clear();       //Clear expression for next iteration
                 leftside_in.clear();    //Clear expression for next iteration
             }
