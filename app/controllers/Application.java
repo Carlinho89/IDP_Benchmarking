@@ -74,8 +74,8 @@ public class Application extends Controller {
             SolverQuery query = new SolverQuery(response);
 
             SolverController solverController = new SolverController();
-            Scenario solvedScenario = solverController.solve(query);
 
+            Scenario solvedScenario = solverController.solve(query);
 
 
 
