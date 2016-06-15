@@ -38,25 +38,15 @@ public class CplexController {
     * */
     public double[][] createParameterArray(int league, int season, List<Integer> choice)    {
         SeasonalData stringPara[][] = new SeasonalData[choice.size()][];
-        System.out.println("Fetching DB, choices number: " + choice.size());
+        //System.out.println("Fetching DB, choices number: " + choice.size());
         for (int i = 0; i < choice.size(); i++){
             List<SeasonalData> result = SeasonalData.getBySeasonAndLeague(season, league, choice.get(i));
             stringPara[i] = result.toArray(new SeasonalData[result.size()]);
             //System.out.println("Done choice n" + i + " has n: " + result.size() + " elements");
         }
 
-        System.out.println("stringPara.length: " + stringPara.length);
-        System.out.println("stringPara[0].length: " + stringPara[0].length);
-
-        /*for (int i = 0; i < stringPara.length; i++) {
-            System.out.println("i: "+i);
-            for (int j = 0; j < stringPara[i].length; j++) {
-                System.out.println("j: "+j);
-                System.out.println("Team " + stringPara[i][j].team_name + " val: " + stringPara[i][j].value);
-
-            }
-
-          }*/
+        //System.out.println("stringPara.length: " + stringPara.length);
+        //System.out.println("stringPara[0].length: " + stringPara[0].length);
 
 
         double[][] parameter = new double[stringPara.length][stringPara[0].length];   //Create final array for return

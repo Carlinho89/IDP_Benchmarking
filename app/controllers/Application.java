@@ -2,7 +2,6 @@ package controllers;
 
 //CPLEX Libs
 
-import case_studies.CaseOne;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.BaseJsonNode;
 import models.Input;
@@ -15,6 +14,7 @@ import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
 import views.html.*;
+import workpackage.Scenario;
 
 public class Application extends Controller {
 
@@ -56,6 +56,7 @@ public class Application extends Controller {
 
     public Result getStarted() {
 
+
         return ok(get_started.render(Input.getByType("Sporty"), Input.getByType("Social"), Input.getByType("Monetary"), Input.getOutputs()));
 
     }
@@ -72,6 +73,7 @@ public class Application extends Controller {
         }
         System.out.println(jsonResult);
         return ok(show_charts.render(jsonResult));
+
     }
 
     public Result getLeagueTeamsBySeason(int year, int league_id) {
@@ -89,11 +91,16 @@ public class Application extends Controller {
             JsonNode json = Json.parse(response);
             System.out.println(Json.stringify(json));
 
+
             SolverQuery query = new SolverQuery(response);
 
             SolverController solverController = new SolverController();
             solverController.solve(query);
            
+
+
+            Scenario solvedScenario = solverController.solve(query);
+
 
 
 

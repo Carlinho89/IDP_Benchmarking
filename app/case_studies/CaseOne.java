@@ -2,6 +2,7 @@ package case_studies;
 
 import controllers.CplexController;
 import models.League;
+import org.apache.commons.math3.exception.DimensionMismatchException;
 import org.apache.commons.math3.stat.correlation.SpearmansCorrelation;
 import workpackage.Scenario;
 
@@ -21,22 +22,23 @@ public class CaseOne {
     private Scenario caseOne;
     private boolean orientation = false;
     private boolean superEff = true;
-    private int start = 2009;
-    private int seasons = 4;
+    private int start;
+    private int seasons;
     private CplexController connection;
 
 
     public CaseOne(){
+        overList = new ArrayList<>();
         league = new ArrayList<Integer>();
         input = new ArrayList<Integer>();
         output = new ArrayList<Integer>();
         correlation = new ArrayList<Integer>();
         correlationTwo = new ArrayList<Integer>();
         connection = new CplexController();
-        orientation = false;
-        boolean superEff = true;
-        int start = 2010;
-        int seasons = 4;
+        orientation = true;
+        superEff = true;
+        start = 2011;
+        seasons = 4;
     }
 
     public void solve() {
@@ -65,7 +67,7 @@ public class CaseOne {
         output.add(4); //goals scored
 
         //String _correlation = "spec";
-        correlation.add(25); // StediumCapacity
+        correlation.add(20); // Numbers of players
 
         //String _correlationTwo = "oneByGoCon";
         correlationTwo.add(4); ////goals scored
@@ -75,8 +77,10 @@ public class CaseOne {
             try{
                 caseOne = new Scenario(league.get(i), input, output, orientation, superEff, start, seasons);
                 overList.addAll(caseOne.getOverviewList());
-            }catch(Exception ex){
-                System.out.println("Failed to compute the case for league " + League.getById(league.get(i)));
+            }
+            catch(Exception ex){
+                ex.printStackTrace();
+                System.out.println("Failed to compute the case for league " + League.getById(league.get(i)).name);
             }
 
         //Gather spectator data in a list
@@ -91,26 +95,39 @@ public class CaseOne {
             }
         
         //Compute correlation
-        double[] spearman = new double[league.size() * seasons];    //FORMEL: Statistikskript, S.72
+        List<Double> spearman = new ArrayList<>();    //FORMEL: Statistikskript, S.72
+        int correllations = league.size() * seasons;
 
         double[][]interOver;
         double[][]interSpec;
+
         System.out.println("Correlation between defensive efficiency and spectators:");
-        for(int i = 0; i < spearman.length; i++)
+        for(int i = 0; i < correllations; i++)
         {
             interOver = overList.get(i);
             interSpec = spectator.get(i);
-            spearman[i] = new SpearmansCorrelation().correlation(interOver[1], interSpec[0]);
-            System.out.println(spearman[i]);
+            try {
+                spearman.add(i, new SpearmansCorrelation().correlation(interOver[1], interSpec[0]));
+                System.out.println(spearman.get(i));
+            }catch (DimensionMismatchException ex){
+                spearman.add(i, null);
+                ex.printStackTrace();
+            }
         }
         double[][]interGoal;
         System.out.println("Correlation between 1/goals shot and spectators:");
-        for(int i = 0; i < spearman.length; i++)
+
+        for(int i = 0; i < correllations; i++)
         {
             interSpec = spectator.get(i);
             interGoal = goals.get(i);
-            spearman[i] = new SpearmansCorrelation().correlation(interGoal[0], interSpec[0]);
-            System.out.println(spearman[i]);
+            try {
+                spearman.add(i, new SpearmansCorrelation().correlation(interSpec[0], interGoal[0]));
+                System.out.println(spearman.get(i));
+            }catch (DimensionMismatchException ex){
+                spearman.add(i, null);
+                ex.printStackTrace();
+            }
         }
     }
 }

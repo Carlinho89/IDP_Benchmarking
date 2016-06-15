@@ -53,12 +53,12 @@ public class SolverQuery {
 
             JsonNode selectedOutputsNode = rootNode.path("selectedOutputs");
              iterator = selectedOutputsNode.iterator();
-            System.out.print("selectedOutputs: [ ");
+            //System.out.print("selectedOutputs: [ ");
 
             while (iterator.hasNext()) {
                 JsonNode output = iterator.next();
-                System.out.print(output.asInt() + " ");
-                selectedInputs.add(output.asInt());
+                //System.out.print(output.asInt() + " ");
+                selectedOutputs.add(output.asInt());
             }
 
             //System.out.println("]");
