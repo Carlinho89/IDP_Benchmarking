@@ -2,7 +2,6 @@ package controllers;
 
 //CPLEX Libs
 
-import case_studies.CaseOne;
 import com.fasterxml.jackson.databind.JsonNode;
 import models.Input;
 import models.SolverQuery;
@@ -14,9 +13,7 @@ import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
 import views.html.*;
-
-import java.util.ArrayList;
-import java.util.List;
+import workpackage.Scenario;
 
 public class Application extends Controller {
 
@@ -57,19 +54,6 @@ public class Application extends Controller {
     }
 
     public Result getStarted() {
-
-        System.out.println("CASE ONE");
-        CaseOne caseOne = new CaseOne();
-        caseOne.solve();
-        System.out.println("DONE CASE ONE");
-
-        GarciaSanchez gs = new GarciaSanchez();
-
-        try {
-            gs.test();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         return ok(get_started.render(Input.getByType("Sporty"), Input.getByType("Social"), Input.getByType("Monetary"), Input.getOutputs()));
 
     }
@@ -89,8 +73,10 @@ public class Application extends Controller {
             JsonNode json = Json.parse(response);
             SolverQuery query = new SolverQuery(response);
 
-            //SolverController solverController = new SolverController();
-            //solverController.solve(query);
+            SolverController solverController = new SolverController();
+            Scenario solvedScenario = solverController.solve(query);
+
+
 
 
             return ok(""+query.getTeamID());
