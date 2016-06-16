@@ -88,11 +88,68 @@
   }
 
   .team-box{
+    cursor: hand;
+    cursor: pointer;
     background: #402a68;
+     box-shadow: rgba(0,0,0,0.2) 10px 10px 10px;
+    padding: 5px;
+    margin: 5px;
+  }
+
+  .team-box img:hover{
+    background: #402a68;
+    cursor: hand;
+    cursor: pointer;
   }
 
   .team-logo{
     padding: 10px;
+  }
+
+  .input-box{
+    background: rgb(188, 69, 14);
+    color: white;
+    box-shadow: rgba(0,0,0,0.2) 10px 10px 10px;
+    padding:10px;
+    margin-bottom: 15px;
+ 
+  }
+
+  .input-box-header{
+     text-align: center;
+  }
+
+  .input-element{
+     color: white;
+    background: #ff9800;
+    margin-right: 10%;
+    margin-top: 10px;
+    margin-left:10%;
+    border-bottom: 2px solid #6f4910;
+  border-right: 2px solid #6f4910;
+  }
+
+  .output-box{
+    background: rgb(14, 113, 103);
+    color: white;
+    box-shadow: rgba(0,0,0,0.2) 10px 10px 10px;
+    padding:10px;
+    margin-bottom: 15px;
+ 
+  }
+
+  .output-box-header{
+     text-align: center;
+  }
+
+  .output-element{
+     color: white;
+    background: rgb(0, 150, 136);;
+    margin-right: 10%;
+    margin-top: 10px;
+    margin-left:10%;
+    border-bottom: 2px solid #6f4910;
+  border-right: 2px solid #6f4910;
   }
     </style>
 
@@ -268,14 +325,14 @@
             </div>
             <div class="row" >
                 <div class="col-md-4">
-                    <div class="panel panel-success">
-                        <div class="panel-heading">
-                            <h2 class="panel-title">Sportive</h2>
+                    <div class="input-box">
+                        <div class="input-box-header">
+                            <h2 >Sportive</h2>
                         </div>
-                        <div class="panel-body" style="color: black;">
+                        <div class="input-box-body " >
                         @for(input <- sporty) {
-                            <div class="checkbox checkbox-success">
-                                <input class="styled" type="checkbox" value="@input.id" name="@input.name" >
+                            <div class="input-element">
+                                <input style="margin-left:5%" type="checkbox" value="@input.id" name="@input.name" >
                                 <label >
                                 @input.name
                                 </label>
@@ -287,14 +344,14 @@
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="panel panel-info">
-                        <div class="panel-heading">
-                            <h2 class="panel-title">Social</h2>
+                    <div class="input-box">
+                         <div class="input-box-header">
+                            <h2>Social</h2>
                         </div>
-                        <div class="panel-body" style="color: black;">
+                        <div class="input-box-body ">
                         @for(input <- social) {
-                            <div class="checkbox checkbox-info">
-                                <input class="styled" type="checkbox" value="@input.id " name="@input.name">
+                             <div class="input-element">
+                                <input style="margin-left:5%" type="checkbox" value="@input.id " name="@input.name">
                                 <label>
                                 @input.name
                                 </label>
@@ -306,14 +363,14 @@
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="panel panel-warning">
-                        <div class="panel-heading">
-                            <h1 class="panel-title">Monetary</h1>
+                   <div class="input-box">
+                         <div class="input-box-header">
+                            <h2 >Monetary</h2>
                         </div>
-                        <div class="panel-body" style="color: black;">
+                        <div class="input-box-body ">
                         @for(input <- monetary) {
-                            <div class="checkbox checkbox-warning">
-                                <input class="styled" type="checkbox" value="@input.id" name="@input.name">
+                            <div class="input-element">
+                                <input style="margin-left:5%"  type="checkbox" value="@input.id" name="@input.name">
                                 <label>
                                 @input.name
                                 </label>
@@ -339,14 +396,14 @@
             <div class="row">
                 <div class="col-md-4"></div>
                 <div class="col-md-4">
-                    <div class="panel panel-danger">
-                        <div class="panel-heading">
-                            <h1 class="panel-title">Outputs</h1>
+                    <div class="output-box">
+                       <div class="output-box-header">
+                            <h2>Outputs</h2>
                         </div>
-                        <div class="panel-body" style="color: black;">
+                       <div class="output-box-body ">
                         @for(input <- output) {
-                            <div class="checkbox checkbox-danger">
-                                <input class="styled" type="checkbox" value="@input.id" name="@input.name">
+                            <div class="output-element">
+                                <input style="margin-left:5%" type="checkbox" value="@input.id" name="@input.name">
                                 <label >
                                 @input.name
                                 </label>
