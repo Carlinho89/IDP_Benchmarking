@@ -87,10 +87,7 @@ public class Application extends Controller {
             return badRequest("Expecting some data");
         } else {
             String response = form.get("query");
-            System.out.println("AAAAA"+response);
             JsonNode json = Json.parse(response);
-            System.out.println(Json.stringify(json));
-
 
             SolverQuery query = new SolverQuery(response);
 

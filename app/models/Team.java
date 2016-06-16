@@ -43,7 +43,14 @@ public class Team extends Model {
      * "select * from team where id in (select distinct team_id from seasonal_data where year = 2010 and league_id=1 )"
      */
     public static List<Team> getAllbySeason(int year, int league_id){
-        RawSql rawSql = RawSqlBuilder.parse("select id, name, tm_id, logo, league_id from team where id in (select distinct team_id from seasonal_data where year = "+year+" and league_id="+league_id+" )")
+        RawSql rawSql = RawSqlBuilder.parse(
+                        "select id, name, tm_id, logo, league_id " +
+                        "from team " +
+                        "where id in " +
+                                "(select distinct team_id " +
+                                "from seasonal_data " +
+                                "where year = "+year+" and league_id="+league_id+" ) " +
+                        "order by id")
                 .columnMapping("id", "id")
                 .columnMapping("name", "name")
                 .columnMapping("tm_id", "tm_id")
