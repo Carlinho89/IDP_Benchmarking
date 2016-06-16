@@ -41,7 +41,8 @@ public class SeasonalData extends Model {
     public static List<SeasonalData> getBySeasonAndLeague(int season, int league_id, int input_id){
         RawSql rawSql = RawSqlBuilder.parse("select id, team_id, team_name, year, league_id, input_id, value  " +
                 "from seasonal_data " +
-                "where year =" + season + "AND input_id = " + input_id + "AND league_id = " + league_id)
+                "where year =" + season + "AND input_id = " + input_id + "AND league_id = " + league_id +
+                "order by team_id")
                 .columnMapping("id","id")
                 .columnMapping("team_id","team_id")
                 .columnMapping("team_name","team_name")
