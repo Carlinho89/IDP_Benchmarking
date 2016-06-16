@@ -101,10 +101,10 @@ public class Application extends Controller {
 
             Scenario solvedScenario = solverController.solve(query);
 
+            
 
-
-
-            return ok(""+query.getTeamID());
+             return ok(show_charts.render(Json.stringify(Json.toJson(solvedScenario))));
+            
         }
     }
 

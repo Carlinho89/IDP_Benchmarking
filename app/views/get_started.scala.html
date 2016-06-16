@@ -48,6 +48,52 @@
     .league-data {
         padding-top: 20px;
     }
+
+    .championship {
+        background: #34495e;
+         box-shadow: rgba(0,0,0,0.2) 10px 10px 10px;
+         margin-bottom: 15px;
+    }
+
+    .championship-label {
+    
+     color: white;
+  text-align: center;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+  background: #1e88e5;
+ 
+  border-bottom: 2px solid #186fbb;
+  border-right: 2px solid #186fbb;
+ 
+    
+    margin-right: 10%;
+    margin-left: 10%;
+    margin-bottom: 5px;
+   
+  }
+
+  .league{
+    background-color: white; border: 5px solid #1e88e5;
+
+  }
+  .league:hover{
+    background-color: white; border: 5px solid white;
+
+  }
+
+  .season-select{
+    background: #402a68;
+     box-shadow: rgba(0,0,0,0.2) 10px 10px 10px;
+     padding :  15px;
+  }
+
+  .team-box{
+    background: #402a68;
+  }
+
+  .team-logo{
+    padding: 10px;
+  }
     </style>
 
 
@@ -96,66 +142,85 @@
 
                 <div class="col-sm-3 text-center">
 
-                    <h2 >Serie A</h2>
+                    <div class="championship">
+                        <br>
+
+                        <div class="championship-label"><h2 >Serie A</h2></div>
 
 
-                    <a href="">
-                        <img class="img-responsive img-thumbnail img-circle center-block league" src="@routes.Assets.at("images/SerieA500.png")" val=1 alt="SerieA" width="150" height="150" style="background-color: white;">
-                    </a>
-                    <p><strong>Italian Football League</strong></p>
-                    <div class="league-data">
-                        <p>League Value: <strong>2,49 Billion €</strong></p>
-                        <p>Number of teams: <strong>20</strong></p>
-                        <p>Number of Players: <strong>528</strong></p>
-                        <p>Uefa Ranking: <strong>4th</strong></p>
+                        <a href="">
+                            <img class="img-responsive img-thumbnail img-circle center-block league" src="@routes.Assets.at("images/SerieA500.png")" val=1 alt="SerieA" width="150" height="150" >
+                        </a>
+                        <div class="championship-label"> <p><strong>Italian Football League</strong></p></div>
+                        <br>
+                        <div class=" championship-label">
+                            <p>League Value: <strong>2,49 Billion €</strong></p>
+                            <p>Number of teams: <strong>20</strong></p>
+                            <p>Number of Players: <strong>528</strong></p>
+                            <p>Uefa Ranking: <strong>4th</strong></p>
+                        </div>
+                        <br>
                     </div>
                 </div>
                 <div class="col-sm-3 text-center">
+                     <div class="championship">
+                     <br>
+                         <div class="championship-label"><h2 >Premier</h2></div>
+                       
 
-                    <h2 >Premier </h2>
+                        <a href="">
 
-                    <a href="">
+                            <img class="img-responsive img-thumbnail img-circle center-block league" src="@routes.Assets.at("images/Premier500.png")" val=2 alt="Premier" width="150" height="150">
 
-                        <img class="img-responsive img-thumbnail img-circle center-block league" src="@routes.Assets.at("images/Premier500.png")" val=2 alt="Premier" width="150" height="150" style="background-color: white;">
-
-                    </a>
-                    <p><strong>English Football League</strong></p>
-                    <div class="league-data">
-                        <p>League Value: <strong>4,41 Billion €</strong></p>
-                        <p>Number of teams: <strong>20</strong></p>
-                        <p>Number of Players: <strong>525</strong></p>
-                        <p>Uefa Ranking: <strong>3rd</strong></p>
+                        </a>
+                        <div class="championship-label"><p><strong>English Football League</strong></p></div>
+                        <br>
+                        <div class="championship-label">
+                            <p>League Value: <strong>4,41 Billion €</strong></p>
+                            <p>Number of teams: <strong>20</strong></p>
+                            <p>Number of Players: <strong>525</strong></p>
+                            <p>Uefa Ranking: <strong>3rd</strong></p>
+                        </div>
+                        <br>
                     </div>
                 </div>
 
                 <div class="col-sm-3 text-center">
+                    <div class="championship">
+                        <br>
+                         <div class="championship-label"><h2 >Liga</h2></div>
 
-                    <h2 >Liga</h2>
-
-                    <a href="">
-                        <img class="img-responsive img-thumbnail img-circle center-block league" src="@routes.Assets.at("images/Liga500.png")" val=3 alt="Liga" width="150" height="150" style="background-color: white;">
-                    </a>
-                    <p><strong>Spanish Football League</strong></p>
-                    <div class="league-data">
-                        <p>League Value: <strong>3,2 Billion €</strong></p>
-                        <p>Number of teams: <strong>20</strong></p>
-                        <p>Number of Players: <strong>484</strong></p>
-                        <p>Uefa Ranking: <strong>1st</strong></p>
+                        <a href="">
+                            <img class="img-responsive img-thumbnail img-circle center-block league" src="@routes.Assets.at("images/Liga500.png")" val=3 alt="Liga" width="150" height="150">
+                        </a>
+                         <div class="championship-label"><p><strong>Spanish Football League</strong></p></div>
+                         <br>
+                         <div class="championship-label">
+                            <p>League Value: <strong>3,2 Billion €</strong></p>
+                            <p>Number of teams: <strong>20</strong></p>
+                            <p>Number of Players: <strong>484</strong></p>
+                            <p>Uefa Ranking: <strong>1st</strong></p>
+                        </div>
+                        <br>
                     </div>
                 </div>
                 <div class="col-sm-3 text-center">
+                    <div class="championship">
+                        <br>
+                         <div class="championship-label"><h2 >Bundes Liga</h2></div>
 
-                    <h2 >Bundes Liga</h2>
-
-                    <a href="">
-                        <img class="img-responsive img-thumbnail img-circle center-block league" src="@routes.Assets.at("images/Bundes500c.png")" val=4 alt="Bundes" width="150" height="150" style="background-color: white;">
-                    </a>
-                    <p><strong>German Football League</strong></p>
-                    <div class="league-data">
-                        <p>League Value: <strong>2,38 Billion €</strong></p>
-                        <p>Number of teams: <strong>18</strong></p>
-                        <p>Number of Players: <strong>515</strong></p>
-                        <p>Uefa Ranking: <strong>2nd</strong></p>
+                        <a href="">
+                            <img class="img-responsive img-thumbnail img-circle center-block league" src="@routes.Assets.at("images/Bundes500c.png")" val=4 alt="Bundes" width="150" height="150">
+                        </a>
+                         <div class="championship-label"><p><strong>German Football League</strong></p></div>
+                         <br>
+                         <div class="championship-label">
+                            <p>League Value: <strong>2,38 Billion €</strong></p>
+                            <p>Number of teams: <strong>18</strong></p>
+                            <p>Number of Players: <strong>515</strong></p>
+                            <p>Uefa Ranking: <strong>2nd</strong></p>
+                        </div>
+                        <br>
                     </div>
                 </div>
             </div>
@@ -167,9 +232,9 @@
             </div>
             <div class="row">
                 <div class="col-md-4"></div>
-                <div class="col-md-4">
+                <div class="col-md-4 season-select">
                     <div class="form-group">
-                        <label for="seasonSelect">Select season:</label>
+                        <label for="seasonSelect"></label>
                         <select class="form-control" id="seasonSelect">
                             <option>...</option>
                             <option>2015</option>

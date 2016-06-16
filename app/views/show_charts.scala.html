@@ -9,8 +9,7 @@
             jsonString=jsonString.replace(/&quot;/g, '\"').slice(1, -1);
             console.log(jsonString);
             var jsonObj=JSON.parse(jsonString);
-            console.log(jsonObj.dmu[0]);
-            console.log("Length"+jsonObj.malm[0][0].splice(20).length);
+          
             $(function () {
                 $('#barChart').highcharts({
                     chart: {
@@ -23,7 +22,7 @@
                         text: null
                     },
                     xAxis: {
-                        categories: jsonObj.dmu[0],
+                        categories: jsonObj.dealist[0].dmu,
                         title: {
                             text: null
                         }
@@ -32,7 +31,7 @@
                         min: 1,
                         type: 'linear',
                         endOnTick: true,
-                        tickInterval: 0.01,
+                        tickInterval: 1,
                         minorTickInterval: 1,
                         gridLineWidth: 0.1,
                         //min: 0,
@@ -45,7 +44,7 @@
                         }
                     },
                     tooltip: {
-                        valueSuffix: ' millions'
+                        valueSuffix: ' '
                     },
                     plotOptions: {
                         bar: {
@@ -69,15 +68,18 @@
                         enabled: false
                     },
                     series: [{
-                        name: 'Boh',
-                        data: jsonObj.malm[0][0].splice(20)
+                        name: 'input1',
+                        data: jsonObj.dealist[0].input[0]
+
                     }, {
-                        name: 'More Boh',
-                        data: jsonObj.malm[0][1].splice(20)
+                        name: 'input2',
+                        data: jsonObj.dealist[0].input[1]
+
                     }, {
-                        name: 'Some More Boh',
-                        data: jsonObj.malm[1][0].splice(20)
-                    }]
+                        name: 'output',
+                        data: jsonObj.dealist[0].output[0]
+
+                    },]
                 });
 
                 $('#barStackedChart').highcharts({
@@ -131,7 +133,7 @@
                         text: null
                     },
                     xAxis: {
-                        categories: jsonObj.dmu[0],
+                        categories: jsonObj.dealist[0].dmu,
                     },
                     yAxis: {
                         min: 0,
@@ -154,16 +156,16 @@
                         }
                     },
                     series: [{
-                        name: '1',
-                        data: [48.9, 38.8, 39.3, 41.4, 47.0, 48.3, 59.0, 59.6, 52.4, 65.2, 59.3, 51.2, 51.2, 51.2, 51.2, 51.2, 51.2, 51.2, 51.2, 51.2]
+                        name: 'input1',
+                        data: jsonObj.dealist[0].input[0]
 
                     }, {
-                        name: '2',
-                        data: [48.9, 38.8, 39.3, 41.4, 47.0, 48.3, 59.0, 59.6, 52.4, 65.2, 59.3, 51.2, 51.2, 51.2, 51.2, 51.2, 51.2, 51.2, 51.2, 51.2]
+                        name: 'input2',
+                        data: jsonObj.dealist[0].input[1]
 
                     }, {
-                        name: '3',
-                        data: [48.9, 38.8, 39.3, 41.4, 47.0, 48.3, 59.0, 59.6, 52.4, 65.2, 59.3, 51.2, 51.2, 51.2, 51.2, 51.2, 51.2, 51.2, 51.2, 51.2]
+                        name: 'output',
+                        data: jsonObj.dealist[0].output[0]
 
                     },]
                 });

@@ -282,12 +282,20 @@ function displayTeams(query) {
     appRoutes.controllers.Application.getLeagueTeamsBySeason(query.season, query.leagueID).ajax({
         success: function (data) {
             $("#teams").empty();
+            var html='<div class="row"><div class="col-md-1"></div>';
+            
+// <a href=""><img class="  img-thumbnail img-circle img-responsive favorite_team" src="/assets/images/team_logo/' + data[i].logo + '"  val="' + data[i].tm_id + '" title="' + data[i].name + '" ></a>
             for (var i = 0; i < data.length; i++) {
-                $("#teams").append('<a href=""><img class="  img-thumbnail img-circle favorite_team" src="/assets/images/team_logo/' + data[i].logo + '"  val="' + data[i].tm_id + '" title="' + data[i].name + '" width="5%"></a>');
-                // console.log(data[i]);
+                html+='<div class="col-md-1 "><div class="team-box" ><img class="team-logo img-thumbnail img-responsive favorite_team" src="/assets/images/team_logo/' + data[i].logo + '"  val="' + data[i].tm_id + '" title="' + data[i].name + '" ></div></div>';
+                if(i==9){
+               html+='<div class="col-md-1"></div></div><div class="row"><div class="col-md-1"></div>';
+
+                }
 
             }
-            $("#teams").append("<br><br>");
+            html+='<div class="col-md-1"></div></div>';
+            console.log(html);
+            $("#teams").append(html+"<br><br>");
         }
     });
 }
