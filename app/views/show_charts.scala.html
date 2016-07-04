@@ -9,7 +9,7 @@
             jsonString=jsonString.replace(/&quot;/g, '\"').slice(1, -1);
             console.log(jsonString);
             var jsonObj=JSON.parse(jsonString);
-          
+            console.log(jsonObj.overviewList[0][0][1]);
             $(function () {
                 $('#barChart').highcharts({
                     chart: {
@@ -29,10 +29,10 @@
                     },
                     yAxis: {
                         min: 1,
-                        type: 'linear',
+                        type: 'decimal',
                         endOnTick: true,
-                        tickInterval: 1,
-                        minorTickInterval: 1,
+                        tickInterval: 0.01,
+                        minorTickInterval: 0.1,
                         gridLineWidth: 0.1,
                         //min: 0,
                         title: {
@@ -67,17 +67,17 @@
                     credits: {
                         enabled: false
                     },
-                    series: [{
-                        name: 'input1',
-                        data: jsonObj.dealist[0].input[0]
+                   series: [{
+                        name: 'CCR',
+                        data: jsonObj.overviewList[0][0]
 
                     }, {
-                        name: 'input2',
-                        data: jsonObj.dealist[0].input[1]
+                        name: 'BCC',
+                        data: jsonObj.overviewList[0][1]
 
                     }, {
-                        name: 'output',
-                        data: jsonObj.dealist[0].output[0]
+                        name: 'SBM',
+                        data: jsonObj.overviewList[0][2]
 
                     },]
                 });
@@ -144,28 +144,28 @@
                     tooltip: {
                         headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
                         pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                        '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
+                        '<td style="padding:0"><b>{point.y:.1f} </b></td></tr>',
                         footerFormat: '</table>',
                         shared: true,
                         useHTML: true
                     },
                     plotOptions: {
                         column: {
-                            pointPadding: 0.2,
+                            pointPadding: 0.01,
                             borderWidth: 0
                         }
                     },
                     series: [{
-                        name: 'input1',
-                        data: jsonObj.dealist[0].input[0]
+                        name: 'CCR',
+                        data: jsonObj.overviewList[0][0][0]
 
                     }, {
-                        name: 'input2',
-                        data: jsonObj.dealist[0].input[1]
+                        name: 'BCC',
+                        data: jsonObj.overviewList[0][0][1]
 
                     }, {
-                        name: 'output',
-                        data: jsonObj.dealist[0].output[0]
+                        name: 'SBM',
+                        data: jsonObj.overviewList[0][0][2]
 
                     },]
                 });
