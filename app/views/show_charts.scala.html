@@ -28,17 +28,7 @@
                         }
                     },
                     yAxis: {
-                        min: 1,
-                        type: 'decimal',
-                        endOnTick: true,
-                        tickInterval: 0.01,
-                        minorTickInterval: 0.1,
-                        gridLineWidth: 0.1,
-                        //min: 0,
-                        title: {
-                            text: null,
-                            align: 'high'
-                        },
+
                         labels: {
                             overflow: 'justify'
                         }
@@ -136,10 +126,7 @@
                         categories: jsonObj.dealist[0].dmu,
                     },
                     yAxis: {
-                        min: 0,
-                        title: {
-                            text: 'Counts'
-                        }
+
                     },
                     tooltip: {
                         headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
@@ -157,15 +144,15 @@
                     },
                     series: [{
                         name: 'CCR',
-                        data: jsonObj.overviewList[0][0][0]
+                        data: jsonObj.overviewList[0][0]
 
                     }, {
                         name: 'BCC',
-                        data: jsonObj.overviewList[0][0][1]
+                        data: jsonObj.overviewList[0][1]
 
                     }, {
                         name: 'SBM',
-                        data: jsonObj.overviewList[0][0][2]
+                        data: jsonObj.overviewList[0][2]
 
                     },]
                 });

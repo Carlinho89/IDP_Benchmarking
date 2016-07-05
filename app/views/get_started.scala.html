@@ -1,4 +1,4 @@
-@(sporty: List[Input], social: List[Input], monetary: List[Input], output: List[Input])
+@(sporty: List[Input], social: List[Input], monetary: List[Input], output: List[Input], offensive: List[Input], defensive: List[Input])
 
 @main("Get Started") {
     <script src="@routes.Assets.versioned("javascripts/getStarted.js")" type="text/javascript"></script>
@@ -150,6 +150,13 @@
     margin-left:10%;
     border-bottom: 2px solid #6f4910;
   border-right: 2px solid #6f4910;
+  }
+
+  .col5{
+      width: 18%;
+ 
+      float: left;
+      margin: 10px;
   }
     </style>
 
@@ -324,7 +331,7 @@
                 <strong>Necessary Field</strong> Select at least two inputs
             </div>
             <div class="row" >
-                <div class="col-md-4">
+                <div class="col5">
                     <div class="input-box">
                         <div class="input-box-header">
                             <h2 >Sportive</h2>
@@ -343,7 +350,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col5">
                     <div class="input-box">
                          <div class="input-box-header">
                             <h2>Social</h2>
@@ -362,13 +369,51 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col5">
                    <div class="input-box">
                          <div class="input-box-header">
                             <h2 >Monetary</h2>
                         </div>
                         <div class="input-box-body ">
                         @for(input <- monetary) {
+                            <div class="input-element">
+                                <input style="margin-left:5%"  type="checkbox" value="@input.id" name="@input.name">
+                                <label>
+                                @input.name
+                                </label>
+                            </div>
+
+
+                        }
+                        </div>
+                    </div>
+                </div>
+                <div class="col5">
+                    <div class="input-box">
+                        <div class="input-box-header">
+                            <h2 >Offensive</h2>
+                        </div>
+                        <div class="input-box-body ">
+                        @for(input <- offensive) {
+                            <div class="input-element">
+                                <input style="margin-left:5%"  type="checkbox" value="@input.id" name="@input.name">
+                                <label>
+                                @input.name
+                                </label>
+                            </div>
+
+
+                        }
+                        </div>
+                    </div>
+                </div>
+                <div class="col5">
+                    <div class="input-box">
+                        <div class="input-box-header">
+                            <h2 >Defensive</h2>
+                        </div>
+                        <div class="input-box-body ">
+                        @for(input <- defensive) {
                             <div class="input-element">
                                 <input style="margin-left:5%"  type="checkbox" value="@input.id" name="@input.name">
                                 <label>
