@@ -34,9 +34,9 @@ foreach ($urls as $url) {
 
           parseInput($conn,"Games Lost", "td[class=l]", $html, $dataArray, "Sporty", 0,  "number" );
 
-          parseInput($conn,"Goals Scored", "td[class=gf]", $html, $dataArray, "Sporty", 1, "number" );
+          parseInput($conn,"Goals Scored", "td[class=gf]", $html, $dataArray, "Offensive", 1, "number" );
 
-          parseInput($conn,"Goals Against", "td[class=ga]", $html, $dataArray, "Sporty", 0 , "number" );
+          parseInput($conn,"Goals Against", "td[class=ga]", $html, $dataArray, "Difensive", 0 , "number" );
 
           parseInput($conn,"Rank", "td[class=o]", $html, $dataArray, "Sporty", 1 , "number" );
 

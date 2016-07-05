@@ -33,11 +33,11 @@ foreach ($urls as $url) {
 
         $dataArray = getTeams($conn, $table, $year, $league_id, "tn");
         
-          parseInput($conn,"Shots Conceded Per Game", "td[class=shotsConcededPerGame]", $table, $dataArray, "Sporty", 0, "number" );
+          parseInput($conn,"Shots Conceded Per Game", "td[class=shotsConcededPerGame]", $table, $dataArray, "Defensive", 0, "number" );
 
-          parseInput($conn,"Tackles Per Game", "td[class=tacklePerGame]", $table, $dataArray, "Sporty" , 0, "number" );
+          parseInput($conn,"Tackles Per Game", "td[class=tacklePerGame]", $table, $dataArray, "Defensive" , 0, "number" );
 
-          parseInput($conn,"Interceptions Per Game", "td[class=interceptionPerGame]", $table, $dataArray, "Sporty" , 0, "number" );
+          parseInput($conn,"Interceptions Per Game", "td[class=interceptionPerGame]", $table, $dataArray, "Defensive" , 0, "number" );
 
      echo "<br><b>Done Parsing Stats from ".$url.$year.".html </b> <br>";
     }

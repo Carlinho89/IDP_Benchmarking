@@ -8,7 +8,7 @@ $leagueURL= array();
 //$leagueURL[]="http://www.transfermarkt.it/serie-a/tabelle/wettbewerb/IT1?saison_id=";
 //$leagueURL[]="http://www.transfermarkt.it/premier-league/tabelle/wettbewerb/GB1/saison_id/";
 $leagueURL[]="http://www.transfermarkt.it/primera-division/tabelle/wettbewerb/ES1/saison_id/";
-//$leagueURL[]="http://www.transfermarkt.it/1-bundesliga/tabelle/wettbewerb/L1/saison_id/";
+$leagueURL[]="http://www.transfermarkt.it/1-bundesliga/tabelle/wettbewerb/L1/saison_id/";
 $inserted_id= array();
 
 echo '<div class="row"><div class="col-md-6">';
@@ -91,7 +91,11 @@ foreach ($leagueURL as $url) {
   $conn->query($sql);
 
    $sql = "UPDATE `team` SET `tm_id`=472, logo='472.png' WHERE `name` LIKE 'Las Palmas'";
+   $conn->query($sql);
    $sql = "UPDATE `team` SET `tm_id`=1084, logo='1084.png' WHERE `name` LIKE 'Malaga'";
+  $conn->query($sql);
+
+ $sql = "UPDATE seasonal_data set seasonal_data.team_id = 69 WHERE seasonal_data.team_id = 92";
   $conn->query($sql);
 
   

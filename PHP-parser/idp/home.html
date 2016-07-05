@@ -452,7 +452,7 @@ ALTER TABLE `seasonal_data`
                 <br>
               </li>
               <li  class="well">
-                Open the helper.php file. Right at the top are the parameters needed for the connection to the db. By default the file is using a sever on localhost and the db name is idpdoc. Change all the parameters according to your setup and insert as $dbname the name of the database you created in 1.
+                Open the helper.php file. Right at the top are the parameters needed for the connection to the db. By default the file is using a sever on localhost and the db name is "benchmarking-football-clubs". Change all the parameters according to your setup and insert as $dbname the name of the database you created in 1.
 
                 <br>
               </li>
@@ -543,7 +543,7 @@ ALTER TABLE `seasonal_data`
                 <br>
               </li>
               <li id="nine" class="well">
-                Run <a href="tm_stats_serieA.php"> tm_stats_serieA.php </a> to save Number Of Players, Average Age, Number Of Foreign Players, Team Value (MLN €), Average Player Value (MLN €) for serieA.
+                Run <a href="tm_stats_serieA.php"> tm_stats_serieA.php </a> to save Number Of Players, Average Age, Number Of Foreign Players, Team Value (MLN €), Average Player Value (MLN €) for serieA. RERUN THIS SCRIPT UNTIL YOU SEE THE CONTINUE BUTTON ON TOP!<br>
                 By the end of this script you should have: <br>
                 24 rows in input <br>
                 9,492 rows in seasonal_data <br>
@@ -552,7 +552,7 @@ ALTER TABLE `seasonal_data`
               </li>
 
               <li id="ten" class="well">
-                Run <a href="tm_stats_premier.php"> tm_stats_premier.php </a> to save Number Of Players, Average Age, Number Of Foreign Players, Team Value (MLN €), Average Player Value (MLN €) for Premier League.
+                Run <a href="tm_stats_premier.php"> tm_stats_premier.php </a> to save Number Of Players, Average Age, Number Of Foreign Players, Team Value (MLN €), Average Player Value (MLN €) for Premier League. RERUN THIS SCRIPT UNTIL YOU SEE THE CONTINUE BUTTON ON TOP!<br>
                 By the end of this script you should have: <br>
                 24 rows in input <br>
                 10,092 rows in seasonal_data <br>
@@ -561,7 +561,7 @@ ALTER TABLE `seasonal_data`
               </li>
 
               <li id="eleven" class="well">
-                Run <a href="tm_stats_liga.php"> tm_stats_liga.php </a> to save Number Of Players, Average Age, Number Of Foreign Players, Team Value (MLN €), Average Player Value (MLN €) for spanish Liga.
+                Run <a href="tm_stats_liga.php"> tm_stats_liga.php </a> to save Number Of Players, Average Age, Number Of Foreign Players, Team Value (MLN €), Average Player Value (MLN €) for spanish Liga. RERUN THIS SCRIPT UNTIL YOU SEE THE CONTINUE BUTTON ON TOP!<br>
                 By the end of this script you should have: <br>
                 24 rows in input <br>
                 10,692 rows in seasonal_data <br>
@@ -570,7 +570,7 @@ ALTER TABLE `seasonal_data`
               </li>
 
               <li id="twelve" class="well">
-                Run <a href="tm_stats_bundes.php"> tm_stats_bundes.php </a> to save Number Of Players, Average Age, Number Of Foreign Players, Team Value (MLN €), Average Player Value (MLN €) for BundesLiga.
+                Run <a href="tm_stats_bundes.php"> tm_stats_bundes.php </a> to save Number Of Players, Average Age, Number Of Foreign Players, Team Value (MLN €), Average Player Value (MLN €) for BundesLiga. RERUN THIS SCRIPT UNTIL YOU SEE THE CONTINUE BUTTON ON TOP!<br>
                 By the end of this script you should have: <br>
                 24 rows in input <br>
                 11,232 rows in seasonal_data <br>
@@ -591,7 +591,41 @@ ALTER TABLE `seasonal_data`
             </ol>
 
 
-
+            <h2 id = "start">Importing in Play Framework</h2>
+            <br>
+            
+            <p class="well">
+              These last steps assume that you have benhmarking-football-clubs.sql file, either by taking it from the deliveries or by having built a new database with the steps in Building DataSet and exported to sql files. The delivered version will have the correct data loaded in the h2 database used by the Play framework but the following steps are illustrated for the cases of update or extension of the dataset.
+                <br>
+            </p>
+            <ol> 
+              <li  class="well">
+                Open the console and go to the IDP_Benchmarking folder (Play Framework project folder) 
+                <br>
+              </li>
+              <li  class="well">
+                Call the <code>activator</code> command 
+                <br>
+              </li>
+              <li  class="well">
+                Once activator is loaded call the <code>h2-browser</code> command 
+                <br>
+              </li>
+              <li  class="well">
+               The database client will open in a new window. Press on connect
+                <br>
+              </li>
+              <li  class="well">
+               In the SQL statement block write <code>drop table TABLENAME</code> for every table you want to update.
+                <br>
+              </li>
+               <li  class="well">
+               Open the sql file in your favorite editor. For each of the tables deleted copy and paste the <code>create table</code> statement first than the relative <code>insert into</code>.
+               Also if you are starting from an empty database take care of copying and pasting each table structure and data singularly. Pasting the whole sql file will result in errors.
+                <br>
+              </li>
+              
+            </ol>
 
             
             <br>
@@ -623,6 +657,8 @@ ALTER TABLE `seasonal_data`
               </li>
             </ul>
         <br>
+
+
          
         </div>
       </div><!--/row-->

@@ -37,7 +37,7 @@ Setting connection to db. remember to change dbname
   $servername = "localhost";
   $username = "root";
   $password = "";
-  $dbname = "idp";
+  $dbname = "benchmarking-football-clubs";
 
   $conn = new mysqli($servername, $username, $password, $dbname);
   // Check connection

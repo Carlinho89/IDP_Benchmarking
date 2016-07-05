@@ -34,9 +34,9 @@ foreach ($urls as $url) {
         $dataArray = getTeams($conn, $table, $year, $league_id, "tn");
         
 
-          parseInput($conn,"Shots On Target Per Game", "td[class=shotOnTargetPerGame]", $table, $dataArray, "Sporty", 0, "number"  );
+          parseInput($conn,"Shots On Target Per Game", "td[class=shotOnTargetPerGame]", $table, $dataArray, "Offensive", 0, "number"  );
 
-          parseInput($conn,"Dribbles Won Per Game", "td[class=dribbleWonPerGame]", $table, $dataArray, "Sporty", 0, "number"  );
+          parseInput($conn,"Dribbles Won Per Game", "td[class=dribbleWonPerGame]", $table, $dataArray, "Offensive", 0, "number"  );
 
 
         
