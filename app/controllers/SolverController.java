@@ -1,7 +1,9 @@
 package controllers;
 
-import models.SolverQuery;
+import models.SolverSimpleQuery;
+import models.SolverSimpleQueryMQI;
 import workpackage.Scenario;
+import workpackage.ScenarioMQI;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,11 +13,15 @@ import java.util.List;
  */
 public class SolverController {
     private Scenario scenario;
+    private List<ScenarioMQI> solvedScenarioMQI;
     private List<Integer> inputs;
     private List<Integer> outputs;
+    private List<Integer> leagues;
     private int league;
+    private int scale;
     private boolean orientation;
     private boolean superEfficiency;
+    private boolean data;
     private int start;
     private int seasons;
 
@@ -23,11 +29,16 @@ public class SolverController {
         scenario = null;
         inputs = new ArrayList<>();
         outputs = new ArrayList<>();
-        orientation = superEfficiency = false;
-        start = seasons = league = -1;
-    }
+        leagues = new ArrayList<>();
+        solvedScenarioMQI = null;
+        orientation = superEfficiency = data = false;
+        start = seasons = league = scale = -1;
 
-    public Scenario solve(SolverQuery query){
+    }
+/*
+* This method realizes the simple solver solution
+* */
+    public Scenario solve(SolverSimpleQuery query){
         inputs  = query.getSelectedInputs();
         outputs = query.getSelectedOutputs();
         league = query.getLeagueID();
@@ -37,16 +48,6 @@ public class SolverController {
         seasons = 1;
 
         try {
-//            List<Integer> selectionOffIn = new ArrayList<Integer>();
-//            selectionOffIn.add(14);
-//            selectionOffIn.add(16);
-//            selectionOffIn.add(7);
-//            selectionOffIn.add(13);
-//
-//
-//            List<Integer> selectionOffOut = new ArrayList<Integer>();
-//            selectionOffOut.add(4);
-//            Scenario garciaSanchez = new Scenario(league, selectionOffIn, selectionOffOut, orientation, superEfficiency, start, seasons);
             this.scenario = new Scenario(league, inputs, outputs, orientation, superEfficiency, start, seasons);
 
 
@@ -59,6 +60,49 @@ public class SolverController {
         }
 
     }
+
+    public List<ScenarioMQI> solve(SolverSimpleQueryMQI query){
+        this.solvedScenarioMQI = new ArrayList<ScenarioMQI>();
+
+        inputs = query.getInput();
+        outputs = query.getOutput();
+        leagues = query.getLeague();
+        start = query.getStart();
+        data = query.isData();
+        scale = query.getScale();
+        orientation = query.isOrientation();
+        seasons = query.getSeasons();
+
+
+
+        for(int i = 0; i < leagues.size(); i++)
+            try{
+                solvedScenarioMQI.add(new ScenarioMQI(leagues.get(i), inputs, outputs, orientation, data, start, seasons, scale));
+            }catch(Exception ex){
+                solvedScenarioMQI.add(null);
+                System.out.println("Failed to compute the case for league " + leagues.get(i));
+            }
+
+
+        return solvedScenarioMQI;
+    }
+
+    public boolean isData() {
+        return data;
+    }
+
+    public void setData(boolean data) {
+        this.data = data;
+    }
+
+    public List<Integer> getLeagues() {
+        return leagues;
+    }
+
+    public void setLeagues(List<Integer> leagues) {
+        this.leagues = leagues;
+    }
+
     public Scenario getScenario() {
         return scenario;
     }

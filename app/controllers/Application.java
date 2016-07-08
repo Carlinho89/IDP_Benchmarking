@@ -3,9 +3,9 @@ package controllers;
 //CPLEX Libs
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.BaseJsonNode;
 import models.Input;
-import models.SolverQuery;
+import models.SolverSimpleQuery;
+import models.SolverSimpleQueryMQI;
 import models.Team;
 import play.Routes;
 import play.data.DynamicForm;
@@ -15,6 +15,10 @@ import play.mvc.Controller;
 import play.mvc.Result;
 import views.html.*;
 import workpackage.Scenario;
+import workpackage.ScenarioMQI;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Application extends Controller {
 
@@ -55,7 +59,8 @@ public class Application extends Controller {
     }
 
     public Result getStarted() {
-
+        //TODO remove these tests!!!
+        this.testSimpleMQI();
 
         return ok(get_started.render(Input.getByType("Sporty"), Input.getByType("Social"), Input.getByType("Monetary"), Input.getOutputs(), Input.getByType("Offensive"),Input.getByType("Defensive")));
 
@@ -89,7 +94,7 @@ public class Application extends Controller {
             String response = form.get("query");
             JsonNode json = Json.parse(response);
 
-            SolverQuery query = new SolverQuery(response);
+            SolverSimpleQuery query = new SolverSimpleQuery(response);
 
             SolverController solverController = new SolverController();
             solverController.solve(query);
@@ -105,16 +110,70 @@ public class Application extends Controller {
         }
     }
 
-
-
-
-
-
-
     public Result jsRoutes() {
         response().setContentType("text/javascript");
         return ok(Routes.javascriptRouter("appRoutes", //appRoutes will be the JS object available in our view
                 routes.javascript.Application.getLeagueTeamsBySeason()
         ));
     }
+
+//TODO remove these ugly pieces of code!!!
+    private void testSimpleMQI(){
+        //String[] league = {"bundesliga", "premier_league", "primera_division"};
+        List league = new ArrayList<Integer>();
+        league.add(1);
+        league.add(2);
+        league.add(3);
+
+        //Market value
+        //String input = "defMV, midMV, offMV";
+        List input = new ArrayList<Integer>();
+        input.add(23); // Team value
+        input.add(24); // Player Value
+        //String output = "score";
+        List output = new ArrayList<Integer>();
+        output.add(6); // Rank
+        boolean orientation = true;
+        boolean data = true;
+        int start = 2012;
+        int seasons = 2; //More than 1
+        int scale = 2; //MQI variable scale
+
+        SolverSimpleQueryMQI query = new SolverSimpleQueryMQI("");
+        query.setInput(input);
+        query.setOutput(output);
+        query.setLeague(league);
+        query.setOrientation(orientation);
+        query.setData(data);
+        query.setStart(start);
+        query.setSeasons(seasons);
+        query.setScale(scale);
+
+        List<ScenarioMQI> solvedScenariosMQI;
+
+        SolverController solverController = new SolverController();
+        solvedScenariosMQI = solverController.solve(query);
+
+        System.out.println("SimpleMQI done, number of scenarios is: " + solvedScenariosMQI.size());
+        for (ScenarioMQI scenarioMQI: solvedScenariosMQI
+             ) {
+            System.out.println("Scenario is:" + scenarioMQI);
+
+        }
+
+
+    }
+
+    private void testComplexMQI(){
+
+    }
+
+    private void testComplex(){
+
+    }
+
+
+
+
+
 }

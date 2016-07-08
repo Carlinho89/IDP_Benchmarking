@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Created by enrico on 16/05/2016.
  */
-public class SolverQuery {
+public class SolverSimpleQuery {
     private int leagueID;
     private int season;
     private int teamID;
@@ -21,7 +21,7 @@ public class SolverQuery {
     private List<Integer> selectedOutputs;
 
 
-    public SolverQuery(String query) {
+    public SolverSimpleQuery(String query) {
 
         try {
 

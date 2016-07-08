@@ -21,7 +21,7 @@ public class CaseOne {
     private List<double[][]> overList;
     private Scenario caseOne;
     private boolean orientation = false;
-    private boolean superEff = true;
+    private boolean superEff = false;
     private int start;
     private int seasons;
     private CplexController connection;
