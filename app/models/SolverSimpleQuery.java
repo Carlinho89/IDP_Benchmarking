@@ -19,6 +19,8 @@ public class SolverSimpleQuery {
     private int teamID;
     private List<Integer> selectedInputs;
     private List<Integer> selectedOutputs;
+    private int start;
+
 
 
     public SolverSimpleQuery(String query) {
@@ -71,6 +73,16 @@ public class SolverSimpleQuery {
 
     }
 
+    public boolean isSuperEff() {
+        return superEff;
+    }
+
+    public void setSuperEff(boolean superEff) {
+        this.superEff = superEff;
+    }
+
+    private boolean superEff;
+
 
     public int getLeagueID() {
         return leagueID;
@@ -110,5 +122,13 @@ public class SolverSimpleQuery {
 
     public void setSelectedOutputs(List<Integer> selectedOutputs) {
         this.selectedOutputs = selectedOutputs;
+    }
+
+    public int getStart() {
+        return start;
+    }
+
+    public void setStart(int start) {
+        this.start = start;
     }
 }

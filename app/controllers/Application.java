@@ -3,10 +3,8 @@ package controllers;
 //CPLEX Libs
 
 import com.fasterxml.jackson.databind.JsonNode;
-import models.Input;
-import models.SolverSimpleQuery;
-import models.SolverSimpleQueryMQI;
-import models.Team;
+import ilog.concert.IloException;
+import models.*;
 import play.Routes;
 import play.data.DynamicForm;
 import play.data.Form;
@@ -60,7 +58,8 @@ public class Application extends Controller {
 
     public Result getStarted() {
         //TODO remove these tests!!!
-        this.testSimpleMQI();
+        // this.testSimpleMQI(); WORKS!!!
+        this.testComplex();
 
         return ok(get_started.render(Input.getByType("Sporty"), Input.getByType("Social"), Input.getByType("Monetary"), Input.getOutputs(), Input.getByType("Offensive"),Input.getByType("Defensive")));
 
@@ -140,13 +139,13 @@ public class Application extends Controller {
         int scale = 2; //MQI variable scale
 
         SolverSimpleQueryMQI query = new SolverSimpleQueryMQI("");
-        query.setInput(input);
-        query.setOutput(output);
-        query.setLeague(league);
+        query.setSelectedInputs(input);
+        query.setSelectedOutputs(output);
+        query.setLeagueID(league);
         query.setOrientation(orientation);
         query.setData(data);
         query.setStart(start);
-        query.setSeasons(seasons);
+        query.setSeason(seasons);
         query.setScale(scale);
 
         List<ScenarioMQI> solvedScenariosMQI;
@@ -167,8 +166,73 @@ public class Application extends Controller {
     private void testComplexMQI(){
 
     }
-
+//TODO remove these ugly pieces of code!!!
     private void testComplex(){
+        //Set parameter selection
+        //Input for offensive efficiency: Shots on target Goal (id 14), shots per game (id 7), Crosses (id 16)
+        //Output for offensive efficiency: Goals scored(id 4)
+        List<Integer> selectionOffIn = new ArrayList<Integer>();
+        selectionOffIn.add(14);
+        selectionOffIn.add(16);
+        selectionOffIn.add(7);
+
+        boolean superEff = true;
+
+        List<Integer> selectionOffOut = new ArrayList<Integer>();
+        selectionOffOut.add(4);
+
+        //Input for defensive efficiency: Intercepts (id 13), 1 / shots conceived (id 11)
+        //Output for defensive efficiency: 1 / Goals conceived (id 5)
+        List<Integer> selectionDefIn = new ArrayList<Integer>();
+        selectionDefIn.add(13);
+        selectionDefIn.add(11);
+
+        List<Integer> selectionDefOut = new ArrayList<Integer>();
+        selectionDefOut.add(5);
+
+        //Output for Athletic efficiency: Games won (id 1)
+        List<Integer> selectionAthOut = new ArrayList<Integer>();
+        selectionAthOut.add(1);
+
+        //Output for Social efficiency: Average Age (id 21)
+        List<Integer> selectionSocOut = new ArrayList<Integer>();
+        selectionSocOut.add(21);
+
+        List<String[]> dmuList = new ArrayList<String[]>();
+        List<double[][]>overList = new ArrayList<double[][]>();
+        List<String[]>refList = new ArrayList<String[]>();
+        boolean[][]ramifications = {{false, false},{false, true},{false, false}};
+
+        int league = 2; //"premier_league";
+        int start = 2010;
+        int seasons = 4;
+
+        SolverComplexQuery query = new SolverComplexQuery("");
+        query.setLeagueID(league);
+        query.setStart(start);
+        query.setRamifications(ramifications);
+        query.setSelectionAthOut(selectionAthOut);
+        query.setSelectionDefOut(selectionDefOut);
+        query.setSelectionDefIn(selectionDefIn);
+        query.setSelectionSocOut(selectionSocOut);
+        query.setSelectionOffIn(selectionOffIn);
+        query.setSelectionOffOut(selectionOffOut);
+        query.setSuperEff(superEff);
+        query.setSeason(seasons);
+
+        SolverController solverController = new SolverController();
+
+        try {
+            solverController.solve(query);
+            System.out.println("HELLO I'M WORKING");
+        } catch (IloException e) {
+            e.printStackTrace();
+            System.out.println("HELLO I'M NOT WORKING");
+
+        } finally {
+
+        }
+
 
     }
 

@@ -1,5 +1,7 @@
 package controllers;
 
+import ilog.concert.IloException;
+import models.SolverComplexQuery;
 import models.SolverSimpleQuery;
 import models.SolverSimpleQueryMQI;
 import workpackage.Scenario;
@@ -50,8 +52,6 @@ public class SolverController {
         try {
             this.scenario = new Scenario(league, inputs, outputs, orientation, superEfficiency, start, seasons);
 
-
-
         }catch (Exception e){
             e.printStackTrace();
             scenario = null;
@@ -64,14 +64,14 @@ public class SolverController {
     public List<ScenarioMQI> solve(SolverSimpleQueryMQI query){
         this.solvedScenarioMQI = new ArrayList<ScenarioMQI>();
 
-        inputs = query.getInput();
-        outputs = query.getOutput();
-        leagues = query.getLeague();
+        inputs = query.getSelectedInputs();
+        outputs = query.getSelectedOutputs();
+        leagues = query.getLeagueID();
         start = query.getStart();
         data = query.isData();
         scale = query.getScale();
         orientation = query.isOrientation();
-        seasons = query.getSeasons();
+        seasons = query.getSeason();
 
 
 
@@ -85,6 +85,15 @@ public class SolverController {
 
 
         return solvedScenarioMQI;
+    }
+
+    public Scenario solve(SolverComplexQuery query) throws IloException {
+        Scenario solvedScenario = null;
+                                      //int league, List<Integer> inputOff, List<Integer> inputDef, List<Integer> outputOff, List<Integer> outputDef, boolean[][]setting, boolean superEff, int start, int seasons
+        solvedScenario = new Scenario(query.getLeagueID(),query.getSelectionOffIn(),query.getSelectionDefIn(),query.getSelectionOffOut(),query.getSelectionDefOut(),query.getSelectionAthOut(),query.getSelectionSocOut(),query.getRamifications(),query.isSuperEff(),query.getStart(),query.getSeason());
+
+
+        return solvedScenario;
     }
 
     public boolean isData() {

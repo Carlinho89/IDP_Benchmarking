@@ -7,13 +7,13 @@ import java.util.List;
  * Created by carlodidomenico on 08/07/2016.
  */
 public class SolverSimpleQueryMQI {
-    private List<Integer> league;
-    private List<Integer> input;
-    private List<Integer> output;
+    private List<Integer> leagueID;
+    private List<Integer> selectedInputs;
+    private List<Integer> selectedOutputs;
     private boolean orientation;
     private boolean data;
     private int start;
-    private int seasons;
+    private int season;
     private int scale;
 
 
@@ -21,35 +21,35 @@ public class SolverSimpleQueryMQI {
     *TO DO: enrico fill this with the data coming from the post form
     * */
     public SolverSimpleQueryMQI(String query){
-        league = new ArrayList<>();
-        input = new ArrayList<>();
-        output = new ArrayList<>();
+        leagueID = new ArrayList<>();
+        selectedInputs = new ArrayList<>();
+        selectedOutputs = new ArrayList<>();
         orientation = data = false;
-        scale = start = seasons = -1;
+        scale = start = season = -1;
     }
 
-    public List<Integer> getLeague() {
-        return league;
+    public List<Integer> getLeagueID() {
+        return leagueID;
     }
 
-    public void setLeague(List<Integer> league) {
-        this.league = league;
+    public void setLeagueID(List<Integer> leagueID) {
+        this.leagueID = leagueID;
     }
 
-    public List<Integer> getInput() {
-        return input;
+    public List<Integer> getSelectedInputs() {
+        return selectedInputs;
     }
 
-    public void setInput(List<Integer> input) {
-        this.input = input;
+    public void setSelectedInputs(List<Integer> selectedInputs) {
+        this.selectedInputs = selectedInputs;
     }
 
-    public List<Integer> getOutput() {
-        return output;
+    public List<Integer> getSelectedOutputs() {
+        return selectedOutputs;
     }
 
-    public void setOutput(List<Integer> output) {
-        this.output = output;
+    public void setSelectedOutputs(List<Integer> selectedOutputs) {
+        this.selectedOutputs = selectedOutputs;
     }
 
     public boolean isOrientation() {
@@ -76,12 +76,12 @@ public class SolverSimpleQueryMQI {
         this.start = start;
     }
 
-    public int getSeasons() {
-        return seasons;
+    public int getSeason() {
+        return season;
     }
 
-    public void setSeasons(int seasons) {
-        this.seasons = seasons;
+    public void setSeason(int season) {
+        this.season = season;
     }
 
     public int getScale() {
