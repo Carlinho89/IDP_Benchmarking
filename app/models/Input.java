@@ -67,4 +67,10 @@ public class Input extends Model {
 
     }
 
+    public boolean isOfType(String type){
+        if(this.type.equals(type))
+        return true;
+        else return false;
+    }
+
 }

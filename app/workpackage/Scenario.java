@@ -77,7 +77,7 @@ public class Scenario {
     private boolean [][]settings;   //Settings: orientation[0][], use efficiency of last stage as input [1][], combined input [2][]
     private  int start;              //Starting year of the observations
     private  int seasons;            //Amount of seasons looked at
-    private List<String[]>dmuList;  //List of used DMUs
+    public List<String[]>dmuList;  //List of used DMUs
     private List<double[][]>overList;   //List over overview-arrays from results
     private List<String[]>refList;   //List over reference-arrays from results
     private List<double[][]>paraValues; //List containing the data used
@@ -342,7 +342,7 @@ public class Scenario {
 
 
         //Create Excel Output
-        ExcelOutput.createEfficiencyOutput(League.getById(league).name, dmuList, overList, refList);
+       // ExcelOutput.createEfficiencyOutput(League.getById(league).name, dmuList, overList, refList);
 
         //Get MQI values
         this.dmuMalm = new ArrayList<String[]>();
@@ -388,7 +388,7 @@ public class Scenario {
         System.out.println(malmList);
 
         //Create Excel Output
-        ExcelOutput.createMQIOutput(League.getById(league).name, dmuMalm, malmList);
+        //ExcelOutput.createMQIOutput(League.getById(league).name, dmuMalm, malmList);
 
         JsonNode jsnmalm= Json.toJson(malmList);
         JsonNode jsndmu= Json.toJson(dmuMalm);

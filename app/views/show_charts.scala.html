@@ -1,5 +1,6 @@
 @import com.fasterxml.jackson.databind.JsonNode
-@(json: String)
+@import workpackage.Scenario
+@(json: String, solvedScenario: Scenario)
 
 @main("Get Started") {
     <script src="@routes.Assets.versioned("javascripts/getStarted.js")" type="text/javascript"></script>
@@ -10,7 +11,15 @@
             console.log(jsonString);
             var jsonObj=JSON.parse(jsonString);
             console.log(jsonObj.overviewList[0][0][1]);
+
+
+
             $(function () {
+                $('#table').append("<thead><tr><th>DMU</th><th>CCR</th><th>BCC</th><th>SBM</th><tr></thead><tbody>");
+                for(var i = 0; i < jsonObj.dealist[0].dmu.length;i++){
+                    $('#table').append("<tr><td>"+jsonObj.dealist[0].dmu[i]+"</td><td>"+ jsonObj.overviewList[0][0][i]+"</td><td>"+ jsonObj.overviewList[0][1][i]+"</td><td>"+ jsonObj.overviewList[0][2][i]+"</td><tr>");
+                }
+                $('#table').append("</tbody>");
                 $('#barChart').highcharts({
                     chart: {
                         type: 'bar'
@@ -160,7 +169,24 @@
     </script>
 
     <div class="container">
+        <div class="row">
 
+            <div class="col-md-12">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Table</h3>
+                    </div>
+                    <div class="panel-body">
+                        <table class="table table-striped" id ="table"></table>
+                    </div>
+                </div>
+
+
+
+
+            </div><!-- /span12 -->
+
+        </div>
 
         <div class="row">
 
@@ -179,22 +205,7 @@
 
         </div><!-- /row -->
 
-        <div class="row">
 
-            <div class="col-md-12">
-
-                <div class="panel panel-info">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Stacked</h3>
-                    </div>
-                    <div class="panel-body">
-                        <div id="barStackedChart" class="chart-holder"></div>
-                    </div>
-                </div>
-
-            </div><!-- /span12 -->
-
-        </div><!-- /row -->
 
         <div class="row">
 

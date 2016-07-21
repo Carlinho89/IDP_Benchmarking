@@ -13,6 +13,7 @@ GET     /team/:year/:league_id         controllers.Application.getLeagueTeamsByS
 
 
 POST    /getStarted/simple-solver              controllers.Application.simpleSolver()
+POST    /getStarted/complex-solver              controllers.Application.complexSolver()
 
 GET     /assets/js/routes             controllers.Application.jsRoutes()
 # Map static resources from the /public folder to the /assets URL path

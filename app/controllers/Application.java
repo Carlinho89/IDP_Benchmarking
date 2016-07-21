@@ -2,8 +2,10 @@ package controllers;
 
 //CPLEX Libs
 
+
 import com.fasterxml.jackson.databind.JsonNode;
 import ilog.concert.IloException;
+import ilog.cplex.IloCplexModeler;
 import models.*;
 import play.Routes;
 import play.data.DynamicForm;
@@ -11,10 +13,12 @@ import play.data.Form;
 import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
+import scala.util.parsing.json.JSONObject;
+import scala.util.parsing.json.JSONObject$;
 import views.html.*;
 import workpackage.Scenario;
 import workpackage.ScenarioMQI;
-
+import play.api.libs.json.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,7 +63,7 @@ public class Application extends Controller {
     public Result getStarted() {
         //TODO remove these tests!!!
         // this.testSimpleMQI(); WORKS!!!
-        this.testComplex();
+        //this.testComplex();
 
         return ok(get_started.render(Input.getByType("Sporty"), Input.getByType("Social"), Input.getByType("Monetary"), Input.getOutputs(), Input.getByType("Offensive"),Input.getByType("Defensive")));
 
@@ -76,7 +80,10 @@ public class Application extends Controller {
             e.printStackTrace();
         }
         System.out.println(jsonResult);
-        return ok(show_charts.render(jsonResult));
+
+        Scenario a = null;
+
+        return ok(show_charts.render(jsonResult,a));
 
     }
 
@@ -86,7 +93,7 @@ public class Application extends Controller {
 
     public  Result simpleSolver(){
         DynamicForm form = Form.form().bindFromRequest();
-
+        System.out.println("Simple");
         if (form.data().size() == 0) {
             return badRequest("Expecting some data");
         } else {
@@ -96,16 +103,42 @@ public class Application extends Controller {
             SolverSimpleQuery query = new SolverSimpleQuery(response);
 
             SolverController solverController = new SolverController();
-            solverController.solve(query);
-           
+
 
 
             Scenario solvedScenario = solverController.solve(query);
 
             
 
-             return ok(show_charts.render(Json.stringify(Json.toJson(solvedScenario))));
-            
+             return ok(show_charts.render(Json.stringify(Json.toJson(solvedScenario)), solvedScenario));
+
+        }
+    }
+
+    public  Result complexSolver(){
+        DynamicForm form = Form.form().bindFromRequest();
+        System.out.println("Complex");
+        if (form.data().size() == 0) {
+            return badRequest("Expecting some data");
+        } else {
+            String response = form.get("query");
+           // JsonNode json = Json.parse(response);
+
+            SolverComplexQuery query = new SolverComplexQuery(response);
+
+            SolverController solverController = new SolverController();
+
+
+            try {
+                Scenario solvedScenario = solverController.solve(query);
+                return ok(show_charts.render(Json.stringify(Json.toJson(solvedScenario)), solvedScenario));
+            } catch(Exception e){
+                e.printStackTrace();
+            }
+
+        return null;
+
+
         }
     }
 

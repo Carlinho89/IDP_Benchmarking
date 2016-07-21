@@ -19,6 +19,13 @@
         background-color: #673ab7;
     }
 
+    #chooseMethod {
+        padding-top: 50px;
+        padding-bottom: 50px;
+        color: #fff;
+        background-color: #DF0101;
+    }
+
     #chooseTeam {
         padding-top: 50px;
     }
@@ -158,6 +165,12 @@
       float: left;
       margin: 10px;
   }
+
+        .red{
+            color: #fff;
+            background-color: #df0101;
+            margin-bottom: 22px;
+        }
     </style>
 
 
@@ -180,6 +193,7 @@
                         <ul class="nav navbar-nav">
                             <li><a href="#chooseLeague">League</a></li>
                             <li><a href="#chooseSeason">Season</a></li>
+                            <li><a href="#chooseMethod">Method</a></li>
                             <li><a href="#chooseInputs">Input</a></li>
                             <li><a href="#chooseOutputs">Output</a></li>
                                 <!--<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Section 4 <span class="caret"></span></a>
@@ -324,6 +338,33 @@
                 <div id="teams" class="row"></div>
             </div>
         </div>
+        <div id="chooseMethod" class="container-fluid text-center">
+            <h1>Choose a Method</h1>
+            <div id="chooseMethodAlert" class="alert alert-danger" style="visibility: hidden;">
+                <strong>Necessary Field</strong> Select one method
+            </div>
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-4" style="background-color: #610B0B; padding-bottom: 10;">
+                <h1>Simple Solver</h1>
+                    <h5>Explain</h5>
+                    <button id="simpleSolver" type="button" class="btn btn-success red"> <span class="glyphicon glyphicon-check" aria-hidden="true"></span>Select</button>
+
+                </div>
+                <div class="col-md-2"></div>
+                <div class="col-md-4" style="background-color: #610B0B">
+                    <h1>Complex Solver</h1>
+                    <h5>Explain</h5>
+                    <button id="complexSolver" type="button" class="btn btn-success red"> <span class="glyphicon glyphicon-check" aria-hidden="true"></span>Select</button>
+
+                </div>
+                <div class="col-md-1"></div>
+
+
+
+            </div>
+
+        </div>
         <div id="chooseInputs" class="container-fluid">
             <h1 class="text-center">Choose input parameters</h1>
 
@@ -389,7 +430,7 @@
                     </div>
                 </div>
                 <div class="col5">
-                    <div class="input-box">
+                    <div class="input-box" id="offensiveInput">
                         <div class="input-box-header">
                             <h2 >Offensive</h2>
                         </div>
@@ -408,7 +449,7 @@
                     </div>
                 </div>
                 <div class="col5">
-                    <div class="input-box">
+                    <div class="input-box" id="defensiveInput">
                         <div class="input-box-header">
                             <h2 >Defensive</h2>
                         </div>
@@ -439,27 +480,66 @@
                 <strong>Necessary Field</strong> Select at least one output
             </div>
             <div class="row">
-                <div class="col-md-4"></div>
                 <div class="col-md-4">
                     <div class="output-box">
+                        <div class="output-box-header">
+                            <h2>General Outputs</h2>
+                        </div>
+                        <div class="output-box-body ">
+                        @for(input <- output) {
+                            @if( !input.isOfType("Defensive") && !input.isOfType("Offensive") ){
+                                <div class="output-element">
+                                    <input style="margin-left:5%" type="checkbox" value="@input.id" name="@input.name">
+                                    <label >
+                                    @input.name
+                                    </label>
+                                </div>
+                            }
+
+                        }
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="output-box" id="offensiveOutput">
                        <div class="output-box-header">
-                            <h2>Outputs</h2>
+                            <h2>Offensive Outputs</h2>
                         </div>
                        <div class="output-box-body ">
                         @for(input <- output) {
+                            @if( input.isOfType("Offensive")){
                             <div class="output-element">
                                 <input style="margin-left:5%" type="checkbox" value="@input.id" name="@input.name">
                                 <label >
                                 @input.name
                                 </label>
                             </div>
-
+                            }
 
                         }
                         </div>
                     </div>
                 </div>
-                <div class="col-md.4"></div>
+                <div class="col-md-4">
+                    <div class="output-box" id="defensiveOutput">
+                        <div class="output-box-header">
+                            <h2>Defensive Outputs</h2>
+                        </div>
+                        <div class="output-box-body ">
+                        @for(input <- output) {
+                            @if( input.isOfType("Defensive")){
+                                <div class="output-element">
+                                    <input style="margin-left:5%" type="checkbox" value="@input.id" name="@input.name">
+                                    <label >
+                                    @input.name
+                                    </label>
+                                </div>
+                            }
+
+                        }
+                        </div>
+                    </div>
+                </div>
             </div>
 
 
