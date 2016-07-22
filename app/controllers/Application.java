@@ -241,15 +241,15 @@ public class Application extends Controller {
         int seasons = 4;
 
         SolverComplexQuery query = new SolverComplexQuery("");
-        query.setLeagueID(league);
-        query.setStart(start);
+        query.setLeagueID(league); //leagueID
+        query.setStart(start); //season
         query.setRamifications(ramifications);
         query.setSelectionAthOut(selectionAthOut);
-        query.setSelectionDefOut(selectionDefOut);
-        query.setSelectionDefIn(selectionDefIn);
-        query.setSelectionSocOut(selectionSocOut);
-        query.setSelectionOffIn(selectionOffIn);
-        query.setSelectionOffOut(selectionOffOut);
+        query.setSelectionDefOut(selectionDefOut); //defSelectedOutputs
+        query.setSelectionDefIn(selectionDefIn);  //defSelectedInputs
+        query.setSelectionSocOut(selectionSocOut); //socSelectedInputs
+        query.setSelectionOffIn(selectionOffIn); //offSelectedInputs
+        query.setSelectionOffOut(selectionOffOut); // offSelectedOutputs
         query.setSuperEff(superEff);
         query.setSeason(seasons);
 

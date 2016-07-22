@@ -43,11 +43,21 @@ $(document).ready(function () {
 //Season to Team
     $("#seasonSelect").change(function () {
         var str = "";
-        $("select option:selected").each(function () {
+
+        $("#seasonSelect option:selected").each(function () {
             str = $(this).text();
         });
 
         query.season = parseInt(str);
+        console.log(query.season);
+        var remainingSeasons=2015-query.season;
+        if(remainingSeasons>0){
+            console.log("remaining season"+remainingSeasons);
+            $( "#numberOfSeasonsSelect" ).empty();
+            for(var i=0;i<=remainingSeasons;i++){
+                $( "#numberOfSeasonsSelect" ).append( " <option>"+(i+1)+"</option>" );
+            }
+        }
         updateResume(query);
         document.getElementById("chooseSeasonAlert").style.visibility = "hidden";
         displayTeams(query);
@@ -101,14 +111,46 @@ $(document).ready(function () {
         document.getElementById("chooseMethodAlert").style.visibility = "hidden";
 
         //Scroll to next section
-        var hash = "#chooseInputs";
+        //var hash = "#chooseInputs";
 
-        scrollTo(hash);
+        //scrollTo(hash);
 
 
     });
 
+//Event to manage selection of super-efficiency
 
+    $("#chooseMethod input").on('click', function (event) {
+        var superEff = false;
+        if ($('#efficiency').is(':checked')){
+            superEff=true;
+        }
+
+
+
+
+        query.superEff = superEff;
+
+
+
+        updateResume(query);
+        //document.getElementById("chooseMethodsAlert").style.visibility = "hidden";
+    });
+
+
+    //Season to Team
+    $("#numberOfSeasonsSelect").change(function () {
+        var str = "";
+
+        $("#numberOfSeasonsSelect option:selected").each(function () {
+            str = $(this).text();
+        });
+
+        query.numberOfSeasons = parseInt(str);
+
+        updateResume(query);
+
+    });
 
 //Events to manage the list of inputs selected  
     $("#chooseInputs input").on('click', function (event) {
@@ -133,6 +175,17 @@ $(document).ready(function () {
         });
         query.offSelectedInputs = offSelected;
         query.offSelectedInputsNames = offNames;
+
+        var socNames = [];
+        var socSelected = [];
+        $('#socialInput input:checked').each(function () {
+            socSelected.push(parseInt($(this).attr('value')));
+            socNames.push($(this).attr('name'));
+
+
+        });
+        query.socSelectedInputs = socSelected;
+        query.socSelectedInputsNames = socNames;
 
         var defNames = [];
         var defSelected = [];
@@ -161,6 +214,18 @@ $(document).ready(function () {
         });
         query.selectedOutputs = selected;
         query.selectedOutputsNames = names;
+
+        var spnames = [];
+        var spselected = [];
+        $('#sportiveOutput input:checked').each(function () {
+            spselected.push(parseInt($(this).attr('value')));
+            spnames.push($(this).attr('name'));
+
+
+        });
+        query.spSelectedOutputs = spselected;
+        query.spSelectedOutputsNames = spnames;
+
 
         var offnames = [];
         var offselected = [];
@@ -223,6 +288,16 @@ $(document).ready(function () {
         if (typeof query.leagueID === "undefined") {
             alert = "chooseLeagueAlert";
             hash = "#chooseLeague";
+        }
+
+        if (typeof query.superEff === "undefined") {
+            query.superEff=false;
+
+        }
+
+        if (typeof query.numberOfSeasons === "undefined") {
+            query.numberOfSeasons=1;
+
         }
 
 
@@ -340,6 +415,17 @@ function updateResume(query) {
     else solver+= query.solver + "<br>";
     resume += solver;
 
+    var efficiency= "Super Efficiency: ";
+    if(typeof query.superEff === "undefined")
+        efficiency+= "false <br>";
+    else efficiency+= query.superEff + "<br>";
+    resume += efficiency;
+
+    var numOfSeasons= "Number Of Seasons: ";
+    if(typeof query.numberOfSeasons === "undefined")
+        numOfSeasons+= "1 <br>";
+    else numOfSeasons+= query.numberOfSeasons + "<br>";
+    resume += numOfSeasons;
 
     var inputs = "Inputs: ";
     if (typeof query.selectedInputs === "undefined") {
@@ -377,6 +463,18 @@ function updateResume(query) {
     }
     resume += definputs;
 
+    var socinputs = "Social Inputs: ";
+    if (typeof query.socSelectedInputsNames === "undefined") {
+        socinputs += "NOT SELECTED<br>";
+
+    } else {
+        for (var i = query.socSelectedInputsNames.length - 1; i >= 0; i--) {
+            socinputs += query.socSelectedInputsNames[i] + ", "
+        }
+        socinputs += "<br>";
+    }
+    resume += socinputs;
+
     var outputs = "Outputs: ";
     if (typeof query.selectedOutputs === "undefined") {
         outputs += "NOT SELECTED<br>";
@@ -388,6 +486,18 @@ function updateResume(query) {
         outputs += "<br>";
     }
     resume += outputs;
+
+    var spoutputs = "Sportive Outputs: ";
+    if (typeof query.spSelectedOutputsNames === "undefined") {
+        spoutputs += "NOT SELECTED<br>";
+
+    } else {
+        for (var i = query.spSelectedOutputsNames.length - 1; i >= 0; i--) {
+            spoutputs += query.spSelectedOutputsNames[i] + ", "
+        }
+        spoutputs += "<br>";
+    }
+    resume += spoutputs;
 
     var defoutputs = "Defensive Outputs: ";
     if (typeof query.defSelectedOutputsNames === "undefined") {

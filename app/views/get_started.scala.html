@@ -159,6 +159,17 @@
   border-right: 2px solid #6f4910;
   }
 
+    .superEff-element{
+        color: white;
+        background: #df0101;
+        margin-right: 10%;
+        margin-top: 10px;
+        margin-left:10%;
+        margin-bottom: 10px;
+        border-bottom: 2px solid #6f4910;
+        border-right: 2px solid #6f4910;
+    }
+
   .col5{
       width: 18%;
  
@@ -325,8 +336,9 @@
                         </select>
 
                     </div>
-                    <div class="col-md-4"></div>
+
                 </div>
+                <div class="col-md-4"></div>
 
 
             </div>
@@ -356,7 +368,29 @@
                     <h1>Complex Solver</h1>
                     <h5>Explain</h5>
                     <button id="complexSolver" type="button" class="btn btn-success red"> <span class="glyphicon glyphicon-check" aria-hidden="true"></span>Select</button>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="superEff-element">
+                                <input style="margin-left:5%" type="checkbox" value="efficiency" id="efficiency" >
+                                <label >
+                                Super Efficiency
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="superEff-element">
 
+                                <div class="form-group">
+                                    <label for="numberOfSeasonsSelect">Number Of Seasons</label>
+                                    <select class="form-control" ; style="width: 90%; margin-left: 5%; margin-right: 5%" id="numberOfSeasonsSelect">
+                                        <option>1</option>
+
+                                    </select>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="col-md-1"></div>
 
@@ -392,7 +426,7 @@
                     </div>
                 </div>
                 <div class="col5">
-                    <div class="input-box">
+                    <div class="input-box" id="socialInput">
                          <div class="input-box-header">
                             <h2>Social</h2>
                         </div>
@@ -480,14 +514,14 @@
                 <strong>Necessary Field</strong> Select at least one output
             </div>
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <div class="output-box">
                         <div class="output-box-header">
                             <h2>General Outputs</h2>
                         </div>
                         <div class="output-box-body ">
                         @for(input <- output) {
-                            @if( !input.isOfType("Defensive") && !input.isOfType("Offensive") ){
+                            @if( !input.isOfType("Defensive") && !input.isOfType("Offensive")  && !input.isOfType("Sporty") ){
                                 <div class="output-element">
                                     <input style="margin-left:5%" type="checkbox" value="@input.id" name="@input.name">
                                     <label >
@@ -500,7 +534,27 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
+                    <div class="output-box" id="sportiveOutput">
+                        <div class="output-box-header">
+                            <h2>Sportive Outputs</h2>
+                        </div>
+                        <div class="output-box-body ">
+                        @for(input <- output) {
+                            @if( input.isOfType("Sporty") ){
+                                <div class="output-element">
+                                    <input style="margin-left:5%" type="checkbox" value="@input.id" name="@input.name">
+                                    <label >
+                                    @input.name
+                                    </label>
+                                </div>
+                            }
+
+                        }
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
                     <div class="output-box" id="offensiveOutput">
                        <div class="output-box-header">
                             <h2>Offensive Outputs</h2>
@@ -520,7 +574,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <div class="output-box" id="defensiveOutput">
                         <div class="output-box-header">
                             <h2>Defensive Outputs</h2>
