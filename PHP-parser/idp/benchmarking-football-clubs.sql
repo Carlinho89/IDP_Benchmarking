@@ -178,11 +178,11 @@ CREATE TABLE `input` (
 --
 
 INSERT INTO `input` (`id`, `name`, `type`, `output`, `value_type`) VALUES
-(1, 'Games Won', 'Sporty', 1, 'number'),
+(1, 'Games Won', 'Offensive', 1, 'number'),
 (2, 'Games Drawn', 'Sporty', 0, 'number'),
-(3, 'Games Lost', 'Sporty', 0, 'number'),
+(3, 'Games Lost', 'Defensive', 1, 'number'),
 (4, 'Goals Scored', 'Offensive', 1, 'number'),
-(5, 'Goals Against', 'Difensive', 0, 'number'),
+(5, 'Goals Against', 'Defensive', 1, 'number'),
 (6, 'Rank', 'Sporty', 1, 'number'),
 (7, 'Shots Per Game', 'Offensive', 0, 'number'),
 (8, 'Ball Possession', 'Sporty', 0, 'percentage'),

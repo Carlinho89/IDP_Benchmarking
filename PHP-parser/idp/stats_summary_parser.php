@@ -46,7 +46,7 @@ foreach ($urls as $url) {
           $dataArray = getTeams($conn, $table, $year, $league_id, "tn");
         
 
-          parseInput($conn,"Shots Per Game", "td[class=shotsPerGame]", $table, $dataArray, "Offensive", 0,  "number" );
+          parseInput($conn,"Shots Per Game", "td[class=shotsPerGame]", $table, $dataArray, "Offensive", 1,  "number" );
 
           parseInput($conn,"Ball Possession", "td[class=possession]", $table, $dataArray, "Sporty", 0, "percentage" );
 
