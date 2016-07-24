@@ -15,7 +15,7 @@ import java.util.List;
  */
 public class SolverSimpleQuery {
     private int leagueID;
-    private int season;
+    private int seasons;
     private int teamID;
     private List<Integer> selectedInputs;
     private List<Integer> selectedOutputs;
@@ -35,10 +35,11 @@ public class SolverSimpleQuery {
 
             this.leagueID =rootNode.path("leagueID").asInt();
             //System.out.println("leagueID: " + this.leagueID);
-            this.season = rootNode.path("season").asInt();
+            this.start = rootNode.path("season").asInt();
             //System.out.println("season: " + this.season);
             this.teamID = rootNode.path("teamID").asInt();
             //System.out.println("teamID: " + this.teamID);
+            this.seasons = 1;
 
 
             JsonNode selectedInputsNode = rootNode.path("selectedInputs");
@@ -92,12 +93,12 @@ public class SolverSimpleQuery {
         this.leagueID = leagueID;
     }
 
-    public int getSeason() {
-        return season;
+    public int getSeasons() {
+        return seasons;
     }
 
     public void setSeason(int season) {
-        this.season = season;
+        this.seasons = season;
     }
 
     public int getTeamID() {
