@@ -127,7 +127,7 @@ public class Application extends Controller {
 
             try {
                 Scenario solvedScenario = solverController.solve(query);
-                return ok(show_charts.render(Json.stringify(Json.toJson(solvedScenario)), solvedScenario));
+                return ok(show_charts_complex.render(Json.stringify(Json.toJson(solvedScenario)), solvedScenario));
             } catch(Exception e){
                 e.printStackTrace();
             }
