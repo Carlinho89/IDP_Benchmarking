@@ -2,7 +2,6 @@ package workpackage;
 import com.fasterxml.jackson.databind.JsonNode;
 import controllers.CplexController;
 import ilog.concert.IloException;
-import models.League;
 import play.libs.Json;
 
 import java.util.ArrayList;
@@ -13,77 +12,77 @@ import java.util.logging.Logger;
 
 public class Scenario {
 
-    private  double[][] offOutTwo;
-    private  Malmquist mqiOff;
-    private  double[][] defInTwo;
-    private  double[][] defInOne;
-    private  Malmquist mqiDef;
-    private  double[][] defOutOne;
-    private  double[][] defOutTwo;
-    private  double[][] solMQIOff;
-    private  double[][] solMQIDef;
-    private  double[][] solMQI;
-    private  String result;
-    private double[][] offInTwo;
-    private double[][] offOutOne;
-    private double[][] offInOne;
-    private String[] dmuTwo;
-    private String[] dmuOne;
-    private List<double[][]> malmList;
-    private List<String[]> dmuMalm;
-    private double[][] overFin;
-    private double[][] overSoc;
-    private double[][] overAth;
-    private double[] stageTwoSBM;
-    private double[] stageOneSBM;
-    private TwoStageDEA deaSBM;
-    private double[] stageTwoBCC;
-    private double[] stageOneBCC;
-    private TwoStageDEA deaBCC;
-    private double[] stageTwoCCR;
-    private double[] stageOneCCR;
-    private TwoStageDEA deaCCR;
-    private double[][] inputAthSBM;
-    private double[][] socOut;
-    private double[][] inputAthCCR;
-    private double[][] inputAthBCC;
-    private double[][] athOut;
-    private double[][] overDef;
-    private double[][] overOff;
-    private double[][] solDefSBM;
-    private double[][] solDefBCC;
-    private double[][] solDefCCR;
-    private double[][] solOffSBM;
-    private double[][] solOffBCC;
-    private double[][] solOffCCR;
-    private DEA deaDef;
-    private DEA deaOff;
-    private String[] reference;
-    private int league;          //Which league are we looking at?
-    private  CplexController connection;   //Connect to database
-    private List<Integer> selectionAthOut;
-    private List<Integer> selectionSocOut;
-    private List<Integer> selectionDefOut;
-    private List<Integer> selectionDefIn;
-    private List<Integer> selectionOffOut;
-    private List<Integer> selectionOffIn;
-    private String[] dmu;           //Array for selected DMUs
-    private double[][] input;       //Array for selected inputs
-    private double[][] interOne;    //Array of Stage 2 parameters
-    private double[][] interTwo;    //Array of Stage 3 parameters
-    private double[][] output;      //Array of  output selection (or of  output of Stage 3 in case of a multi-stage approach
-    private boolean orientation;   //Boolean to figure out orientation of a single-stage DEA (true: input, false: output)
-    private boolean superEfficiency;    //Boolean to figure out whether Super Efficiency is desired or not (true: yes, false: no)
-    private boolean [][]settings;   //Settings: orientation[0][], use efficiency of last stage as input [1][], combined input [2][]
-    private  int start;              //Starting year of the observations
-    private  int seasons;            //Amount of seasons looked at
+    public  double[][] offOutTwo;
+    public  Malmquist mqiOff;
+    public  double[][] defInTwo;
+    public  double[][] defInOne;
+    public  Malmquist mqiDef;
+    public  double[][] defOutOne;
+    public  double[][] defOutTwo;
+    public  double[][] solMQIOff;
+    public  double[][] solMQIDef;
+    public  double[][] solMQI;
+    public  String result;
+    public double[][] offInTwo;
+    public double[][] offOutOne;
+    public double[][] offInOne;
+    public String[] dmuTwo;
+    public String[] dmuOne;
+    public List<double[][]> malmList;
+    public List<String[]> dmuMalm;
+    public double[][] overFin;
+    public double[][] overSoc;
+    public double[][] overAth;
+    public double[] stageTwoSBM;
+    public double[] stageOneSBM;
+    public TwoStageDEA deaSBM;
+    public double[] stageTwoBCC;
+    public double[] stageOneBCC;
+    public TwoStageDEA deaBCC;
+    public double[] stageTwoCCR;
+    public double[] stageOneCCR;
+    public TwoStageDEA deaCCR;
+    public double[][] inputAthSBM;
+    public double[][] socOut;
+    public double[][] inputAthCCR;
+    public double[][] inputAthBCC;
+    public double[][] athOut;
+    public double[][] overDef;
+    public double[][] overOff;
+    public double[][] solDefSBM;
+    public double[][] solDefBCC;
+    public double[][] solDefCCR;
+    public double[][] solOffSBM;
+    public double[][] solOffBCC;
+    public double[][] solOffCCR;
+    public DEA deaDef;
+    public DEA deaOff;
+    public String[] reference;
+    public int league;          //Which league are we looking at?
+    public  CplexController connection;   //Connect to database
+    public List<Integer> selectionAthOut;
+    public List<Integer> selectionSocOut;
+    public List<Integer> selectionDefOut;
+    public List<Integer> selectionDefIn;
+    public List<Integer> selectionOffOut;
+    public List<Integer> selectionOffIn;
+    public String[] dmu;           //Array for selected DMUs
+    public double[][] input;       //Array for selected inputs
+    public double[][] interOne;    //Array of Stage 2 parameters
+    public double[][] interTwo;    //Array of Stage 3 parameters
+    public double[][] output;      //Array of  output selection (or of  output of Stage 3 in case of a multi-stage approach
+    public boolean orientation;   //Boolean to figure out orientation of a single-stage DEA (true: input, false: output)
+    public boolean superEfficiency;    //Boolean to figure out whether Super Efficiency is desired or not (true: yes, false: no)
+    public boolean [][]settings;   //Settings: orientation[0][], use efficiency of last stage as input [1][], combined input [2][]
+    public  int start;              //Starting year of the observations
+    public  int seasons;            //Amount of seasons looked at
     public List<String[]>dmuList;  //List of used DMUs
-    private List<double[][]>overList;   //List over overview-arrays from results
-    private List<String[]>refList;   //List over reference-arrays from results
-    private List<double[][]>paraValues; //List containing the data used
-    private List<DEA>deaList;  //List of DEAs created while solving the scenario
-    private List<TwoStageDEA>twodeaList;  //List of TwoStageDEAs created while solving the scenario
-    private List<ThreeStageDEA>threedeaList;  //List of ThreeStageDEAs created while solving the scenario
+    public List<double[][]>overList;   //List over overview-arrays from results
+    public List<String[]>refList;   //List over reference-arrays from results
+    public List<double[][]>paraValues; //List containing the data used
+    public List<DEA>deaList;  //List of DEAs created while solving the scenario
+    public List<TwoStageDEA>twodeaList;  //List of TwoStageDEAs created while solving the scenario
+    public List<ThreeStageDEA>threedeaList;  //List of ThreeStageDEAs created while solving the scenario
 
     public Scenario(int league, List<Integer> inputStr, List<Integer> outputStr, boolean orientation, boolean superEff, int start, int seasons) throws Exception   //Single-Stage constructor
     {
@@ -141,97 +140,6 @@ public class Scenario {
         paraValues.add(paraOut);
         //ExcelOutput.createDataOutput(League.getById(league).name, dmuList, paraNames, paraValues);
     }
-    /*
-    public Scenario(int league, List<Integer> inputStr, List<Integer> interOneStr, List<Integer> interTwoStr, List<Integer> outputStr, boolean[][]setting, boolean superEff, int start, int seasons)
-    {
-        this.connection = new CplexController();  //Establish connection to database
-
-        //Initialize parameters
-        this.league = league;
-        this.settings = setting;
-        this.superEfficiency = superEff;
-        this.start = start;
-        this.seasons = seasons;
-        this.dmuList = new ArrayList<>();
-        this.overList = new ArrayList<>();
-        this.refList = new ArrayList<>();
-        if(interTwoStr == null)
-            this.twodeaList = new ArrayList<>();
-        else
-            this.threedeaList = new ArrayList<>();
-
-        double[][]paraIn = null;    //Arrays for saving parameter values
-        double[][]paraIntOne = null;
-        double[][]paraIntTwo = null;
-        double[][]paraOut = null;
-
-        for(int i = 0; i < seasons; i++)
-        {
-            //Create parameter-arrays to work from
-            this.dmu = connection.createDMUArray(league, start + i);
-            this.input = connection.createParameterArray(league, start + i, inputStr);
-            this.output = connection.createParameterArray(league, start + i, outputStr);
-            this.interOne = connection.createParameterArray(league, start + i, interOneStr);
-            if(interTwoStr != null)
-                this.interTwo = connection.createParameterArray(league, start + i, interTwoStr);
-
-            if(paraIn == null)  //Building matrices showing all inputs and outputs
-                paraIn = input;
-            else
-                paraIn = ExcelOutput.combineOverviewStage(paraIn, input);
-            if(paraIntOne == null)
-                paraIntOne = interOne;
-            else
-                paraIntOne = ExcelOutput.combineOverviewStage(paraIntOne, interOne);
-            if(interTwoStr != null)    //active only in case of a third stage
-            {
-                if(paraIntTwo == null)
-                    paraIntTwo = interTwo;
-                else
-                    paraIntTwo = ExcelOutput.combineOverviewStage(paraIntTwo, interTwo);
-            }
-            if(paraOut == null)
-                paraOut = output;
-            else
-                paraOut = ExcelOutput.combineOverviewStage(paraIn, output);
-
-            dmuList.add(dmu);   //Add DMU to list for Exceloutput later on
-
-            //Establish workflow
-            TwoStageDEA twoDea = null;
-            ThreeStageDEA threeDea = null;
-            if(interTwoStr == null)
-            {
-                twoDea = new TwoStageDEA(dmu, input, interOne, output, settings);
-                solve(twoDea);  //Solve DEA
-                twodeaList.add(twoDea);
-            }
-            else
-            {
-                threeDea = new ThreeStageDEA(dmu, input, interOne, interTwo, output, settings);
-                solve(threeDea);    //Solve DEA
-                threedeaList.add(threeDea);
-            }
-
-        }
-        //Create Excel Output
-        ExcelOutput.createEfficiencyOutput(League.getById(league).name, dmuList, overList, refList);
-
-        //Print out data that was used in the analysis
-        String[] paraNames = ExcelOutput.combineStringArray(CplexController.listToCSString(inputStr).split(", "), CplexController.listToCSString(interOneStr).split(", "));
-        if(interTwoStr != null)
-            paraNames = ExcelOutput.combineStringArray(paraNames, CplexController.listToCSString(interTwoStr).split(", "));
-        paraNames = ExcelOutput.combineStringArray(paraNames, CplexController.listToCSString(outputStr).split(", "));
-        this.paraValues = new ArrayList<>();  //Unify input and output list
-        paraValues.add(paraIn);
-        paraValues.add(paraIntOne);
-        if(interTwoStr != null)
-            paraValues.add(paraIntTwo);
-        paraValues.add(paraOut);
-        ExcelOutput.createDataOutput(League.getById(league).name, dmuList, paraNames, paraValues);
-
-    }*/
-
     public Scenario (int league, List<Integer> inputOff, List<Integer> inputDef, List<Integer> outputOff, List<Integer> outputDef, List<Integer> outputAth, List<Integer> outputSoc, boolean[][]setting, boolean superEff, int start, int seasons) throws IloException {
         this.connection = new CplexController();
 
@@ -334,6 +242,8 @@ public class Scenario {
             this.overFin = ExcelOutput.combineOverviewStage(overOff, overDef);
             overFin = ExcelOutput.combineOverviewStage(overFin, overAth);
             overFin = ExcelOutput.combineOverviewStage(overFin, overSoc);
+
+
             overList.add(overFin);
             refList.add(reference);
 
@@ -343,12 +253,14 @@ public class Scenario {
 
         //Create Excel Output
        // ExcelOutput.createEfficiencyOutput(League.getById(league).name, dmuList, overList, refList);
-
+        System.out.println("MALM");
         //Get MQI values
         this.dmuMalm = new ArrayList<String[]>();
         this.malmList = new ArrayList<double[][]>();
         for(int i = 0; i < (this.seasons - 1); i++)
         {
+            System.out.println("MALM2");
+
             this.dmuOne = connection.createDMUArray(league,(2011 + i));
             this.dmuTwo = connection.createDMUArray(league, (2010 + i + 1));
 
@@ -507,7 +419,7 @@ public class Scenario {
         refList.add(reference); //Add to list of result-arrays
     }
 
-    private void solve(ThreeStageDEA threeDea)  {
+    public void solve(ThreeStageDEA threeDea)  {
         //Method for properly solving a DEA with three stages
         double[][]solCCR = threeDea.solveThreeStage("CCR"); //The method returns an array with both stages in it (same format as for a one-stage-solution array)
         double[][]solBCC = threeDea.solveThreeStage("BCC");
