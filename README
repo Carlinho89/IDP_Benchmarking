@@ -1,4 +1,44 @@
-This is your new Play application
-=================================
+How To Install:
 
-This file will be packaged with your application, when using `activator dist`.
+prerequisites:
+
+- Download and install JDK >= 1.8
+    + Add "~/Java/jdk1.8.0/bin" to PATH
+- Install Play Framework Activator 
+    + downolad Acrivator Offline distribution (https://playframework.com/download -> "Offline Distriburion")
+    
+- Install IBM Cplex Studio
+    + Windows: 
+        - tested on "cplex_studio126.win-x86-64"
+        - IMPORTANT: Install "Microsoft Visual C++ 2010 SP1 Redistributable Package (x64)
+            + https://www.microsoft.com/en-us/download/details.aspx?id=13523
+        
+DEPLOYING the app:
+1. Navigate to the project folder
+
+2. run the command 
+    - "./activator" or ".\activator"  depending if you are on a Mac/Linux or Windows environment
+    this will open the "play terminal". In this terminal run the command
+    - "h2-browser"
+    this will start the h2 database and open a webpage (usually http://192.168.104.193:8082/). 
+    ---> THIS step is really important <---  
+    Once the page is loaded, set the Driver Class to "jdbc:h2:tcp://localhost/~/IDP_Benchmarking" and log in with EMPTY username and password.
+    
+    These are the complete settings: 
+        + Saved Settings: "Generic H2 (Embedded)"
+        + Settings Name: "Generic H2 (Embedded)"
+        + Driver Class: "org.h2.Driver"
+        + JDBC URL: "jdbc:h2:tcp://localhost/~/IDP_Benchmarking"
+        + username: "" 
+        + password: "" 
+
+3. Open the DB dump "benchmarking-football-clubs.sql" file located in:
+    - "~/IDP_Benchmarking-master/PHP-parser/idp/benchmarking-football-clubs.sql"
+    - copy and then paste the content of the file in "SQL statement" Text Field in the h2-browser web page.
+    - finally click on the "Run" button to import the DB Schema and Data
+
+4. In the "play terminal" run the application with the command:
+    - "run" 
+    the application will load on "http://localhost:9000/" 
+
+        
