@@ -1,3 +1,14 @@
+
+--
+-- Clearing tables. Don't mind if you get an error on these rows when executing the first time
+--
+
+drop table FIXED_DATA;
+drop table INPUT;
+drop table  LEAGUE ;
+drop table  SEASONAL_DATA ;
+drop table  TEAM ;
+
 --
 -- Database: `benchmarking-football-clubs`
 --
@@ -11609,3 +11620,41 @@ INSERT INTO `team` (`id`, `name`, `tm_id`, `logo`, `league_id`) VALUES
 (117, 'Paderborn', 127, '127.png', 4),
 (118, 'Ingolstadt', 4795, '4795.png', 4),
 (119, 'Darmstadt', 105, '105.png', 4);
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `fixed_data`
+--
+ALTER TABLE `fixed_data`
+  
+  ADD UNIQUE KEY `unique_index` (`team_id`,`input_id`);
+
+--
+-- Indexes for table `input`
+--
+ALTER TABLE `input`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `league`
+--
+ALTER TABLE `league`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `seasonal_data`
+--
+ALTER TABLE `seasonal_data`
+ 
+  ADD UNIQUE KEY `unique_index_2` (`team_id`,`year`,`input_id`);
+
+--
+-- Indexes for table `team`
+--
+ALTER TABLE `team`
+  ADD PRIMARY KEY (`id`);
+
+
