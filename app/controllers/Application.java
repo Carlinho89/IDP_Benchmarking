@@ -128,7 +128,7 @@ public class Application extends Controller {
             try {
                 Scenario solvedScenario = solverController.solve(query);
                 JsonNode node = Json.toJson(solvedScenario);
-                System.out.println("JSON RESULT: ");
+               // System.out.println("JSON RESULT: ");
                 System.out.println(Json.stringify(node));
                 return ok(show_charts_complex.render(Json.stringify(node), solvedScenario));
             } catch(Exception e){

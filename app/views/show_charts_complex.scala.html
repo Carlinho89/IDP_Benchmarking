@@ -7,10 +7,21 @@
 
     <script>
             var jsonString = JSON.stringify("@json");
-            jsonString=jsonString.replace(/&quot;/g, '\"').slice(1, -1);
-            console.log(jsonString);
-            var jsonObj=JSON.parse(jsonString);
-            console.log(jsonObj.overviewList[0][0][1]);
+
+            
+
+            jsonString= jsonString.replace(/&quot;/g, '\"');
+            jsonString=jsonString.replace('\"\,', '\,');
+            jsonString=jsonString.replace('result\":\"','result\":');
+           // text.slice(1, -1);
+            var result = jsonString.substring(1, jsonString.length-1);
+            console.log("After");
+            console.log(result);
+           // jsonString=jsonString.replace(/&quot;/g, '\"').slice(1, -1);
+            //console.log(jsonString);
+
+            var jsonObj=JSON.parse(result);
+            //console.log(jsonObj.overviewList[0][0][1]);
 
 
 

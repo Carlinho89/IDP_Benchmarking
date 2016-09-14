@@ -315,6 +315,7 @@ $(document).ready(function () {
             else
             {url = './complex-solver';}
             console.log(url);
+          
            /* var form = $('<form action="' + url + '" method="post">' +
                 '<input type="text" name="query" value="' + JSON.stringify(query) + '" />' +
                 '</form>');
@@ -330,6 +331,7 @@ $(document).ready(function () {
                 'value': JSON.stringify(query),
                 'type': 'hidden'
             }));
+
             $('body').append(newForm);
             newForm.submit();
         }
