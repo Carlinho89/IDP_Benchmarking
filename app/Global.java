@@ -30,13 +30,13 @@ public class Global extends GlobalSettings {
             //WINDOWS:
             path += "WIN/";
 
-            PlayNativeLibLoader.load(app.getFile(path + "cplex1260.dll").getPath());
-            PlayNativeLibLoader.load(app.getFile(path + "cplex1260processtransport.dll").getPath());
-            PlayNativeLibLoader.load(app.getFile(path + "cplex1260processworker.dll").getPath());
-            PlayNativeLibLoader.load(app.getFile(path + "cplex1260remote.dll").getPath());
-            PlayNativeLibLoader.load(app.getFile(path + "cplex1260remotejni.dll").getPath());
-            PlayNativeLibLoader.load(app.getFile(path + "cplex1260tcpiptransport.dll").getPath());
-            PlayNativeLibLoader.load(app.getFile(path + "cplex1260tcpipworker.dll").getPath());
+            PlayNativeLibLoader.load(app.getFile(path + "cplex1261.dll").getPath());
+            PlayNativeLibLoader.load(app.getFile(path + "cplex1261processtransport.dll").getPath());
+            PlayNativeLibLoader.load(app.getFile(path + "cplex1261processworker.dll").getPath());
+            PlayNativeLibLoader.load(app.getFile(path + "cplex1261remote.dll").getPath());
+            PlayNativeLibLoader.load(app.getFile(path + "cplex1261remotejni.dll").getPath());
+            PlayNativeLibLoader.load(app.getFile(path + "cplex1261tcpiptransport.dll").getPath());
+            PlayNativeLibLoader.load(app.getFile(path + "cplex1261tcpipworker.dll").getPath());
             PlayNativeLibLoader.load(app.getFile(path + "ILOG.Concert.dll").getPath());
             PlayNativeLibLoader.load(app.getFile(path + "ILOG.CPLEX.dll").getPath());
 
