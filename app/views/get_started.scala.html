@@ -48,6 +48,11 @@
         background-color: #009688;
     }
 
+    #chooseOrder {
+        padding-top: 50px;
+        color: #fff;
+        background-color: #c81db3;
+    }
     .navbar-inverse {
         margin-bottom: 0px;
     }
@@ -151,7 +156,7 @@
 
   .output-element{
      color: white;
-    background: rgb(0, 150, 136);;
+    background: rgb(0, 150, 136);
     margin-right: 10%;
     margin-top: 10px;
     margin-left:10%;
@@ -177,11 +182,36 @@
       margin: 10px;
   }
 
-        .red{
-            color: #fff;
-            background-color: #df0101;
-            margin-bottom: 22px;
+    .red{
+    color: #fff;
+    background-color: #df0101;
+    margin-bottom: 22px;
+    }
+
+    .select-method-box{
+        background: rgb(174, 44, 172);
+        color: white;
+        box-shadow: rgba(0,0,0,0.2) 10px 10px 10px;
+        padding:10px;
+        margin-bottom: 15px;
+
+    }
+
+        .dea-element{
+            background: rgb(200, 29, 179);
+            margin-right: 5%;
+            margin-bottom: 5%;
+            border-bottom: 2px solid rgb(134, 58, 133);
+            border-right: 2px solid rgb(134, 58, 133);
+
         }
+        .add-dea-button{
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+    #dea-templates { display: none; }
+
     </style>
 
 
@@ -202,9 +232,10 @@
                 <div>
                     <div class="collapse navbar-collapse" id="myNavbar">
                         <ul class="nav navbar-nav">
+                            <li><a href="#chooseMethod">Method</a></li>
                             <li><a href="#chooseLeague">League</a></li>
                             <li><a href="#chooseSeason">Season</a></li>
-                            <li><a href="#chooseMethod">Method</a></li>
+
                             <li><a href="#chooseInputs">Input</a></li>
                             <li><a href="#chooseOutputs">Output</a></li>
                                 <!--<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Section 4 <span class="caret"></span></a>
@@ -218,7 +249,56 @@
                 </div>
             </div>
         </nav>
+        <div id="chooseMethod" class="container-fluid text-center">
+            <h1>Choose a Method</h1>
+            <div id="chooseMethodAlert" class="alert alert-danger" style="visibility: hidden;">
+                <strong>Necessary Field</strong> Select one method
+            </div>
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-4" style="background-color: #610B0B; padding-bottom: 10;">
+                    <h1>Simple Solver</h1>
+                    <h5>The simple solver is suggested for non expert users. <br>Select Maximum three inputs and one output</h5>
+                    <button id="simpleSolver" type="button" class="btn btn-success red"> <span class="glyphicon glyphicon-check" aria-hidden="true"></span>Select</button>
 
+                </div>
+                <div class="col-md-2"></div>
+                <div class="col-md-4" style="background-color: #610B0B">
+                    <h1>Complex Solver</h1>
+                    <h5>The complex solver is using a multi stage Data Envelopment Analysis.<br>
+                        Please select the inputs and outputs desired<br>
+                        <button id="complexSolver" type="button" class="btn btn-success red"> <span class="glyphicon glyphicon-check" aria-hidden="true"></span>Select</button>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="superEff-element">
+                                    <input style="margin-left:5%" type="checkbox" value="efficiency" id="efficiency" >
+                                    <label >
+                                        Super Efficiency
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="superEff-element">
+
+                                    <div class="form-group">
+                                        <label for="numberOfSeasonsSelect">Number Of Seasons</label>
+                                        <select class="form-control" ; style="width: 90%; margin-left: 5%; margin-right: 5%" id="numberOfSeasonsSelect">
+                                            <option>1</option>
+
+                                        </select>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+                <div class="col-md-1"></div>
+
+
+
+            </div>
+
+        </div>
         <div id="chooseLeague" class="container-fluid text-center">
             <h1 >Choose a League</h1>
 
@@ -350,58 +430,7 @@
                 <div id="teams" class="row"></div>
             </div>
         </div>
-        <div id="chooseMethod" class="container-fluid text-center">
-            <h1>Choose a Method</h1>
-            <div id="chooseMethodAlert" class="alert alert-danger" style="visibility: hidden;">
-                <strong>Necessary Field</strong> Select one method
-            </div>
-            <div class="row">
-                <div class="col-md-1"></div>
-                <div class="col-md-4" style="background-color: #610B0B; padding-bottom: 10;">
-                <h1>Simple Solver</h1>
-                    <h5>The simple solver is suggested for non expert users. <br>Select Maximum three inputs and one output</h5>
-                    <button id="simpleSolver" type="button" class="btn btn-success red"> <span class="glyphicon glyphicon-check" aria-hidden="true"></span>Select</button>
 
-                </div>
-                <div class="col-md-2"></div>
-                <div class="col-md-4" style="background-color: #610B0B">
-                    <h1>Complex Solver</h1>
-                    <h5>The complex solver is using the three stage Data Envelopment Analysis.<br>
-                    Please select at least:<br>
-                    One social input, one offensive input, one defensive input<br>
-                    One sportive output, one offensive output, one offensive output</h5>
-                    <button id="complexSolver" type="button" class="btn btn-success red"> <span class="glyphicon glyphicon-check" aria-hidden="true"></span>Select</button>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="superEff-element">
-                                <input style="margin-left:5%" type="checkbox" value="efficiency" id="efficiency" >
-                                <label >
-                                Super Efficiency
-                                </label>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="superEff-element">
-
-                                <div class="form-group">
-                                    <label for="numberOfSeasonsSelect">Number Of Seasons</label>
-                                    <select class="form-control" ; style="width: 90%; margin-left: 5%; margin-right: 5%" id="numberOfSeasonsSelect">
-                                        <option>1</option>
-
-                                    </select>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-1"></div>
-
-
-
-            </div>
-
-        </div>
         <div id="chooseInputs" class="container-fluid">
             <h1 class="text-center">Choose input parameters</h1>
 
@@ -602,6 +631,91 @@
 
         </div>
 
+        <div id="chooseOrder" class="container-fluid">
+            <div class="row">
+                <div class="col-md-1">
+
+                </div>
+                <div class="col-md-10">
+                    <h1  class="text-center">Compose Your Solver</h1>
+                    <p  class="text-center">You have choosen to use a multi-stage data analysis. This method is a composition of several "Simple Solvers" or one-stage DEAs.</p>
+                    <p class="text-center"> You can create up to three stages and solve multiple DEAs in each stage. The results from one stage can be used as inputs for DEAs in the following stages</p>
+                </div>
+                <div class="col-md-1">
+
+                </div>
+            </div>
+            <div class="row" >
+                <div class="col-md-4"></div>
+                <div class="col-md-4  select-method-box">
+                    <h4 class="text-center">Select a solving method:
+                    <h5 class="text-center">Learn more on <a href="/benchmarking/CCR">CCR</a>,<a href="/benchmarking/BCC">BCC</a></h5>
+                    <div class="form-group">
+                        <label for="seasonSelect"></label>
+                        <select class="form-control" id="methodSelect">
+                            <option>BCC</option>
+                            <option>CCR</option>
+                        </select>
+
+                    </div>
+                </div>
+                <div class="col-md-4"></div>
+
+
+            </div>
+            <div class="row " id="setStages" >
+                <div class="col-md-4">
+                    <div class="row">
+                        <div class="col-md-4"></div>
+                        <div class="col-md-4"><h1 class="text-center">Stage 1</h1></div>
+                        <div class="col-md-4"><button id="stage1" type="button" class="btn btn-success add-dea-button"><span class="glyphicon glyphicon-plus"></span>Add DEA</button></div>
+                    </div>
+                    <div id="stage1-dea" class="stage">
+
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4"></div>
+                        <div class="col-md-4"></div>
+                        <div class="col-md-4"><button id="stage1-rem" style=" display: none;" type="button" class="btn btn-danger add-dea-button"><span class="glyphicon glyphicon-minus"></span>Remove DEA</button></div>
+                    </div>
+
+                </div>
+                <div class="col-md-4">
+                    <div class="row">
+                        <div class="col-md-4"></div>
+                        <div class="col-md-4">    <h1 class="text-center">Stage 2</h1></div>
+                        <div class="col-md-4">  <button id="stage2"  type="button" class="btn btn-success add-dea-button"><span class="glyphicon glyphicon-plus"></span>Add DEA</button></div>
+                    </div>
+                    <div id="stage2-dea" class="stage">
+
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4"></div>
+                        <div class="col-md-4"></div>
+                        <div class="col-md-4"><button id="stage2-rem" style=" display: none;" type="button" class="btn btn-danger add-dea-button"><span class="glyphicon glyphicon-minus"></span>Remove DEA</button></div>
+                    </div>
+
+                </div>
+                <div class="col-md-4">
+                    <div class="row">
+                        <div class="col-md-4"></div>
+                        <div class="col-md-4">    <h1 class="text-center">Stage 3</h1></div>
+                        <div class="col-md-4">  <button id="stage3" type="button" class="btn btn-success add-dea-button"><span class="glyphicon glyphicon-plus"></span>Add DEA</button></div>
+                    </div>
+                    <div id="stage3-dea" class="stage">
+
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4"></div>
+                        <div class="col-md-4"></div>
+                        <div class="col-md-4"><button id="stage3-rem" style=" display: none;" type="button" class="btn btn-danger add-dea-button"><span class="glyphicon glyphicon-minus"></span>Remove DEA</button></div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
         <div id="resume" class="container-fluid">
             <div class="row">
                 <div class="col-md-4">
@@ -620,6 +734,43 @@
             </div>
 
 
+        </div>
+
+        <div >
+            <div class="select-method-box" id="dea-templates">
+
+
+                <div class="row">
+                    <div class="col-md-3">Inputs:</div>
+                    <div class="col-md-9 dea-inputs-container" >
+
+
+
+                    </div>
+
+
+                </div>
+                <br><br>
+                <div class="row">
+                    <div class="col-md-3">Outputs:</div>
+                    <div class="col-md-9 dea-outputs-container">
+
+
+                    </div>
+
+
+                </div>
+                <br><br>
+                <div class="row dea-orientation-container">
+
+
+
+                </div>
+
+
+
+
+            </div>
         </div>
 
     </body>
