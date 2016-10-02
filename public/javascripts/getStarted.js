@@ -26,7 +26,7 @@ $(document).ready(function () {
         event.preventDefault();
         //save the value of the selected league
         query.solver = "simple";
-
+        document.getElementById("chooseOrder").setAttribute("style","display: none;");
         updateResume(query);
         document.getElementById("chooseMethodAlert").style.visibility = "hidden";
 
@@ -44,7 +44,7 @@ $(document).ready(function () {
         //save the value of the selected league
         query.solver = "complex";
         query.selectedMethod = "BCC";
-
+        document.getElementById("chooseOrder").setAttribute("style","display: block;");
         updateResume(query);
         document.getElementById("chooseMethodAlert").style.visibility = "hidden";
 
@@ -160,12 +160,27 @@ $(document).ready(function () {
     $("#chooseInputs input").on('click', function (event) {
         var names = [];
         var selected = [];
+        var alreadySelected = "";
+        var value=-1;
         $('#chooseInputs input:checked').each(function () {
-            selected.push(parseInt($(this).attr('value')));
-            names.push($(this).attr('name'));
+            value=parseInt($(this).attr('value'));
+            console.log(value);
+
+            if (query.selectedOutputs && query.selectedOutputs.indexOf(value)>=0  ){
+                alreadySelected=$(this).attr('name');
+                $(this).prop( "checked", false );
+
+            } else {
+                selected.push(parseInt($(this).attr('value')));
+                names.push($(this).attr('name'));
+            }
+
 
 
         });
+        if(alreadySelected!=""){
+            alert("The "+alreadySelected+" parameter is already selected as output");
+        }
         query.selectedInputs = selected;
         query.selectedInputsNames = names;
 
@@ -210,12 +225,28 @@ $(document).ready(function () {
     $("#chooseOutputs input").on('click', function (event) {
         var names = [];
         var selected = [];
+        var alreadySelected = "";
+        var value=-1;
         $('#chooseOutputs input:checked').each(function () {
-            selected.push(parseInt($(this).attr('value')));
-            names.push($(this).attr('name'));
+
+
+            value=parseInt($(this).attr('value'));
+            console.log(value);
+
+            if (query.selectedInputs && query.selectedInputs.indexOf(value)>=0  ){
+                alreadySelected=$(this).attr('name');
+                $(this).prop( "checked", false );
+
+            } else {
+                selected.push(parseInt($(this).attr('value')));
+                names.push($(this).attr('name'));
+            }
 
 
         });
+        if(alreadySelected!=""){
+            alert("The "+alreadySelected+" parameter is already selected as input");
+        }
         query.selectedOutputs = selected;
         query.selectedOutputsNames = names;
 
@@ -278,84 +309,87 @@ $(document).ready(function () {
     });
 //Stage 1 manager
     $("#stage1").on('click', function (event) {
-        document.getElementById("stage1-rem").setAttribute("style","display: block;");
-        var index = 0;
-        var dea= {};
-        dea.selectedInputs=[];
-        dea.selectedOutputs=[];
-        dea.previousResults=[];
-        dea.stage=1;
-        dea.inputOriented=false;
-        dea.deaID=0;
+        if(!typeof query.selectedInputs === "undefined" && !typeof query.selectedOutputs === "undefined" && query.selectedInputs.length>0 && query.selectedOutputs.length>0){
+            if(typeof query.stage1DEA === "undefined")
+            document.getElementById("stage1-rem").setAttribute("style","display: block;");
+            var index = 0;
+            var dea= {};
+            dea.selectedInputs=[];
+            dea.selectedOutputs=[];
+            dea.previousResults=[];
+            dea.stage=1;
+            dea.inputOriented=false;
+            dea.deaID=0;
 
-        if(typeof query.stage1DEA === "undefined"){
-            query.stage1DEA= [];
-            query.stage1DEA.push(dea);
+            if(typeof query.stage1DEA === "undefined"){
+                query.stage1DEA= [];
+                query.stage1DEA.push(dea);
 
-        } else {
-            console.log(query.stage1DEA.length);
-            index= query.stage1DEA.length;
-            dea.deaID=index;
-            query.stage1DEA.push(dea);
+            } else {
+                console.log(query.stage1DEA.length);
+                index= query.stage1DEA.length;
+                dea.deaID=index;
+                query.stage1DEA.push(dea);
 
+            }
+
+
+
+
+            var node = document.getElementById("dea-templates").cloneNode(true);
+            var newID= "dea"+(index);
+            console.log(newID);
+            node.setAttribute("id",newID);
+            //  var h4 = document.createElement("h4").setAttribute("class","text-center ");
+            // h4.innerHTML="AAA";
+
+            node.insertAdjacentHTML("afterbegin", "<h4 class='text-center'>DEA"+(index+1)+"</h4>");
+            //$( "#"+newID+".dea-title" ).replaceWith( '<h4>AAAAAA</h4>' );
+            //console.log(document.getElementById(newID).innerHTML);
+            //console.log("aaaaa" + JSON.stringify($('#'+newID+' .dea-title')));
+
+
+            var container = document.getElementById('stage1-dea');
+            console.log(JSON.stringify(query.stage1DEA));
+
+            var deaInputs= node.getElementsByClassName("dea-inputs-container")[0];
+            //deaInputs.innerHTML="AA";
+            var inputlist="";
+            for(var i=0; i< query.selectedInputs.length;i++){
+                inputlist+=' <div class="col-md-4 ">';
+                inputlist+=' <div class="dea-element">';
+                inputlist+='<input style=" margin-left:5%" type="checkbox" class="dea-input" stage="1" value='+query.selectedInputs[i]+' dea="'+index+'" parameter-type="input" >';
+                inputlist+='<label>'+query.selectedInputsNames[i]+'</label>';
+                inputlist+='</div></div>';
+            }
+            deaInputs.innerHTML=inputlist;
+
+            var deaOutputs= node.getElementsByClassName("dea-outputs-container")[0];
+            //deaInputs.innerHTML="AA";
+            var outputlist="";
+            for(var i=0; i< query.selectedOutputs.length;i++){
+                outputlist+=' <div class="col-md-4 ">';
+                outputlist+=' <div class="dea-element">';
+                outputlist+='<input style=" margin-left:5%" type="checkbox" class="dea-input" stage="1" value='+query.selectedOutputs[i]+' dea="'+index+'" parameter-type="output" >';
+                outputlist+='<label>'+query.selectedOutputsNames[i]+'</label>';
+                outputlist+='</div></div>';
+            }
+            deaOutputs.innerHTML=outputlist;
+
+            var deaOrientation= node.getElementsByClassName("dea-orientation-container")[0];
+            var orientationDiv="";
+            orientationDiv+='<div class="col-md-4">Orienation:</div>';
+            orientationDiv+='<div class="col-md-4"><input class="col-md-4" type="radio" stage="1" name="orientation" value="Input" checked dea="'+index+'" parameter-type="orientation"> Input</div>';
+            orientationDiv+='<div class="col-md-4"><input class="col-md-4" type="radio" stage="1" name="orientation" value="Output" dea="'+index+'" parameter-type="orientation"> Output</div>';
+            deaOrientation.innerHTML=orientationDiv;
+
+
+            container.appendChild(node);
+        }
+        else {
+            alert("Choose inputs and outputs first!");
         }
 
-
-
-
-        var node = document.getElementById("dea-templates").cloneNode(true);
-        var newID= "dea"+(index);
-        console.log(newID);
-        node.setAttribute("id",newID);
-      //  var h4 = document.createElement("h4").setAttribute("class","text-center ");
-       // h4.innerHTML="AAA";
-
-        node.insertAdjacentHTML("afterbegin", "<h4 class='text-center'>DEA"+(index+1)+"</h4>");
-        //$( "#"+newID+".dea-title" ).replaceWith( '<h4>AAAAAA</h4>' );
-        //console.log(document.getElementById(newID).innerHTML);
-        //console.log("aaaaa" + JSON.stringify($('#'+newID+' .dea-title')));
-
-
-        var container = document.getElementById('stage1-dea');
-        console.log(JSON.stringify(query.stage1DEA));
-
-       var deaInputs= node.getElementsByClassName("dea-inputs-container")[0];
-        //deaInputs.innerHTML="AA";
-        var inputlist="";
-        for(var i=0; i< query.selectedInputs.length;i++){
-            inputlist+=' <div class="col-md-4 ">';
-            inputlist+=' <div class="dea-element">';
-            inputlist+='<input style=" margin-left:5%" type="checkbox" class="dea-input" stage="1" value='+query.selectedInputs[i]+' dea="'+index+'" parameter-type="input" >';
-            inputlist+='<label>'+query.selectedInputsNames[i]+'</label>';
-            inputlist+='</div></div>';
-        }
-        deaInputs.innerHTML=inputlist;
-
-        var deaOutputs= node.getElementsByClassName("dea-outputs-container")[0];
-        //deaInputs.innerHTML="AA";
-        var outputlist="";
-        for(var i=0; i< query.selectedOutputs.length;i++){
-            outputlist+=' <div class="col-md-4 ">';
-            outputlist+=' <div class="dea-element">';
-            outputlist+='<input style=" margin-left:5%" type="checkbox" class="dea-input" stage="1" value='+query.selectedOutputs[i]+' dea="'+index+'" parameter-type="output" >';
-            outputlist+='<label>'+query.selectedOutputsNames[i]+'</label>';
-            outputlist+='</div></div>';
-        }
-        deaOutputs.innerHTML=outputlist;
-
-        var deaOrientation= node.getElementsByClassName("dea-orientation-container")[0];
-        var orientationDiv="";
-        orientationDiv+='<div class="col-md-4">Orienation:</div>';
-        orientationDiv+='<div class="col-md-4"><input class="col-md-4" type="radio" stage="1" name="orientation" value="Input" checked dea="'+index+'" parameter-type="orientation"> Input</div>';
-        orientationDiv+='<div class="col-md-4"><input class="col-md-4" type="radio" stage="1" name="orientation" value="Output" dea="'+index+'" parameter-type="orientation"> Output</div>';
-        deaOrientation.innerHTML=orientationDiv;
-
-
-
-
-
-
-        container.appendChild(node);
     });
 
     $("#stage1-rem").on('click', function (event) {
@@ -387,87 +421,90 @@ $(document).ready(function () {
 
 //Stage 2 manager
     $("#stage2").on('click', function (event) {
-        document.getElementById("stage2-rem").setAttribute("style","display: block;");
-        var index = 0;
-        var dea= {};
-        dea.selectedInputs=[];
-        dea.selectedOutputs=[];
-        dea.previousResults=[];
-        dea.stage=2;
-        dea.inputOriented=false;
-        dea.deaID=0;
+        if(!typeof query.selectedInputs === "undefined" && !typeof query.selectedOutputs === "undefined" && query.selectedInputs.length>0 && query.selectedOutputs.length>0) {
+            document.getElementById("stage2-rem").setAttribute("style", "display: block;");
+            var index = 0;
+            var dea = {};
+            dea.selectedInputs = [];
+            dea.selectedOutputs = [];
+            dea.previousResults = [];
+            dea.stage = 2;
+            dea.inputOriented = false;
+            dea.deaID = 0;
 
-        if(typeof query.stage2DEA === "undefined"){
-            query.stage2DEA= [];
-            query.stage2DEA.push(dea);
+            if (typeof query.stage2DEA === "undefined") {
+                query.stage2DEA = [];
+                query.stage2DEA.push(dea);
 
-        } else {
-            console.log(query.stage2DEA.length);
-            index= query.stage2DEA.length;
-            dea.deaID=index;
-            query.stage2DEA.push(dea);
+            } else {
+                console.log(query.stage2DEA.length);
+                index = query.stage2DEA.length;
+                dea.deaID = index;
+                query.stage2DEA.push(dea);
 
+            }
+
+
+            var node = document.getElementById("dea-templates").cloneNode(true);
+            var newID = "dea" + (index);
+            console.log(newID);
+            node.setAttribute("id", newID);
+            //  var h4 = document.createElement("h4").setAttribute("class","text-center ");
+            // h4.innerHTML="AAA";
+
+            node.insertAdjacentHTML("afterbegin", "<h4 class='text-center'>DEA" + (index + 1) + "</h4>");
+            //$( "#"+newID+".dea-title" ).replaceWith( '<h4>AAAAAA</h4>' );
+            //console.log(document.getElementById(newID).innerHTML);
+            //console.log("aaaaa" + JSON.stringify($('#'+newID+' .dea-title')));
+
+
+            var container = document.getElementById('stage2-dea');
+            console.log(JSON.stringify(query.stage1DEA));
+
+            var deaInputs = node.getElementsByClassName("dea-inputs-container")[0];
+            //deaInputs.innerHTML="AA";
+            var inputlist = "";
+            for (var i = 0; i < query.selectedInputs.length; i++) {
+                inputlist += ' <div class="col-md-4 ">';
+                inputlist += ' <div class="dea-element">';
+                inputlist += '<input style=" margin-left:5%" type="checkbox" class="dea-input" stage="2" value=' + query.selectedInputs[i] + ' dea="' + index + '"  parameter-type="input">';
+                inputlist += '<label>' + query.selectedInputsNames[i] + '</label>';
+                inputlist += '</div></div>';
+            }
+            for (var i = 0; i < query.stage1DEA.length; i++) {
+                inputlist += ' <div class="col-md-4 ">';
+                inputlist += ' <div class="dea-element">';
+                inputlist += '<input style=" margin-left:5%" type="checkbox" class="dea-input" stage="2" value="' + (1 * i) + '" dea="' + index + '"  parameter-type="result">';
+                inputlist += '<label>Stage1 DEA' + (i + 1) + ' result</label>';
+                inputlist += '</div></div>';
+            }
+            deaInputs.innerHTML = inputlist;
+
+            var deaOutputs = node.getElementsByClassName("dea-outputs-container")[0];
+            //deaInputs.innerHTML="AA";
+            var outputlist = "";
+            for (var i = 0; i < query.selectedOutputs.length; i++) {
+                outputlist += ' <div class="col-md-4 ">';
+                outputlist += ' <div class="dea-element">';
+                outputlist += '<input style=" margin-left:5%" type="checkbox" class="dea-input" stage="2" value=' + query.selectedOutputs[i] + ' dea="' + index + '" parameter-type="output" >';
+                outputlist += '<label>' + query.selectedOutputsNames[i] + '</label>';
+                outputlist += '</div></div>';
+            }
+            deaOutputs.innerHTML = outputlist;
+
+
+            var deaOrientation = node.getElementsByClassName("dea-orientation-container")[0];
+            var orientationDiv = "";
+            orientationDiv += '<div class="col-md-4">Orienation:</div>';
+            orientationDiv += '<div class="col-md-4"><input class="col-md-4" type="radio" stage="2" name="orientation" value="Input" checked dea="' + index + '" parameter-type="orientation"> Input</div>';
+            orientationDiv += '<div class="col-md-4"><input class="col-md-4" type="radio" stage="2" name="orientation" value="Output" dea="' + index + '" parameter-type="orientation"> Output</div>';
+            deaOrientation.innerHTML = orientationDiv;
+
+            container.appendChild(node);
         }
-
-
-
-
-        var node = document.getElementById("dea-templates").cloneNode(true);
-        var newID= "dea"+(index);
-        console.log(newID);
-        node.setAttribute("id",newID);
-        //  var h4 = document.createElement("h4").setAttribute("class","text-center ");
-        // h4.innerHTML="AAA";
-
-        node.insertAdjacentHTML("afterbegin", "<h4 class='text-center'>DEA"+(index+1)+"</h4>");
-        //$( "#"+newID+".dea-title" ).replaceWith( '<h4>AAAAAA</h4>' );
-        //console.log(document.getElementById(newID).innerHTML);
-        //console.log("aaaaa" + JSON.stringify($('#'+newID+' .dea-title')));
-
-
-        var container = document.getElementById('stage2-dea');
-        console.log(JSON.stringify(query.stage1DEA));
-
-        var deaInputs= node.getElementsByClassName("dea-inputs-container")[0];
-        //deaInputs.innerHTML="AA";
-        var inputlist="";
-        for(var i=0; i< query.selectedInputs.length;i++){
-            inputlist+=' <div class="col-md-4 ">';
-            inputlist+=' <div class="dea-element">';
-            inputlist+='<input style=" margin-left:5%" type="checkbox" class="dea-input" stage="2" value='+query.selectedInputs[i]+' dea="'+index+'"  parameter-type="input">';
-            inputlist+='<label>'+query.selectedInputsNames[i]+'</label>';
-            inputlist+='</div></div>';
+        else {
+            alert("Choose inputs and outputs first!");
         }
-        for(var i=0; i< query.stage1DEA.length;i++){
-            inputlist+=' <div class="col-md-4 ">';
-            inputlist+=' <div class="dea-element">';
-            inputlist+='<input style=" margin-left:5%" type="checkbox" class="dea-input" stage="2" value="'+(1*i)+'" dea="'+index+'"  parameter-type="result">';
-            inputlist+='<label>Stage1 DEA'+(i+1)+' result</label>';
-            inputlist+='</div></div>';
-        }
-        deaInputs.innerHTML=inputlist;
-
-        var deaOutputs= node.getElementsByClassName("dea-outputs-container")[0];
-        //deaInputs.innerHTML="AA";
-        var outputlist="";
-        for(var i=0; i< query.selectedOutputs.length;i++){
-            outputlist+=' <div class="col-md-4 ">';
-            outputlist+=' <div class="dea-element">';
-            outputlist+='<input style=" margin-left:5%" type="checkbox" class="dea-input" stage="2" value='+query.selectedOutputs[i]+' dea="'+index+'" parameter-type="output" >';
-            outputlist+='<label>'+query.selectedOutputsNames[i]+'</label>';
-            outputlist+='</div></div>';
-        }
-        deaOutputs.innerHTML=outputlist;
-
-
-        var deaOrientation= node.getElementsByClassName("dea-orientation-container")[0];
-        var orientationDiv="";
-        orientationDiv+='<div class="col-md-4">Orienation:</div>';
-        orientationDiv+='<div class="col-md-4"><input class="col-md-4" type="radio" stage="2" name="orientation" value="Input" checked dea="'+index+'" parameter-type="orientation"> Input</div>';
-        orientationDiv+='<div class="col-md-4"><input class="col-md-4" type="radio" stage="2" name="orientation" value="Output" dea="'+index+'" parameter-type="orientation"> Output</div>';
-        deaOrientation.innerHTML=orientationDiv;
-
-        container.appendChild(node);
     });
 
     $("#stage2-rem").on('click', function (event) {
@@ -499,87 +536,92 @@ $(document).ready(function () {
 
 //Stage 3 manager
     $("#stage3").on('click', function (event) {
-        document.getElementById("stage3-rem").setAttribute("style","display: block;");
-        var index = 0;
-        var dea= {};
-        dea.selectedInputs=[];
-        dea.selectedOutputs=[];
-        dea.previousResults=[];
-        dea.stage=3;
-        dea.inputOriented=false;
-        dea.deaID=0;
+        if(!typeof query.selectedInputs === "undefined" && !typeof query.selectedOutputs === "undefined" && query.selectedInputs.length>0 && query.selectedOutputs.length>0) {
+            document.getElementById("stage3-rem").setAttribute("style","display: block;");
+            var index = 0;
+            var dea= {};
+            dea.selectedInputs=[];
+            dea.selectedOutputs=[];
+            dea.previousResults=[];
+            dea.stage=3;
+            dea.inputOriented=false;
+            dea.deaID=0;
 
-        if(typeof query.stage3DEA === "undefined"){
-            query.stage3DEA= [];
-            query.stage3DEA.push(dea);
+            if(typeof query.stage3DEA === "undefined"){
+                query.stage3DEA= [];
+                query.stage3DEA.push(dea);
 
-        } else {
-            console.log(query.stage3DEA.length);
-            index= query.stage3DEA.length;
-            dea.deaID=index;
-            query.stage3DEA.push(dea);
+            } else {
+                console.log(query.stage3DEA.length);
+                index= query.stage3DEA.length;
+                dea.deaID=index;
+                query.stage3DEA.push(dea);
 
+            }
+
+
+
+
+            var node = document.getElementById("dea-templates").cloneNode(true);
+            var newID= "dea"+(index);
+            console.log(newID);
+            node.setAttribute("id",newID);
+            //  var h4 = document.createElement("h4").setAttribute("class","text-center ");
+            // h4.innerHTML="AAA";
+
+            node.insertAdjacentHTML("afterbegin", "<h4 class='text-center'>DEA"+(index+1)+"</h4>");
+            //$( "#"+newID+".dea-title" ).replaceWith( '<h4>AAAAAA</h4>' );
+            //console.log(document.getElementById(newID).innerHTML);
+            //console.log("aaaaa" + JSON.stringify($('#'+newID+' .dea-title')));
+
+
+            var container = document.getElementById('stage3-dea');
+            console.log(JSON.stringify(query.stage3DEA));
+
+            var deaInputs= node.getElementsByClassName("dea-inputs-container")[0];
+            //deaInputs.innerHTML="AA";
+            var inputlist="";
+            for(var i=0; i< query.selectedInputs.length;i++){
+                inputlist+=' <div class="col-md-4 ">';
+                inputlist+=' <div class="dea-element">';
+                inputlist+='<input style=" margin-left:5%" type="checkbox" class="dea-input" stage="3" value='+query.selectedInputs[i]+' dea="'+index+'" parameter-type="input">';
+                inputlist+='<label>'+query.selectedInputsNames[i]+'</label>';
+                inputlist+='</div></div>';
+            }
+            for(var i=0; i< query.stage2DEA.length;i++){
+                inputlist+=' <div class="col-md-4 ">';
+                inputlist+=' <div class="dea-element">';
+                inputlist+='<input style=" margin-left:5%" type="checkbox" class="dea-input" stage="3" value="'+(1*i)+'" dea="'+index+'" parameter-type="result">';
+                inputlist+='<label>Stage2 DEA'+(i+1)+' result</label>';
+                inputlist+='</div></div>';
+            }
+            deaInputs.innerHTML=inputlist;
+
+            var deaOutputs= node.getElementsByClassName("dea-outputs-container")[0];
+            //deaInputs.innerHTML="AA";
+            var outputlist="";
+            for(var i=0; i< query.selectedOutputs.length;i++){
+                outputlist+=' <div class="col-md-4 ">';
+                outputlist+=' <div class="dea-element">';
+                outputlist+='<input style=" margin-left:5%" type="checkbox" class="dea-input" stage="3" value='+query.selectedOutputs[i]+' dea="'+index+'" parameter-type="output">';
+                outputlist+='<label>'+query.selectedOutputsNames[i]+'</label>';
+                outputlist+='</div></div>';
+            }
+            deaOutputs.innerHTML=outputlist;
+
+            var deaOrientation= node.getElementsByClassName("dea-orientation-container")[0];
+            var orientationDiv="";
+            orientationDiv+='<div class="col-md-4">Orienation:</div>';
+            orientationDiv+='<div class="col-md-4"><input class="col-md-4" type="radio" stage="3" name="orientation" value="Input" checked dea="'+index+'" parameter-type="orientation"> Input</div>';
+            orientationDiv+='<div class="col-md-4"><input class="col-md-4" type="radio" stage="3" name="orientation" value="Output" dea="'+index+'" parameter-type="orientation"> Output</div>';
+            deaOrientation.innerHTML=orientationDiv;
+
+
+            container.appendChild(node);
         }
-
-
-
-
-        var node = document.getElementById("dea-templates").cloneNode(true);
-        var newID= "dea"+(index);
-        console.log(newID);
-        node.setAttribute("id",newID);
-        //  var h4 = document.createElement("h4").setAttribute("class","text-center ");
-        // h4.innerHTML="AAA";
-
-        node.insertAdjacentHTML("afterbegin", "<h4 class='text-center'>DEA"+(index+1)+"</h4>");
-        //$( "#"+newID+".dea-title" ).replaceWith( '<h4>AAAAAA</h4>' );
-        //console.log(document.getElementById(newID).innerHTML);
-        //console.log("aaaaa" + JSON.stringify($('#'+newID+' .dea-title')));
-
-
-        var container = document.getElementById('stage3-dea');
-        console.log(JSON.stringify(query.stage3DEA));
-
-        var deaInputs= node.getElementsByClassName("dea-inputs-container")[0];
-        //deaInputs.innerHTML="AA";
-        var inputlist="";
-        for(var i=0; i< query.selectedInputs.length;i++){
-            inputlist+=' <div class="col-md-4 ">';
-            inputlist+=' <div class="dea-element">';
-            inputlist+='<input style=" margin-left:5%" type="checkbox" class="dea-input" stage="3" value='+query.selectedInputs[i]+' dea="'+index+'" parameter-type="input">';
-            inputlist+='<label>'+query.selectedInputsNames[i]+'</label>';
-            inputlist+='</div></div>';
+        else {
+            alert("Choose inputs and outputs first!");
         }
-        for(var i=0; i< query.stage2DEA.length;i++){
-            inputlist+=' <div class="col-md-4 ">';
-            inputlist+=' <div class="dea-element">';
-            inputlist+='<input style=" margin-left:5%" type="checkbox" class="dea-input" stage="3" value="'+(1*i)+'" dea="'+index+'" parameter-type="result">';
-            inputlist+='<label>Stage2 DEA'+(i+1)+' result</label>';
-            inputlist+='</div></div>';
-        }
-        deaInputs.innerHTML=inputlist;
-
-        var deaOutputs= node.getElementsByClassName("dea-outputs-container")[0];
-        //deaInputs.innerHTML="AA";
-        var outputlist="";
-        for(var i=0; i< query.selectedOutputs.length;i++){
-            outputlist+=' <div class="col-md-4 ">';
-            outputlist+=' <div class="dea-element">';
-            outputlist+='<input style=" margin-left:5%" type="checkbox" class="dea-input" stage="3" value='+query.selectedOutputs[i]+' dea="'+index+'" parameter-type="output">';
-            outputlist+='<label>'+query.selectedOutputsNames[i]+'</label>';
-            outputlist+='</div></div>';
-        }
-        deaOutputs.innerHTML=outputlist;
-
-        var deaOrientation= node.getElementsByClassName("dea-orientation-container")[0];
-        var orientationDiv="";
-        orientationDiv+='<div class="col-md-4">Orienation:</div>';
-        orientationDiv+='<div class="col-md-4"><input class="col-md-4" type="radio" stage="3" name="orientation" value="Input" checked dea="'+index+'" parameter-type="orientation"> Input</div>';
-        orientationDiv+='<div class="col-md-4"><input class="col-md-4" type="radio" stage="3" name="orientation" value="Output" dea="'+index+'" parameter-type="orientation"> Output</div>';
-        deaOrientation.innerHTML=orientationDiv;
-
-
-        container.appendChild(node);
     });
 
     $("#stage3-rem").on('click', function (event) {
@@ -664,7 +706,7 @@ $(document).ready(function () {
             hash = "#chooseOutputs";
         }
 
-        if (typeof query.selectedInputs === "undefined" || query.selectedInputs.length < 2) {
+        if (typeof query.selectedInputs === "undefined" || query.selectedInputs.length < 1) {
 
             hash = "#chooseInputs";
             alert = "chooseInputsAlert";
@@ -931,7 +973,7 @@ function displayTeams(query) {
         success: function (data) {
             $("#teams").empty();
             var html='<div class="row"><div class="col-md-1"></div>';
-            
+            query.numberOfTeams=data.length;
 // <a href=""><img class="  img-thumbnail img-circle img-responsive favorite_team" src="/assets/images/team_logo/' + data[i].logo + '"  val="' + data[i].tm_id + '" title="' + data[i].name + '" ></a>
             for (var i = 0; i < data.length; i++) {
                 html+='<div class="col-md-1 "><div class="team-box" ><img class="team-logo img-thumbnail img-responsive favorite_team" src="/assets/images/team_logo/' + data[i].logo + '"  val="' + data[i].tm_id + '" title="' + data[i].name + '" ></div></div>';
