@@ -8,106 +8,258 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 /**
  * Created by carlodidomenico on 08/07/2016.
  */
-public class SolverComplexQuery extends SolverSimpleQuery {
-    private List<Integer> selectionOffIn;
-    private List<Integer> selectionDefIn;
-    private List<Integer> selectionSocIn;
+public class SolverComplexQuery {
 
-    private List<Integer> selectionOffOut;
-    private List<Integer> selectionDefOut;
-    private List<Integer> selectionAthOut;
+    private boolean superEff;
+    private String solver;
+    private String selectedMethod;
+    private String leagueName;
+    private String teamName;
+    private ArrayList<Integer> selectedInputs;
+    private ArrayList<String> selectedInputsNames;
+    private ArrayList<Integer> selectedOutputs;
+    private ArrayList<String> selectedOutputsNames;
+    private ArrayList<DEAWrapper> stage1DEA;
+    private ArrayList<DEAWrapper> stage2DEA;
+    private ArrayList<DEAWrapper> stage3DEA;
+    private int season;
+    private int numberOfTeams;
+    private int teamID;
+    private int numberOfSeasons;
+    private int leagueID;
 
-    private boolean[][]ramifications;
 
     public SolverComplexQuery(String query){
-        super(query);
-        ramifications = new boolean[][]{{false, false}, {false, true}, {false, false}};
-
-
         try {
-
-            selectionOffIn = new ArrayList<Integer>();
-            selectionDefIn = new ArrayList<Integer>();
-            selectionOffOut = new ArrayList<Integer>();
-            selectionDefOut = new ArrayList<Integer>();
-            selectionAthOut = new ArrayList<Integer>();
-            selectionSocIn = new ArrayList<Integer>();
-
+            season = numberOfSeasons = teamID = numberOfSeasons = leagueID = -1;
+            superEff = false;
+            solver = selectedMethod = leagueName = teamName = null;
+            selectedInputs = new ArrayList<>();
+            selectedInputsNames = new ArrayList<>();
+            selectedOutputs = new ArrayList<>();
+            selectedOutputsNames = new ArrayList<>();
+            stage1DEA = new ArrayList<>();
+            stage2DEA = new ArrayList<>();
+            stage3DEA = new ArrayList<>();
 
             ObjectMapper mapper = new ObjectMapper();
 
             JsonNode rootNode = mapper.readTree(query);
-
-            this.setSeason(rootNode.path("numberOfSeasons").asInt());
-
-            JsonNode selectedOffInputsNode = rootNode.path("offSelectedInputs");
-            Iterator<JsonNode> iterator = selectedOffInputsNode.iterator();
-            //System.out.print("offSelectedInputs: [ ");
-
-            while (iterator.hasNext()) {
-                JsonNode input = iterator.next();
-                //System.out.print(input.asInt() + " ");
-                selectionOffIn.add(input.asInt());
+            if (rootNode.has("superEff"))
+                superEff = rootNode.path("superEff").asBoolean();
+            if (rootNode.has("season"))
+                season = rootNode.path("season").asInt();
+            if (rootNode.has("numberOfTeams"))
+                numberOfTeams = rootNode.path("numberOfTeams").asInt();
+            if (rootNode.has("numberOfSeasons"))
+                numberOfSeasons = rootNode.path("numberOfSeasons").asInt(1);
+            if (rootNode.has("teamID"))
+                teamID = rootNode.path("teamID").asInt();
+            if (rootNode.has("leagueID"))
+                leagueID = rootNode.path("leagueID").asInt();
+            if (rootNode.has("solver"))
+                solver = rootNode.path("solver").asText();
+            if (rootNode.has("selectedMethod"))
+                selectedMethod = rootNode.path("selectedMethod").asText();
+            if (rootNode.has("leagueName"))
+                leagueName = rootNode.path("leagueName").asText();
+            if (rootNode.has("teamName"))
+                teamName = rootNode.path("teamName").asText();
+            if (rootNode.has("selectedInputs")){
+                JsonNode selectedInputs = rootNode.path("selectedInputs");
+                Iterator<JsonNode> iterator = selectedInputs.iterator();
+                while (iterator.hasNext()){
+                    JsonNode input = iterator.next();
+                    this.selectedInputs.add(input.asInt());
+                }
             }
-
-            //System.out.println("]");
-
-            JsonNode selectedDefInputsNode = rootNode.path("defSelectedInputs");
-            iterator = selectedDefInputsNode.iterator();
-            //System.out.print("selectedInputs: [ ");
-
-            while (iterator.hasNext()) {
-                JsonNode input = iterator.next();
-                //System.out.print(input.asInt() + " ");
-                selectionDefIn.add(input.asInt());
+            if (rootNode.has("selectedInputsNames")){
+                JsonNode selectedInputsNames = rootNode.path("selectedInputsNames");
+                Iterator<JsonNode> iterator = selectedInputsNames.iterator();
+                while (iterator.hasNext()){
+                    JsonNode input = iterator.next();
+                    this.selectedInputsNames.add(input.asText());
+                }
             }
-
-            JsonNode selectedSocInputsNode = rootNode.path("socSelectedInputs");
-            iterator = selectedSocInputsNode.iterator();
-            //System.out.print("offSelectedInputs: [ ");
-
-            while (iterator.hasNext()) {
-                JsonNode input = iterator.next();
-                //System.out.print(input.asInt() + " ");
-                selectionSocIn.add(input.asInt());
+            if (rootNode.has("selectedOutputs")){
+                JsonNode selectedOutputs = rootNode.path("selectedOutputs");
+                Iterator<JsonNode> iterator = selectedOutputs.iterator();
+                while (iterator.hasNext()){
+                    JsonNode input = iterator.next();
+                    this.selectedOutputs.add(input.asInt());
+                }
             }
-
-            JsonNode selectedOffOutputNode = rootNode.path("offSelectedOutputs");
-            iterator = selectedOffOutputNode.iterator();
-            //System.out.print("offSelectedInputs: [ ");
-
-            while (iterator.hasNext()) {
-                JsonNode input = iterator.next();
-                //System.out.print(input.asInt() + " ");
-                selectionOffOut.add(input.asInt());
+            if (rootNode.has("selectedOutputsNames")){
+                JsonNode selectedOutputsNames = rootNode.path("selectedOutputsNames");
+                Iterator<JsonNode> iterator = selectedOutputsNames.iterator();
+                while (iterator.hasNext()){
+                    JsonNode input = iterator.next();
+                    this.selectedOutputsNames.add(input.asText());
+                }
             }
+            if (rootNode.has("stage1DEA")){
+                JsonNode stage1DEA = rootNode.path("stage1DEA");
+                Iterator<JsonNode> iterator = stage1DEA.iterator();
+                DEAWrapper wrapper = null;
 
-            JsonNode selectedDefOutputNode = rootNode.path("defSelectedOutputs");
-            iterator = selectedDefOutputNode.iterator();
-            //System.out.print("offSelectedInputs: [ ");
+                System.out.println("stage1DEA: " + stage1DEA);
 
-            while (iterator.hasNext()) {
-                JsonNode input = iterator.next();
-                //System.out.print(input.asInt() + " ");
-                selectionDefOut.add(input.asInt());
+
+                while (iterator.hasNext()){
+                    ArrayList<Integer> selectedInputHolder = new ArrayList<>();
+                    ArrayList<Integer> selectedOutputsHolder = new ArrayList<>();
+                    ArrayList<Integer> previousResultsHolder = new ArrayList<>();
+                    int stageHolder = -1;
+                    boolean inputOrientedHolder = false;
+                    int deaIDHolder = -1;
+
+                    JsonNode deaNode = iterator.next();
+                    System.out.print("DeaNode: "+ deaNode);
+                    if (deaNode.has("stage"))
+                        stageHolder = deaNode.path("stage").asInt();
+                    if (deaNode.has("inputOriented"))
+                        inputOrientedHolder = deaNode.path("inputOriented").asBoolean();
+
+                    if (deaNode.has("deaID"))
+                        deaIDHolder = deaNode.path("deaID").asInt();
+
+                    if (deaNode.has("selectedInputs")){
+                        JsonNode selectedInputs = deaNode.path("selectedInputs");
+                        Iterator<JsonNode> iterator2 = selectedInputs.iterator();
+                        while (iterator2.hasNext()){
+                            JsonNode input = iterator2.next();
+                            selectedInputHolder.add(input.asInt());
+                        }
+                    }
+
+                    if (deaNode.has("previousResults")){
+                        JsonNode previousResults = deaNode.path("previousResults");
+                        Iterator<JsonNode> iterator2 = previousResults.iterator();
+                        while (iterator2.hasNext()){
+                            JsonNode input = iterator2.next();
+                            previousResultsHolder.add(input.asInt());
+                        }
+                    }
+                    if (deaNode.has("selectedOutputs")){
+                        JsonNode selectedOutputs = deaNode.path("selectedOutputs");
+                        Iterator<JsonNode> iterator2 = selectedOutputs.iterator();
+                        while (iterator2.hasNext()){
+                            JsonNode input = iterator2.next();
+                            selectedOutputsHolder.add(input.asInt());
+                        }
+                    }
+                    wrapper = new DEAWrapper(selectedInputHolder, previousResultsHolder, selectedOutputsHolder, stageHolder, inputOrientedHolder, deaIDHolder);
+                    this.stage1DEA.add(wrapper);
+                }
             }
+            if (rootNode.has("stage2DEA")){
+                JsonNode stage2DEA = rootNode.path("stage2DEA");
+                Iterator<JsonNode> iterator = stage2DEA.iterator();
+                DEAWrapper wrapper = null;
+                while (iterator.hasNext()){
+                    ArrayList<Integer> selectedInputHolder = new ArrayList<>();
+                    ArrayList<Integer> selectedOutputsHolder = new ArrayList<>();
+                    ArrayList<Integer> previousResultsHolder = new ArrayList<>();
+                    int stageHolder = -1;
+                    boolean inputOrientedHolder = false;
+                    boolean supereffHolder = false;
+                    int deaIDHolder = -1;
 
-            JsonNode selectedAthOutputNode = rootNode.path("spSelectedOutputs");
-            iterator = selectedAthOutputNode.iterator();
-            //System.out.print("offSelectedInputs: [ ");
+                    JsonNode deaNode = iterator.next();
+                    System.out.print("DeaNode: "+ deaNode);
+                    if (deaNode.has("stage"))
+                        stageHolder = deaNode.path("stage").asInt();
+                    if (deaNode.has("inputOriented"))
+                        inputOrientedHolder = deaNode.path("inputOriented").asBoolean();
 
-            while (iterator.hasNext()) {
-                JsonNode input = iterator.next();
-                //System.out.print(input.asInt() + " ");
-                selectionAthOut.add(input.asInt());
+                    if (deaNode.has("deaID"))
+                        deaIDHolder = deaNode.path("deaID").asInt();
+
+                    if (deaNode.has("selectedInputs")){
+                        JsonNode selectedInputs = deaNode.path("selectedInputs");
+                        Iterator<JsonNode> iterator2 = selectedInputs.iterator();
+                        while (iterator2.hasNext()){
+                            JsonNode input = iterator2.next();
+                            selectedInputHolder.add(input.asInt());
+                        }
+                    }
+
+                    if (deaNode.has("previousResults")){
+                        JsonNode previousResults = deaNode.path("previousResults");
+                        Iterator<JsonNode> iterator2 = previousResults.iterator();
+                        while (iterator2.hasNext()){
+                            JsonNode input = iterator2.next();
+                            previousResultsHolder.add(input.asInt());
+                        }
+                    }
+                    if (deaNode.has("selectedOutputs")){
+                        JsonNode selectedOutputs = deaNode.path("selectedOutputs");
+                        Iterator<JsonNode> iterator2 = selectedOutputs.iterator();
+                        while (iterator2.hasNext()){
+                            JsonNode input = iterator2.next();
+                            selectedOutputsHolder.add(input.asInt());
+                        }
+                    }
+                    wrapper = new DEAWrapper(selectedInputHolder, previousResultsHolder, selectedOutputsHolder, stageHolder, inputOrientedHolder, deaIDHolder);
+                    this.stage2DEA.add(wrapper);
+                }
             }
+            if (rootNode.has("stage3DEA")){
+                JsonNode stage3DEA = rootNode.path("stage3DEA");
+                Iterator<JsonNode> iterator = stage3DEA.iterator();
+                DEAWrapper wrapper = null;
+                while (iterator.hasNext()) {
+                    ArrayList<Integer> selectedInputHolder = new ArrayList<>();
+                    ArrayList<Integer> selectedOutputsHolder = new ArrayList<>();
+                    ArrayList<Integer> previousResultsHolder = new ArrayList<>();
+                    int stageHolder = -1;
+                    boolean inputOrientedHolder = false;
+                    boolean supereffHolder = false;
+                    int deaIDHolder = -1;
 
-            //System.out.println("]");
+                    JsonNode deaNode = iterator.next();
+                    System.out.print("DeaNode: "+ deaNode);
+                    if (deaNode.has("stage"))
+                        stageHolder = deaNode.path("stage").asInt();
+                    if (deaNode.has("inputOriented"))
+                        inputOrientedHolder = deaNode.path("inputOriented").asBoolean();
+
+                    if (deaNode.has("deaID"))
+                        deaIDHolder = deaNode.path("deaID").asInt();
+
+                    if (deaNode.has("selectedInputs")){
+                        JsonNode selectedInputs = deaNode.path("selectedInputs");
+                        Iterator<JsonNode> iterator2 = selectedInputs.iterator();
+                        while (iterator2.hasNext()){
+                            JsonNode input = iterator2.next();
+                            selectedInputHolder.add(input.asInt());
+                        }
+                    }
+
+                    if (deaNode.has("previousResults")){
+                        JsonNode previousResults = deaNode.path("previousResults");
+                        Iterator<JsonNode> iterator2 = previousResults.iterator();
+                        while (iterator2.hasNext()){
+                            JsonNode input = iterator2.next();
+                            previousResultsHolder.add(input.asInt());
+                        }
+                    }
+                    if (deaNode.has("selectedOutputs")){
+                        JsonNode selectedOutputs = deaNode.path("selectedOutputs");
+                        Iterator<JsonNode> iterator2 = selectedOutputs.iterator();
+                        while (iterator2.hasNext()){
+                            JsonNode input = iterator2.next();
+                            selectedOutputsHolder.add(input.asInt());
+                        }
+                    }
+                    wrapper = new DEAWrapper(selectedInputHolder, previousResultsHolder, selectedOutputsHolder, stageHolder, inputOrientedHolder, deaIDHolder);
+                    this.stage3DEA.add(wrapper);
+                }
+            }
         }
         catch (JsonParseException e) { e.printStackTrace(); }
         catch (JsonMappingException e) { e.printStackTrace(); }
@@ -118,129 +270,72 @@ public class SolverComplexQuery extends SolverSimpleQuery {
 
     }
 
-    /*
-    {
-    "leagueID": "2",
-    "leagueName": "Premier",
-    "season": 2014,
-    "superEff": true,
-    "numberOfSeasons": 2,
-    "solver": "complex",
-    "selectedInputs": [
-        20,
-        14,
-        12
-    ],
-    "selectedInputsNames": [
-        "Number Of Players",
-        "Shots On Target Per Game",
-        "Tackles Per Game"
-    ],
-    "offSelectedInputs": [
-        14
-    ],
-    "offSelectedInputsNames": [
-        "Shots On Target Per Game"
-    ],
-    "socSelectedInputs": [
-        20
-    ],
-    "socSelectedInputsNames": [
-        "Number Of Players"
-    ],
-    "defSelectedInputs": [
-        12
-    ],
-    "defSelectedInputsNames": [
-        "Tackles Per Game"
-    ],
-    "selectedOutputs": [
-        6,
-        4,
-        5
-    ],
-    "selectedOutputsNames": [
-        "Rank",
-        "Goals Scored",
-        "Goals Against"
-    ],
-    "spSelectedOutputs": [
-        6
-    ],
-    "spSelectedOutputsNames": [
-        "Rank"
-    ],
-    "offSelectedOutputs": [
-        4
-    ],
-    "offSelectedOutputsNames": [
-        "Goals Scored"
-    ],
-    "defSelectedOutputs": [
-        5
-    ],
-    "defSelectedOutputsNames": [
-        "Goals Against"
-    ],
-    "teamID": "11",
-    "teamName": "Arsenal"
-}
-    {"leagueID":"2","leagueName":"Premier","season":2014,"superEff":true,"numberOfSeasons":2,"solver":"complex","selectedInputs":[20,14,12],"selectedInputsNames":["Number Of Players","Shots On Target Per Game","Tackles Per Game"],"offSelectedInputs":[14],"offSelectedInputsNames":["Shots On Target Per Game"],"socSelectedInputs":[20],"socSelectedInputsNames":["Number Of Players"],"defSelectedInputs":[12],"defSelectedInputsNames":["Tackles Per Game"],"selectedOutputs":[6,4,5],"selectedOutputsNames":["Rank","Goals Scored","Goals Against"],"spSelectedOutputs":[6],"spSelectedOutputsNames":["Rank"],"offSelectedOutputs":[4],"offSelectedOutputsNames":["Goals Scored"],"defSelectedOutputs":[5],"defSelectedOutputsNames":["Goals Against"],"teamID":"11","teamName":"Arsenal"}
-*/
-    public boolean[][] getRamifications() {
-        return ramifications;
+    /*---------Getters---------*/
+    public boolean isSuperEff() {
+        return superEff;
     }
 
-    public void setRamifications(boolean[][] ramifications) {
-        this.ramifications = ramifications;
+    public String getSolver() {
+        return solver;
     }
 
-    public List<Integer> getSelectionSocIn() {
-        return selectionSocIn;
+    public String getSelectedMethod() {
+        return selectedMethod;
     }
 
-    public void setSelectionSocIn(List<Integer> selectionSocIn) {
-        this.selectionSocIn = selectionSocIn;
+    public int getLeagueID() {
+        return leagueID;
     }
 
-    public List<Integer> getSelectionDefIn() {
-        return selectionDefIn;
+    public String getLeagueName() {
+        return leagueName;
     }
 
-    public void setSelectionDefIn(List<Integer> selectionDefIn) {
-        this.selectionDefIn = selectionDefIn;
+    public int getSeason() {
+        return season;
     }
 
-    public List<Integer> getSelectionOffOut() {
-        return selectionOffOut;
+    public int getNumberOfTeams() {
+        return numberOfTeams;
     }
 
-    public void setSelectionOffOut(List<Integer> selectionOffOut) {
-        this.selectionOffOut = selectionOffOut;
+    public int getTeamID() {
+        return teamID;
     }
 
-    public List<Integer> getSelectionAthOut() {
-        return selectionAthOut;
+    public String getTeamName() {
+        return teamName;
     }
 
-    public void setSelectionAthOut(List<Integer> selectionAthOut) {
-        this.selectionAthOut = selectionAthOut;
+    public ArrayList<Integer> getSelectedInputs() {
+        return selectedInputs;
     }
 
-    public List<Integer> getSelectionDefOut() {
-        return selectionDefOut;
+    public ArrayList<String> getSelectedInputsNames() {
+        return selectedInputsNames;
     }
 
-    public void setSelectionDefOut(List<Integer> selectionDefOut) {
-        this.selectionDefOut = selectionDefOut;
+    public ArrayList<Integer> getSelectedOutputs() {
+        return selectedOutputs;
     }
 
-    public List<Integer> getSelectionOffIn() {
-        return selectionOffIn;
+    public ArrayList<String> getSelectedOutputsNames() {
+        return selectedOutputsNames;
     }
 
-    public void setSelectionOffIn(List<Integer> selectionOffIn) {
-        this.selectionOffIn = selectionOffIn;
+    public ArrayList<DEAWrapper> getStage1DEA() {
+        return stage1DEA;
     }
 
+    public ArrayList<DEAWrapper> getStage2DEA() {
+        return stage2DEA;
+    }
+
+    public ArrayList<DEAWrapper> getStage3DEA() {
+        return stage3DEA;
+    }
+
+    public int getNumberOfSeasons() {
+        return numberOfSeasons;
+    }
 }

@@ -90,7 +90,7 @@ public class SolverController {
     public Scenario solve(SolverComplexQuery query) throws IloException {
         Scenario solvedScenario = null;
                                       //int league, List<Integer> inputOff, List<Integer> inputDef, List<Integer> outputOff, List<Integer> outputDef, boolean[][]setting, boolean superEff, int start, int seasons
-        solvedScenario = new Scenario(query.getLeagueID(),query.getSelectionOffIn(),query.getSelectionDefIn(),query.getSelectionOffOut(),query.getSelectionDefOut(),query.getSelectionAthOut(),query.getSelectionSocIn(),query.getRamifications(),query.isSuperEff(),query.getStart(),query.getSeasons());
+        //solvedScenario = new Scenario(query.getLeagueID(),query.getSelectionOffIn(),query.getSelectionDefIn(),query.getSelectionOffOut(),query.getSelectionDefOut(),query.getSelectionAthOut(),query.getSelectionSocIn(),query.getRamifications(),query.isSuperEff(),query.getStart(),query.getSeasons());
 
 
         return solvedScenario;
