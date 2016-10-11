@@ -15,6 +15,7 @@ import java.util.Iterator;
 public class SolverComplexQuery {
 
     private boolean superEff;
+    private boolean inputOriented;
     private String solver;
     private String selectedMethod;
     private String leagueName;
@@ -51,6 +52,8 @@ public class SolverComplexQuery {
             JsonNode rootNode = mapper.readTree(query);
             if (rootNode.has("superEff"))
                 superEff = rootNode.path("superEff").asBoolean();
+            if (rootNode.has("inputOriented"))
+                inputOriented = rootNode.path("inputOriented").asBoolean();
             if (rootNode.has("season"))
                 season = rootNode.path("season").asInt();
             if (rootNode.has("numberOfTeams"))
@@ -106,9 +109,6 @@ public class SolverComplexQuery {
                 Iterator<JsonNode> iterator = stage1DEA.iterator();
                 DEAWrapper wrapper = null;
 
-                System.out.println("stage1DEA: " + stage1DEA);
-
-
                 while (iterator.hasNext()){
                     ArrayList<Integer> selectedInputHolder = new ArrayList<>();
                     ArrayList<Integer> selectedOutputsHolder = new ArrayList<>();
@@ -118,7 +118,6 @@ public class SolverComplexQuery {
                     int deaIDHolder = -1;
 
                     JsonNode deaNode = iterator.next();
-                    System.out.print("DeaNode: "+ deaNode);
                     if (deaNode.has("stage"))
                         stageHolder = deaNode.path("stage").asInt();
                     if (deaNode.has("inputOriented"))
@@ -170,7 +169,6 @@ public class SolverComplexQuery {
                     int deaIDHolder = -1;
 
                     JsonNode deaNode = iterator.next();
-                    System.out.print("DeaNode: "+ deaNode);
                     if (deaNode.has("stage"))
                         stageHolder = deaNode.path("stage").asInt();
                     if (deaNode.has("inputOriented"))
@@ -222,7 +220,6 @@ public class SolverComplexQuery {
                     int deaIDHolder = -1;
 
                     JsonNode deaNode = iterator.next();
-                    System.out.print("DeaNode: "+ deaNode);
                     if (deaNode.has("stage"))
                         stageHolder = deaNode.path("stage").asInt();
                     if (deaNode.has("inputOriented"))
@@ -338,4 +335,14 @@ public class SolverComplexQuery {
     public int getNumberOfSeasons() {
         return numberOfSeasons;
     }
+
+    public boolean isInputOriented() {
+        return inputOriented;
+    }
+
+    public void setInputOriented(boolean inputOriented) {
+        this.inputOriented = inputOriented;
+    }
+
+
 }

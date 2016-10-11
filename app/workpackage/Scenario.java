@@ -102,7 +102,7 @@ public class Scenario {
         double[][]paraIn = null;    //Arrays for saving parameter values
         double[][]paraOut = null;
 
-        for(int i = 0; i <= seasons; i++)
+        for(int i = 0; i < seasons; i++)
         {
             //Create parameter-arrays to work from
             this.dmu = connection.createDMUArray(league, start + i);

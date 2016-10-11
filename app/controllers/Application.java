@@ -117,14 +117,14 @@ public class Application extends Controller {
         System.out.println("Complex");
 
         if (form.data().size() != 0 || mockIt){
-            String mockResponse = "{\"superEff\":true,\"solver\":\"complex\",\"selectedMethod\":\"BCC\",\"leagueID\":\"2\",\"leagueName\":\"Premier\",\"season\":2013,\"numberOfTeams\":20,\"teamID\":\"180\",\"teamName\":\"Southampton\",\"selectedInputs\":[2,6,8,9],\"selectedInputsNames\":[\"Games Drawn\",\"Rank\",\"Ball Possession\",\"Pass Success\"],\"selectedOutputs\":[1,4,3,5],\"selectedOutputsNames\":[\"Games Won\",\"Goals Scored\",\"Games Lost\",\"Goals Against\"],\"stage1DEA\":[{\"selectedInputs\":[2,9],\"selectedOutputs\":[1,5],\"previousResults\":[],\"stage\":1,\"inputOriented\":false,\"deaID\":0},{\"selectedInputs\":[6],\"selectedOutputs\":[4],\"previousResults\":[],\"stage\":1,\"inputOriented\":false,\"deaID\":1}],\"stage2DEA\":[{\"selectedInputs\":[8],\"selectedOutputs\":[3],\"previousResults\":[1],\"stage\":2,\"inputOriented\":false,\"deaID\":0}],\"stage3DEA\":[{\"selectedInputs\":[],\"selectedOutputs\":[5],\"previousResults\":[0],\"stage\":3,\"inputOriented\":false,\"deaID\":0}],\"numberOfSeasons\":1}";
-            System.out.println("MockString: \n " + mockResponse);
-
+            final String mockResponse = "{\"superEff\":true,\"solver\":\"complex\",\"selectedMethod\":\"BCC\",\"leagueID\":\"2\",\"leagueName\":\"Premier\",\"season\":2013,\"numberOfTeams\":20,\"teamID\":\"180\",\"teamName\":\"Southampton\",\"selectedInputs\":[2,6,8,9],\"selectedInputsNames\":[\"Games Drawn\",\"Rank\",\"Ball Possession\",\"Pass Success\"],\"selectedOutputs\":[1,4,3,5],\"selectedOutputsNames\":[\"Games Won\",\"Goals Scored\",\"Games Lost\",\"Goals Against\"],\"stage1DEA\":[{\"selectedInputs\":[2,9],\"selectedOutputs\":[1,5],\"previousResults\":[],\"stage\":1,\"inputOriented\":false,\"deaID\":0},{\"selectedInputs\":[6],\"selectedOutputs\":[4],\"previousResults\":[],\"stage\":1,\"inputOriented\":false,\"deaID\":1}],\"stage2DEA\":[{\"selectedInputs\":[8],\"selectedOutputs\":[3],\"previousResults\":[1],\"stage\":2,\"inputOriented\":false,\"deaID\":0}],\"stage3DEA\":[{\"selectedInputs\":[9],\"selectedOutputs\":[5],\"previousResults\":[0],\"stage\":3,\"inputOriented\":false,\"deaID\":0}],\"numberOfSeasons\":1}";
             String response = (mockIt)? mockResponse: form.get("query");
+            SolverController solverController = new SolverController();
+
+
             JsonNode json = Json.parse(response);
             SolverComplexQuery query = new SolverComplexQuery(response);
 
-            SolverController solverController = new SolverController();
 
 
             try {
