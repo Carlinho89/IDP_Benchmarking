@@ -306,6 +306,7 @@ public class ThreeStageDEA {
         return combined;
     }
 
+
     private double[][]createSolution(double[][]solutionOne, double[][]solutionTwo)
     {
         double[][] solution = new double[solutionOne.length + solutionTwo.length][solutionOne[0].length];

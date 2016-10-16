@@ -113,11 +113,11 @@ public class Application extends Controller {
 
     public  Result complexSolver(){
         DynamicForm form = Form.form().bindFromRequest();
-        boolean mockIt = true;
+        boolean mockIt = false;
         System.out.println("Complex");
 
         if (form.data().size() != 0 || mockIt){
-            final String mockResponse = "{\"superEff\":true,\"solver\":\"complex\",\"selectedMethod\":\"BCC\",\"leagueID\":\"2\",\"leagueName\":\"Premier\",\"season\":2013,\"numberOfTeams\":20,\"teamID\":\"180\",\"teamName\":\"Southampton\",\"selectedInputs\":[2,6,8,9],\"selectedInputsNames\":[\"Games Drawn\",\"Rank\",\"Ball Possession\",\"Pass Success\"],\"selectedOutputs\":[1,4,3,5],\"selectedOutputsNames\":[\"Games Won\",\"Goals Scored\",\"Games Lost\",\"Goals Against\"],\"stage1DEA\":[{\"selectedInputs\":[2,9],\"selectedOutputs\":[1,5],\"previousResults\":[],\"stage\":1,\"inputOriented\":false,\"deaID\":0},{\"selectedInputs\":[6],\"selectedOutputs\":[4],\"previousResults\":[],\"stage\":1,\"inputOriented\":false,\"deaID\":1}],\"stage2DEA\":[{\"selectedInputs\":[8],\"selectedOutputs\":[3],\"previousResults\":[1],\"stage\":2,\"inputOriented\":false,\"deaID\":0}],\"stage3DEA\":[{\"selectedInputs\":[9],\"selectedOutputs\":[5],\"previousResults\":[0],\"stage\":3,\"inputOriented\":false,\"deaID\":0}],\"numberOfSeasons\":1}";
+            final String mockResponse = "{\"superEff\":false,\"numberOfSeasons\":1,\"leagueID\":\"2\",\"leagueName\":\"Premier\",\"season\":2014,\"numberOfTeams\":20,\"teamID\":\"11\",\"teamName\":\"Arsenal\",\"selectedInputs\":[2,8,9,10,16],\"selectedInputsNames\":[\"Games Drawn\",\"Ball Possession\",\"Pass Success\",\"Red Cards\",\"Cross Per Game\"],\"selectedOutputs\":[6,1,4,3,5],\"selectedOutputsNames\":[\"Rank\",\"Games Won\",\"Goals Scored\",\"Games Lost\",\"Goals Against\"],\"solver\":\"complex\",\"selectedMethod\":\"CCR\",\"stage1DEA\":[{\"selectedInputs\":[2],\"selectedOutputs\":[6],\"previousResults\":[],\"stage\":1,\"inputOriented\":false,\"deaID\":0},{\"selectedInputs\":[8],\"selectedOutputs\":[1],\"previousResults\":[],\"stage\":1,\"inputOriented\":true,\"deaID\":1}],\"stage2DEA\":[{\"selectedInputs\":[9],\"selectedOutputs\":[4],\"previousResults\":[0,1],\"stage\":2,\"inputOriented\":false,\"deaID\":0},{\"selectedInputs\":[2],\"selectedOutputs\":[6,1],\"previousResults\":[],\"stage\":2,\"inputOriented\":false,\"deaID\":1}],\"stage3DEA\":[{\"selectedInputs\":[2],\"selectedOutputs\":[6],\"previousResults\":[0],\"stage\":3,\"inputOriented\":false,\"deaID\":0}]}";
             String response = (mockIt)? mockResponse: form.get("query");
             SolverController solverController = new SolverController();
 

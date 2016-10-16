@@ -151,9 +151,9 @@ public class SolverController {
             double [][] solutionOne = solveDEA(_dea,query.getSelectedMethod(),query.isInputOriented());
 
             this.st1solList.add(dea.getDeaID(), solutionOne);
-            paraValues = new ArrayList<>();  //Unify input and output list
-            paraValues.add(paraIn);
-            paraValues.add(paraOut);
+            //paraValues = new ArrayList<>();  //Unify input and output list
+            //paraValues.add(paraIn);
+            //paraValues.add(paraOut);
         }
 
         for (DEAWrapper dea:stage2DEA){
@@ -161,98 +161,149 @@ public class SolverController {
             st2dmuList = new ArrayList<>();
             paraIn = null;
             paraOut = null;
+            double[][]solutionStageTwo = null;
 
             //Stage 2 DEA that will be solved
             DEA _dea = null;
-
+            //Add DMU to list for Exceloutput later on
+            st2dmuList.add(dmu);
             //Create parameter-arrays to work from
-            input = connection.createParameterArray(query.getLeagueID(), query.getSeason(), dea.getSelectedInputs());
+
+            input = (dea.getSelectedInputs().size() == 0)? null:connection.createParameterArray(query.getLeagueID(), query.getSeason(), dea.getSelectedInputs());
             output = connection.createParameterArray(query.getLeagueID(), query.getSeason(), dea.getSelectedOutputs());
 
-            st2dmuList.add(dmu);   //Add DMU to list for Exceloutput later on
             paraIn = input;
             paraOut = output;
+            solutionStageTwo = solveMultiStage(input,output,dmu,dea,query.getSelectedMethod());
 
+            this.st2solList.add(dea.getDeaID(), solutionStageTwo);
 
-            ArrayList<Integer> prevDEAsIDs = dea.getPreviousResults();
-            HashMap<Integer, double[][]> prevDEAsSols = new HashMap<>();
-
-            for (int deaID:prevDEAsIDs) {
-                double [][] solution = st1solList.get(deaID);
-                prevDEAsSols.put(deaID, solution);
-            }
-
-            double[][] solutionOne = (prevDEAsSols.size()>0)? prevDEAsSols.get(1):null;
-
-            _dea = fitInputsForStage(dea,dmu,input,output,prevDEAsSols);
-
-            double [][] solutionTwo = solveDEA(_dea, query.getSelectedMethod(), query.isInputOriented());
-            double[][]solutionComplete = createSolutionTwo(solutionOne, solutionTwo);  //Create a single solution array containing weights and efficiencies.
-
-            st2solList.add(solutionComplete);
         }
 
         for (DEAWrapper dea:stage3DEA){
             //clearing
             st3dmuList = new ArrayList<>();
+            paraIn = null;
+            paraOut = null;
+            double[][]solutionStageThree = null;
 
-            //Stage 3 DEA that will be solved
+            //Stage 2 DEA that will be solved
             DEA _dea = null;
-
+            //Add DMU to list for Exceloutput later on
+            st3dmuList.add(dmu);
             //Create parameter-arrays to work from
-            input = connection.createParameterArray(query.getLeagueID(), query.getSeason(), dea.getSelectedInputs());
+            input = (dea.getSelectedInputs().size() == 0)? null:connection.createParameterArray(query.getLeagueID(), query.getSeason(), dea.getSelectedInputs());
             output = connection.createParameterArray(query.getLeagueID(), query.getSeason(), dea.getSelectedOutputs());
 
-            st3dmuList.add(dmu);   //Add DMU to list for Exceloutput later on
             paraIn = input;
             paraOut = output;
+            solutionStageThree = solveMultiStage(input,output,dmu,dea,query.getSelectedMethod());
 
-            double [][]effOneFitted = null;
-            ArrayList<Integer> prevDEAsIDs = dea.getPreviousResults();
-            HashMap<Integer, double[][]> prevDEAsSols = new HashMap<>();
-
-            for (int deaID:prevDEAsIDs) {
-                double [][] solution = st2solList.get(deaID);
-                prevDEAsSols.put(deaID, solution);
-            }
-            _dea = fitInputsForStage(dea,dmu,input,output,prevDEAsSols);
-
-            double[][] solutionTwo = (prevDEAsSols.size()>0)? prevDEAsSols.get(0):null;
-
-            double [][] solutionThree = solveDEA(_dea, query.getSelectedMethod(), query.isInputOriented());
-            double[][]solutionComplete = createSolutionThree(solutionTwo, solutionThree);  //Create a single solution array containing weights and efficiencies.
-
-            st3solList.add(solutionComplete);
+            this.st3solList.add(dea.getDeaID(), solutionStageThree);
         }
         return solvedScenario;
     }
 
-    private DEA fitInputsForStage(DEAWrapper dea, String[] dmu, double[][] input ,double[][] output, HashMap<Integer, double[][]> prevDEAsSols){
+    /**
+     * Solves Multistage DEA
+     *
+     * @param input  DEA's inputs
+     * @param output DEA's outputs
+     * @param dmu    DEA's dmu
+     * @param dea    DEA's parameters chosen by the user
+     * @param method DEA's solution method
+     * @return  computed solution
+     */
+    private double[][] solveMultiStage(double[][] input, double[][] output, String[] dmu, DEAWrapper dea, String method) {
         DEA _dea = null;
-        double[][] solutionOne = null;
+        double [][]solutionComplete = null;
 
-        if(dea.getSelectedInputs().size() > 0 && dea.getPreviousResults().size() == 0){ // new inputs, no 1stage Dea eff
-            _dea = new DEA(dmu, input, output);
+        // No DEA eff as input
+        if (!(dea.getPreviousResults().size() > 0)){
+            // Only New Input
+            if(dea.getSelectedInputs().size() > 0) {
+                _dea = new DEA(dmu,input,output);
+                solutionComplete = solveDEA(_dea, method, dea.isInputOriented());
+            }
         }
-        else if(dea.getSelectedInputs().size() == 0 && dea.getPreviousResults().size() > 0){ // no new inputs, only 1stage Dea eff
-            solutionOne = prevDEAsSols.get(dea.getPreviousResults().get(0));
-            double[]effOne = Evaluation.getEfficiency(solutionOne); //Fit efficiency to fullfill requirement of double[][]
-            double [][]effOneFitted = fitEfficiency(effOne);
-            _dea = new DEA(dmu, effOneFitted, output);
-        }
-        else if(dea.getSelectedInputs().size() > 0 && dea.getPreviousResults().size() > 0){ // new inputs + prev stage Dea eff
-            solutionOne = prevDEAsSols.get(dea.getPreviousResults().get(0));
+        // DEA eff as input
+        else{ //if (dea.getPreviousResults().size() > 0){
+            HashMap<Integer, double[][]> prevDEAsSols = getPrevDEAEff(dea.getPreviousResults());
+            double[][]combEff = null;
 
-            double[][] combInter = combineEffInter(Evaluation.getEfficiency(solutionOne), dmu, input);
-            _dea = new DEA(dmu, combInter, output);
-        }
-        else {
-            System.out.println("SOMETHING WENT HORRIBLY WRONG WHILE COMPUTING STAGE 2!");
+            if(dea.getSelectedInputs().size() > 0){
+                combEff = fitPrevDEAsEff(prevDEAsSols,dmu.length,input);
+                _dea = new DEA(dmu,combEff,output);
+                solutionComplete = solveDEA(_dea,method,dea.isInputOriented());
+            }
+            // No New input
+            else{ //if(dea.getSelectedInputs().size() <= 0){
+                double[][]firstSol = prevDEAsSols.get(0);
+                double[]eff = Evaluation.getEfficiency(firstSol);
+                double[][]fitEff = fitEfficiency(eff);
+
+                prevDEAsSols.remove(0);
+
+                if (prevDEAsSols.size()>0)
+                    combEff = fitPrevDEAsEff(prevDEAsSols,dmu.length,fitEff);
+                else
+                    combEff = fitEff;
+                _dea = new DEA(dmu, combEff, output);
+                solutionComplete = solveDEA(_dea,method,dea.isInputOriented());
+            }
         }
 
-        return _dea;
+        return solutionComplete;
     }
-    // Solving Algorithms
+
+    /**
+     * Function that gets the previous stage's solutions
+     * @param previousResults Prev stage's IDs
+     * @return prev stage solutions
+     */
+    private HashMap<Integer, double[][]> getPrevDEAEff(ArrayList<Integer> previousResults) {
+        ArrayList<Integer> prevDEAsIDs = previousResults;
+        HashMap<Integer, double[][]> prevDEAsSols = new HashMap<>();
+        // Getting values from prec solved DEAs
+        for (int deaID:prevDEAsIDs) {
+            double [][] solution = st1solList.get(deaID);
+            prevDEAsSols.put(deaID, solution);
+        }
+        return  prevDEAsSols;
+    }
+
+    /**
+     * Fitting Prev DEAs' Efficiencies with the input
+     * @param prevDEAsSols
+     * @param dmuLenght
+     * @param input
+     * @return
+     */
+    private double[][] fitPrevDEAsEff(HashMap<Integer,double[][]> prevDEAsSols, int dmuLenght, double[][]input) {
+
+        double[] prevDEAEff = null;
+        double[][] prevFittedEff = input;
+        double[][] combDEAEff = null;
+        boolean firstTime = true;
+
+        for (double[][] sol : prevDEAsSols.values()){
+            combDEAEff = combineEffInter(Evaluation.getEfficiency(sol), dmuLenght, prevFittedEff);
+            prevFittedEff = combDEAEff;
+        }
+
+        return combDEAEff;
+    }
+
+    /**
+     * Calculating DEA's solution
+     * @param _dea      DEA to solve
+     * @param method    Solution Method - CCR
+     *                                  - BCC
+     *                                  - SBM
+     *
+     * @param isInputOriented
+     * @return  computed solution
+     */
     private double [][] solveDEA(DEA _dea, String method, boolean isInputOriented){
         double [][] solutionOne = null;
         try {
@@ -279,16 +330,28 @@ public class SolverController {
 
     }
 
-    private double[][] fitEfficiency(double[]eff)    //Method to make a 2-dimenstional array out of the efficiency in order to use it as input for stage 2
+    /**
+     * Method to make a 2-dimenstional array out of the efficiency in order to use it as input for stage 2
+     * @param eff
+     * @return
+     */
+    private double[][] fitEfficiency(double[]eff)
     {
         double[][]fitted = new double[1][eff.length];   //1st dimension: "amount" of different parameters, 2nd dimension: value for each DMU
         System.arraycopy(eff, 0, fitted[0], 0, eff.length);
         return fitted;
     }
 
-    private double[][] combineEffInter(double[]eff, String[] dmu, double[][] inter)  //Method to create a single, 2-dimensional array out of efficiency and intermediary products
+    /**
+     * //Method to create a single, 2-dimensional array out of efficiency and intermediary products
+     * @param eff
+     * @param dmuLength
+     * @param inter
+     * @return
+     */
+    private double[][] combineEffInter(double[]eff, int dmuLength, double[][] inter)
     {
-        double[][]combined = new double[inter.length + 1][dmu.length];  //1st dimension: "amount" of different parameters, 2nd dimension: value for each DMU
+        double[][]combined = new double[inter.length + 1][dmuLength];  //1st dimension: "amount" of different parameters, 2nd dimension: value for each DMU
 
         for(int i = 0; i < combined.length; i++)    //Iteration over parameters
             for(int j = 0; j < combined[i].length; j++)  //Iteration over DMU-values
@@ -299,9 +362,13 @@ public class SolverController {
         return combined;
     }
 
-
+    /**
+     * Method that solves a DEA according to CCR and BCC, creates scale efficiency and puts things in an overview-array
+     * @param dea
+     * @param dmu
+     * @param query
+     */
     private void solve(DEA dea, String dmu[], SolverComplexQuery query)    {
-        //Method that solves a DEA according to CCR and BCC, creates scale efficiency and puts things in an overview-array
         double[][] overview = null;     //Array to save efficiency results
         String[] reference = null;      //Array for reference units. Reference units are pulled from the BCC results
         try {
@@ -374,6 +441,14 @@ public class SolverController {
         refList.add(reference); //Add to list of result-arrays
     }
 
+    private double[][] copy2DArray(double[][]matrix){
+        double [][] myInt = new double[matrix.length][];
+        for(int i = 0; i < matrix.length; i++)
+            myInt[i] = matrix[i].clone();
+        return myInt;
+    }
+
+    /*
     private double[][] createSolutionTwo(double[][]solutionOne, double[][]solutionTwo)
     {
         double[][] solution = new double[solutionOne.length + solutionTwo.length][solutionOne[0].length];
@@ -396,7 +471,7 @@ public class SolverController {
             System.arraycopy(solutionTwo[i - solutionOne.length], 0, solution[i], 0, solutionTwo[i - solutionOne.length].length);
         return solution;
     }
-
+*/
     // Getters and Setters
     public boolean isData() {
         return data;
