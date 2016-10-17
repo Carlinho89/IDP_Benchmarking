@@ -1,10 +1,12 @@
 package controllers;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import ilog.concert.IloException;
 import models.DEAWrapper;
 import models.SolverComplexQuery;
 import models.SolverSimpleQuery;
 import models.SolverSimpleQueryMQI;
+import play.libs.Json;
 import workpackage.*;
 
 import java.util.ArrayList;
@@ -63,8 +65,10 @@ public class SolverController {
         league = query.getLeagueID();
         orientation = false;
         superEfficiency = false;
-        start = query.getStart();
-        seasons = 1;
+        start = query.getSeason();
+        seasons = (query.getNumberOfSeasons()!=null && !(query.getNumberOfSeasons()<=0)) ?
+                query.getNumberOfSeasons():
+                1;
 
         try {
             this.scenario = new Scenario(league, inputs, outputs, orientation, superEfficiency, start, seasons);
@@ -201,7 +205,51 @@ public class SolverController {
 
             this.st3solList.add(dea.getDeaID(), solutionStageThree);
         }
+        ArrayList<double[]> st1eff = new ArrayList<>();
+        ArrayList<double[]> st2eff = new ArrayList<>();
+        ArrayList<double[]> st3eff = new ArrayList<>();
+
+        for (double[][]sol:st1solList)
+            st1eff.add(st1solList.indexOf(sol), Evaluation.getEfficiency(sol));
+        for (double[][]sol:st2solList)
+            st2eff.add(st2solList.indexOf(sol), Evaluation.getEfficiency(sol));
+        for (double[][]sol:st3solList)
+            st3eff.add(st3solList.indexOf(sol), Evaluation.getEfficiency(sol));
+
+        SolutionModel finalSolution = new SolutionModel(st1solList,st2solList,st3solList,
+                                                        st1eff,st2eff,st3eff,
+                                                        query.getSelectedMethod(),dmu);
+        JsonNode node = Json.toJson(finalSolution);
+        System.out.println("JSON FINAL SOLUTION: " + node);
+
         return solvedScenario;
+    }
+
+    private class SolutionModel{
+        public final ArrayList<double[][]> stage1Solutions;
+        public final ArrayList<double[][]> stage2Solutions;
+        public final ArrayList<double[][]> stage3Solutions;
+
+        public final ArrayList<double[]> stage1Eff;
+        public final ArrayList<double[]> stage2Eff;
+        public final ArrayList<double[]> stage3Eff;
+
+        public final String solutionMethod;
+        public final String[] dmu;
+
+        public SolutionModel(ArrayList<double[][]> stage1Solutions, ArrayList<double[][]> stage2Solutions, ArrayList<double[][]> stage3Solutions, ArrayList<double[]> stage1Eff, ArrayList<double[]> stage2Eff, ArrayList<double[]> stage3Eff, String solutionMethod, String[] dmu) {
+            this.stage1Solutions = stage1Solutions;
+            this.stage2Solutions = stage2Solutions;
+            this.stage3Solutions = stage3Solutions;
+            this.stage1Eff = stage1Eff;
+            this.stage2Eff = stage2Eff;
+            this.stage3Eff = stage3Eff;
+            this.solutionMethod = solutionMethod;
+            this.dmu = dmu;
+        }
+
+
+
     }
 
     /**
