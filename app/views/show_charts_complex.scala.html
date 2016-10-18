@@ -1,6 +1,5 @@
 @import com.fasterxml.jackson.databind.JsonNode
-@import workpackage.Scenario
-@(json: String, solvedScenario: Scenario)
+@(json: String)
 
 @main("Get Started") {
     <script src="@routes.Assets.versioned("javascripts/getStarted.js")" type="text/javascript"></script>
@@ -10,36 +9,37 @@
 
             
 
-            jsonString= jsonString.replace(/&quot;/g, '\"');
-            jsonString=jsonString.replace('\"\,', '\,');
-            jsonString=jsonString.replace('result\":\"','result\":');
-           // text.slice(1, -1);
-            var result = jsonString.substring(1, jsonString.length-1);
-            console.log("After");
-            console.log(result);
-           // jsonString=jsonString.replace(/&quot;/g, '\"').slice(1, -1);
-            //console.log(jsonString);
 
-            var jsonObj=JSON.parse(result);
-            //console.log(jsonObj.overviewList[0][0][1]);
+
+            var jsonString = JSON.stringify("@json");
+            jsonString=jsonString.replace(/&quot;/g, '\"').slice(1, -1);
+            console.log(jsonString);
+            var jsonObj=JSON.parse(jsonString);
 
 
 
             $(function () {
-                $('#table').append("<thead><tr><th>DMU</th>" +
-                        "<th>CCR-1Off</th><th>CCR-1Dif</th><th>CCR-2</th><th>CCR-3</th>" +
-                        "<th>BCC-1Off</th><th>BCC-1Dif</th><th>BCC-2</th><th>BCC-3</th>" +
-                        "<th>SBM-1Off</th><th>SBM-1Dif</th><th>SBM-2</th><th>SBM-3</th>" +
-                        "<tr></thead><tbody>");
-                for(var i = 0; i < jsonObj.dmuList[0].length;i++){
-                    $('#table').append("<tr><td>"+jsonObj.dmuList[0][i]+"</td>" +
-                            "<td>"+ jsonObj.overviewList[0][0].slice(0, 20)[i]+"</td><td>"+ jsonObj.overviewList[0][0].slice(20, 40)[i]+"</td><td>"+ jsonObj.overviewList[0][0].slice(40, 60)[i]+"</td><td><b>"+ jsonObj.overviewList[0][0].slice(60, 80)[i]+"</b></td>" +
-                            "<td>"+jsonObj.overviewList[0][1].slice(0, 20)[i]+"</td>" +"<td>"+jsonObj.overviewList[0][1].slice(20, 40)[i]+"</td>" + "<td>"+jsonObj.overviewList[0][1].slice(40, 60)[i]+"</td>" + "<td><b>"+jsonObj.overviewList[0][1].slice(60, 80)[i]+"</b></td>"+
-                            "<td>"+jsonObj.overviewList[0][2].slice(0, 20)[i]+"</td>" +"<td>"+jsonObj.overviewList[0][2].slice(20, 40)[i]+"</td>" + "<td>"+jsonObj.overviewList[0][2].slice(40, 60)[i]+"</td>" + "<td><b>"+jsonObj.overviewList[0][2].slice(60, 80)[i]+"</b></td>"+
-                            "<tr>");
-                }
-                $('#table').append("</tbody>");
-                $('#barChart').highcharts({
+                var method= jsonObj.solutionMethod;
+
+
+               var stage3table = showStage(jsonObj.stage3Eff,jsonObj.dmu, "Stage 3"+method);
+
+
+                $('#stage3').append(stage3table);
+
+
+                var stage2table = showStage(jsonObj.stage2Eff,jsonObj.dmu, "Stage 2"+method);
+
+
+                $('#stage2').append(stage2table);
+
+                var stage1table = showStage(jsonObj.stage1Eff,jsonObj.dmu, "Stage 1"+method);
+
+
+                $('#stage1').append(stage1table);
+
+
+              /*  $('#barChart').highcharts({
                     chart: {
                         type: 'bar'
                     },
@@ -144,7 +144,7 @@
                            data: jsonObj.overviewList[0][2].slice(60, 80)
 
                        }]
-                });
+                });*/
 
                 // $('#barStackedChart').highcharts({
                 //     chart: {
@@ -186,7 +186,7 @@
                 //     }]
                 // });
 
-                $('#columnChart').highcharts({
+             /*   $('#columnChart3').highcharts({
                     chart: {
                         type: 'column'
                     },
@@ -197,7 +197,7 @@
                         text: null
                     },
                     xAxis: {
-                        categories: jsonObj.dmuList[0],
+                        categories: jsonObj.dmu,
                     },
                     yAxis: {
 
@@ -227,56 +227,29 @@
                             data: jsonObj.overviewList[0][0].slice(20, 40),
                             visible: false
 
-                        },{
-                            name: 'CCR-2',
-                            data: jsonObj.overviewList[0][0].slice(40, 60),
-                            visible: false
-
-                        },{
-                            name: 'CCR-3',
-                            data: jsonObj.overviewList[0][0].slice(60, 80)
-
-                        }, {
-                            name: 'BCC-1Off',
-                            data: jsonObj.overviewList[0][1].slice(0, 20),
-                            visible: false
-
-                        },{
-                            name: 'BCC-1Dif',
-                            data: jsonObj.overviewList[0][1].slice(20, 40),
-                            visible: false
-
-                        },{
-                            name: 'BCC-2',
-                            data: jsonObj.overviewList[0][1].slice(40, 60),
-                            visible: false
-
-                        },{
-                            name: 'BCC-3',
-                            data: jsonObj.overviewList[0][1].slice(60, 80)
-
-                        },{
-                            name: 'SBM-1Off',
-                            data: jsonObj.overviewList[0][2].slice(0, 20),
-                            visible: false
-
-                        },{
-                            name: 'SBM-1Dif',
-                            data: jsonObj.overviewList[0][2].slice(20, 40),
-                            visible: false
-
-                        },{
-                            name: 'SBM-2',
-                            data: jsonObj.overviewList[0][2].slice(40, 60),
-                            visible: false
-
-                        },{
-                            name: 'SBM-3',
-                            data: jsonObj.overviewList[0][2].slice(60, 80)
-
                         }]
-                });
+                });  */
             });
+            function showStage(stage,dmu,title){
+                var table = "<thead><tr><th>DMU"+title+"</th>";
+                for(var j=0;j<stage.length;j++){
+                    table+="<th>Dea"+(j+1)+"</th>"
+                }
+                table +="<tr></thead><tbody>";
+
+              //  console.log(JSON.stringify(jsonObj.stage3Eff));
+                for(var i=0; i<dmu.length;i++){
+                    table+="<tr><td>"+dmu[i]+"</td>";
+                    for(var j=0;j<stage.length;j++){
+                        console.log(j+" "+i);
+                        table+="<td>"+stage[j][i]+"</td>";
+                    }
+                    table+="</tr>";
+                }
+                table+="</tbody>";
+                //console.log(" table: " + stage3table);
+                return table;
+            }
     </script>
 
     <div class="container">
@@ -285,10 +258,49 @@
             <div class="col-md-12">
                 <div class="panel panel-info">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Table</h3>
+                        <h3 class="panel-title">Results</h3>
                     </div>
                     <div class="panel-body">
-                        <table class="table table-striped" id ="table"></table>
+                        <div class="row">
+                            <div class="col-md-6"><table class="table table-striped" id ="stage3"></table></div>
+                            <div class="col-md-6">
+                                <div class="panel panel-info">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">Bar</h3>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div id="columnChart3" class="chart-holder"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6"><table class="table table-striped" id ="stage2"></table></div>
+                            <div class="col-md-6">
+                                <div class="panel panel-info">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">Bar</h3>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div id="columnChart2" class="chart-holder"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6"><table class="table table-striped" id ="stage1"></table></div>
+                            <div class="col-md-6">
+                                <div class="panel panel-info">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">Bar</h3>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div id="columnChart1" class="chart-holder"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
 
@@ -299,41 +311,8 @@
 
         </div>
 
-        <div class="row">
-
-            <div class="col-md-12">
-
-                <div class="panel panel-info">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Bar</h3>
-                    </div>
-                    <div class="panel-body">
-                        <div id="barChart" class="chart-holder"></div>
-                    </div>
-                </div>
-
-            </div><!-- /span12 -->
-
-        </div><!-- /row -->
 
 
-
-        <div class="row">
-
-            <div class="col-md-12">
-
-                <div class="panel panel-info">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Column</h3>
-                    </div>
-                    <div class="panel-body">
-                        <div id="columnChart" class="chart-holder"></div>
-                    </div>
-                </div>
-
-            </div><!-- /span12 -->
-
-        </div><!-- /row -->
 
     </div><!-- /container -->
 

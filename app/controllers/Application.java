@@ -8,6 +8,7 @@ import ilog.concert.IloException;
 import ilog.cplex.IloCplexModeler;
 import models.*;
 import play.Routes;
+import play.api.libs.ws.ssl.SystemConfiguration;
 import play.data.DynamicForm;
 import play.data.Form;
 import play.libs.Json;
@@ -79,7 +80,7 @@ public class Application extends Controller {
 
         Scenario a = null;
 
-        return ok(show_charts.render(jsonResult,a));
+        return ok(show_charts.render(jsonResult));
 
     }
 
@@ -95,18 +96,19 @@ public class Application extends Controller {
         } else {
             String response = form.get("query");
             JsonNode json = Json.parse(response);
+            JsonNode solution = null;
+            SolverController solverController = null;
+            SolverSimpleQuery query = null;
 
-            SolverSimpleQuery query = new SolverSimpleQuery(response);
+            solverController = new SolverController();
+            query = new SolverSimpleQuery(response);
 
-            SolverController solverController = new SolverController();
+            solution = solverController.solve(query);
+            System.out.println("Solution: " + solution);
 
-
-
-            Scenario solvedScenario = solverController.solve(query);
-
-            
-
-             return ok(show_charts.render(Json.stringify(Json.toJson(solvedScenario)), solvedScenario));
+            //TO-DO: Change with new return type for the solution --> JsonNode
+            Scenario solvedScenario = null;
+             return ok(show_charts.render(Json.stringify(solution)));
 
         }
     }
@@ -117,28 +119,29 @@ public class Application extends Controller {
         System.out.println("Complex");
 
         if (form.data().size() != 0 || mockIt){
+            //TO-DO: remove mock string
             final String mockResponse = "{\"superEff\":false,\"numberOfSeasons\":1,\"leagueID\":\"2\",\"leagueName\":\"Premier\",\"season\":2014,\"numberOfTeams\":20,\"teamID\":\"11\",\"teamName\":\"Arsenal\",\"selectedInputs\":[2,8,9,10,16],\"selectedInputsNames\":[\"Games Drawn\",\"Ball Possession\",\"Pass Success\",\"Red Cards\",\"Cross Per Game\"],\"selectedOutputs\":[6,1,4,3,5],\"selectedOutputsNames\":[\"Rank\",\"Games Won\",\"Goals Scored\",\"Games Lost\",\"Goals Against\"],\"solver\":\"complex\",\"selectedMethod\":\"CCR\",\"stage1DEA\":[{\"selectedInputs\":[2],\"selectedOutputs\":[6],\"previousResults\":[],\"stage\":1,\"inputOriented\":false,\"deaID\":0},{\"selectedInputs\":[8],\"selectedOutputs\":[1],\"previousResults\":[],\"stage\":1,\"inputOriented\":true,\"deaID\":1}],\"stage2DEA\":[{\"selectedInputs\":[9],\"selectedOutputs\":[4],\"previousResults\":[0,1],\"stage\":2,\"inputOriented\":false,\"deaID\":0},{\"selectedInputs\":[2],\"selectedOutputs\":[6,1],\"previousResults\":[],\"stage\":2,\"inputOriented\":false,\"deaID\":1}],\"stage3DEA\":[{\"selectedInputs\":[2],\"selectedOutputs\":[6],\"previousResults\":[0],\"stage\":3,\"inputOriented\":false,\"deaID\":0}]}";
-            String response = (mockIt)? mockResponse: form.get("query");
-            SolverController solverController = new SolverController();
+
+            SolverController solverController = null;
+            String response = null;
+            JsonNode json = null;
+            SolverComplexQuery query = null;
+
+            response = (mockIt)? mockResponse: form.get("query");
+
+            solverController = new SolverController();
+            json = Json.parse(response);
+            query = new SolverComplexQuery(response);
+
+            JsonNode solution = solverController.solve(query);
+            System.out.println("Solution: " + solution);
 
 
-            JsonNode json = Json.parse(response);
-            SolverComplexQuery query = new SolverComplexQuery(response);
-
-
-
-            try {
-                Scenario solvedScenario = solverController.solve(query);
-                JsonNode node = Json.toJson(solvedScenario);
-                //System.out.println("JSON RESULT: ");
-                //System.out.println(Json.stringify(node));
-                return ok(show_charts_complex.render(Json.stringify(node), solvedScenario));
-            } catch(Exception e){
-                e.printStackTrace();
-            }
-
-        return null;
-
+            Scenario solvedScenario = null;
+            JsonNode node = Json.toJson(solution);
+            //System.out.println("JSON RESULT: ");
+            //System.out.println(Json.stringify(node));
+            return ok(show_charts_complex.render(Json.stringify(node)));
 
         }
         else {

@@ -59,28 +59,40 @@ public class SolverController {
 /*
 * This method realizes the simple solver solution
 * */
-    public Scenario solve(SolverSimpleQuery query){
-        inputs  = query.getSelectedInputs();
-        outputs = query.getSelectedOutputs();
-        league = query.getLeagueID();
-        orientation = false;
-        superEfficiency = false;
-        start = query.getSeason();
-        seasons = (query.getNumberOfSeasons()!=null && !(query.getNumberOfSeasons()<=0)) ?
-                query.getNumberOfSeasons():
-                1;
+    public JsonNode solve(SolverSimpleQuery query){
+        SimpleSolutionModel model;
 
-        try {
-            this.scenario = new Scenario(league, inputs, outputs, orientation, superEfficiency, start, seasons);
+        String[] dmu = null;
+        CplexController connection = new CplexController();  //Establish connection to database
 
-        }catch (Exception e){
-            e.printStackTrace();
-            scenario = null;
-        }finally {
-            return this.scenario;
-        }
+        double[][]input = null;
+        double[][]output = null;
+        double[][]paraIn = null;    //Arrays for saving parameter values
+        double[][]paraOut = null;
+
+        overList = new ArrayList<>();
+        refList = new ArrayList<>();
+        deaList = new ArrayList<>();
+
+        dmu = connection.createDMUArray(query.getLeagueID(), query.getSeason());
+
+        input = connection.createParameterArray(query.getLeagueID(), query.getSeason(), query.getSelectedInputs());
+        output = connection.createParameterArray(query.getLeagueID(), query.getSeason(), query.getSelectedOutputs());
+
+        paraIn = input;
+        paraOut = output;
+        paraOut = ExcelOutput.combineOverviewStage(paraOut, output);
+        DEA dea =  new DEA(dmu, input, output);
+
+        deaList.add(dea);
+        model = solveSingleStageDEA(dea,dmu,query.isInputOriented(),query.isSuperEff(),query.getSelectedInputsNames(),query.getSelectedOutputsNames()); //Solves the DEA and updates overview and reference lists
+        JsonNode node = Json.toJson(model);
+
+        return node;
 
     }
+
+
 
     public List<ScenarioMQI> solve(SolverSimpleQueryMQI query){
         this.solvedScenarioMQI = new ArrayList<ScenarioMQI>();
@@ -108,8 +120,8 @@ public class SolverController {
         return solvedScenarioMQI;
     }
 
-    public Scenario solve(SolverComplexQuery query) throws IloException {
-        Scenario solvedScenario = null;
+    public JsonNode solve(SolverComplexQuery query) {
+        ComplexSolutionModel model;
         //Complex Query variables
         ArrayList<DEAWrapper> stage1DEA = query.getStage1DEA();
         ArrayList<DEAWrapper> stage2DEA = query.getStage2DEA();
@@ -118,6 +130,7 @@ public class SolverController {
         st1solList = new ArrayList<>();
         st2solList = new ArrayList<>();
         st3solList = new ArrayList<>();
+
 
         //Cplex variables
         CplexController connection = new CplexController();
@@ -134,6 +147,8 @@ public class SolverController {
         dmu = connection.createDMUArray(query.getLeagueID(), query.getSeason());
 
         for (DEAWrapper dea:stage1DEA){
+            String[] inputNames = null;
+            String[] outputNames = null;
 
             paraIn = null;    //Arrays for saving parameter values
             paraOut = null;
@@ -150,14 +165,10 @@ public class SolverController {
             DEA _dea =  new DEA(dmu, input, output); //Create DEA-object to be solved
 
             //Solve DEA
-            //solve(_dea, dmu, query); //Solves the DEA and updates overview and reference lists
-            //deaList.add(_dea);
             double [][] solutionOne = solveDEA(_dea,query.getSelectedMethod(),query.isInputOriented());
 
             this.st1solList.add(dea.getDeaID(), solutionOne);
-            //paraValues = new ArrayList<>();  //Unify input and output list
-            //paraValues.add(paraIn);
-            //paraValues.add(paraOut);
+
         }
 
         for (DEAWrapper dea:stage2DEA){
@@ -216,40 +227,124 @@ public class SolverController {
         for (double[][]sol:st3solList)
             st3eff.add(st3solList.indexOf(sol), Evaluation.getEfficiency(sol));
 
-        SolutionModel finalSolution = new SolutionModel(st1solList,st2solList,st3solList,
-                                                        st1eff,st2eff,st3eff,
-                                                        query.getSelectedMethod(),dmu);
-        JsonNode node = Json.toJson(finalSolution);
+        model = new ComplexSolutionModel(st1solList,st1eff,st2solList,st2eff,st3solList,st3eff,query.getSelectedMethod(),dmu,query.getSelectedInputsNames(),query.getSelectedOutputsNames());
+
+        JsonNode node = Json.toJson(model);
         System.out.println("JSON FINAL SOLUTION: " + node);
 
-        return solvedScenario;
+        return node;
     }
 
-    private class SolutionModel{
-        public final ArrayList<double[][]> stage1Solutions;
-        public final ArrayList<double[][]> stage2Solutions;
-        public final ArrayList<double[][]> stage3Solutions;
+    /**
+     * This method solves a single stage DEA with CCR, BCC, SBM solution methods
+     * @param dea
+     * @param dmu
+     * @param orientation
+     * @param superEfficiency
+     * @param selectedInputsNames
+     *@param selectedOutputsNames @return
+     */
+    private SimpleSolutionModel solveSingleStageDEA(DEA dea, String[] dmu, boolean orientation, boolean superEfficiency, ArrayList<String> selectedInputsNames, ArrayList<String> selectedOutputsNames)    {
+        //Method that solves a DEA according to CCR and BCC, creates scale efficiency and puts things in an overview-array
+        double[][] overview = null;     //Array to save efficiency results
+        String[] reference = null;      //Array for reference units. Reference units are pulled from the BCC results
 
-        public final ArrayList<double[]> stage1Eff;
-        public final ArrayList<double[]> stage2Eff;
-        public final ArrayList<double[]> stage3Eff;
+        HashMap<String,double[][]> solutions = new HashMap<>();
+        HashMap<String,double[]> efficencies = new HashMap<>();
 
-        public final String solutionMethod;
-        public final String[] dmu;
 
-        public SolutionModel(ArrayList<double[][]> stage1Solutions, ArrayList<double[][]> stage2Solutions, ArrayList<double[][]> stage3Solutions, ArrayList<double[]> stage1Eff, ArrayList<double[]> stage2Eff, ArrayList<double[]> stage3Eff, String solutionMethod, String[] dmu) {
-            this.stage1Solutions = stage1Solutions;
-            this.stage2Solutions = stage2Solutions;
-            this.stage3Solutions = stage3Solutions;
-            this.stage1Eff = stage1Eff;
-            this.stage2Eff = stage2Eff;
-            this.stage3Eff = stage3Eff;
-            this.solutionMethod = solutionMethod;
-            this.dmu = dmu;
+        double[][]solCCR = null;
+        double[][]solBCC = null;
+        double[][]solSBM = null;
+
+        double[]effCCR = null;
+        double[]effBCC = null;
+        double[]effSBM = null;
+
+        SimpleSolutionModel model = null;
+        try {
+            if(orientation == true)
+            {
+
+                solCCR = dea.solve_Dual_Basic_Input(false);
+                solBCC = dea.solve_Dual_Basic_Input(true);
+                solSBM = dea.solve_Dual_SBM_Input();
+
+                effCCR = Evaluation.getEfficiency(solCCR);
+                effBCC = Evaluation.getEfficiency(solBCC);
+                effSBM = Evaluation.getEfficiency(solSBM);
+
+                if(superEfficiency == true)
+                {
+                    solCCR = dea.solve_Radial_SuperEff_Input(effCCR, false);
+                    double[][]solSuperBCC = dea.solve_Radial_SuperEff_Input(effBCC, true); //Separate Array to avoid confusing reference units
+                    solSBM = dea.solve_SBM_SuperEff_Input(effSBM);
+
+                    for(int i = 0; i < effCCR.length; i++)  //Write Superefficiency into normal efficiency arrays
+                    {
+                        if(effCCR[i] == 1)
+                            effCCR[i] = solCCR[i][dmu.length];
+                        if(effBCC[i] == 1)
+                            effBCC[i] = solSuperBCC[i][dmu.length];
+                        if(effSBM[i] == 1)
+                            effSBM[i] = solSBM[i][dmu.length];
+                    }
+                }
+
+                double[]scale = Evaluation.createScaleEfficiency(effCCR, effBCC);
+
+
+
+                overview = Evaluation.createOverview(effCCR, effBCC, scale, effSBM);
+                reference = Evaluation.createReferenceSetDual(dmu, solBCC);
+
+            }
+            else
+            {
+                solCCR = dea.solve_Dual_Basic_Output(false);
+                solBCC = dea.solve_Dual_Basic_Output(true);
+                solSBM = dea.solve_Dual_SBM_Output();
+
+                effCCR = Evaluation.getEfficiency(solCCR);
+                effBCC = Evaluation.getEfficiency(solBCC);
+                effSBM = Evaluation.getEfficiency(solSBM);
+
+                if(superEfficiency == true)
+                {
+                    solCCR = dea.solve_Radial_SuperEff_Output(effCCR, false);
+                    double[][]solSuperBCC = dea.solve_Radial_SuperEff_Output(effBCC, true); //Separate Array to avoid confusing reference units
+                    solSBM = dea.solve_SBM_SuperEff_Output(effSBM);
+
+                    for(int i = 0; i < effCCR.length; i++)  //Write Superefficiency into normal efficiency arrays
+                    {
+                        if(effCCR[i] == 1)
+                            effCCR[i] = solCCR[i][dmu.length];
+                        if(effBCC[i] == 1)
+                            effBCC[i] = solSuperBCC[i][dmu.length];
+                        if(effSBM[i] == 1)
+                            effSBM[i] = solSBM[i][dmu.length];
+                    }
+                }
+                double[]scale = Evaluation.createScaleEfficiency(effCCR, effBCC);
+
+                overview = Evaluation.createOverview(effCCR, effBCC, scale, effSBM);
+                reference = Evaluation.createReferenceSetDual(dmu, solBCC);
+            }
+        } catch (IloException ex) {
+            System.out.println("Error solving for CCR, BCC or SBM efficiency");
+            Logger.getLogger(Scenario.class.getName()).log(Level.SEVERE, null, ex);
         }
+        solutions.put("BCC", solBCC);
+        solutions.put("CCR", solCCR);
+        solutions.put("SBM", solSBM);
 
+        efficencies.put("BCC",effBCC);
+        efficencies.put("CCR",effCCR);
+        efficencies.put("SBM",effSBM);
 
+        model = new SimpleSolutionModel(solutions,efficencies,selectedInputsNames,selectedOutputsNames,overview,reference,dmu);
 
+        return model;
     }
 
     /**
@@ -410,85 +505,6 @@ public class SolverController {
         return combined;
     }
 
-    /**
-     * Method that solves a DEA according to CCR and BCC, creates scale efficiency and puts things in an overview-array
-     * @param dea
-     * @param dmu
-     * @param query
-     */
-    private void solve(DEA dea, String dmu[], SolverComplexQuery query)    {
-        double[][] overview = null;     //Array to save efficiency results
-        String[] reference = null;      //Array for reference units. Reference units are pulled from the BCC results
-        try {
-            if(query.isInputOriented()) {
-                double[][]solCCR = dea.solve_Dual_Basic_Input(false);
-                double[][]solBCC = dea.solve_Dual_Basic_Input(true);
-                double[][]solSBM = dea.solve_Dual_SBM_Input();
-
-                double[]effCCR = Evaluation.getEfficiency(solCCR);
-                double[]effBCC = Evaluation.getEfficiency(solBCC);
-                double[]effSBM = Evaluation.getEfficiency(solSBM);
-
-                if(superEfficiency == true)
-                {
-                    solCCR = dea.solve_Radial_SuperEff_Input(effCCR, false);
-                    double[][]solSuperBCC = dea.solve_Radial_SuperEff_Input(effBCC, true); //Separate Array to avoid confusing reference units
-                    solSBM = dea.solve_SBM_SuperEff_Input(effSBM);
-
-                    for(int i = 0; i < effCCR.length; i++)  //Write Superefficiency into normal efficiency arrays
-                    {
-                        if(effCCR[i] == 1)
-                            effCCR[i] = solCCR[i][dmu.length];
-                        if(effBCC[i] == 1)
-                            effBCC[i] = solSuperBCC[i][dmu.length];
-                        if(effSBM[i] == 1)
-                            effSBM[i] = solSBM[i][dmu.length];
-                    }
-                }
-                double[]scale = Evaluation.createScaleEfficiency(effCCR, effBCC);
-
-                overview = Evaluation.createOverview(effCCR, effBCC, scale, effSBM);
-                reference = Evaluation.createReferenceSetDual(dmu, solBCC);
-            }
-            else
-            {
-                double[][]solCCR = dea.solve_Dual_Basic_Output(false);
-                double[][]solBCC = dea.solve_Dual_Basic_Output(true);
-                double[][]solSBM = dea.solve_Dual_SBM_Output();
-
-                double[]effCCR = Evaluation.getEfficiency(solCCR);
-                double[]effBCC = Evaluation.getEfficiency(solBCC);
-                double[]effSBM = Evaluation.getEfficiency(solSBM);
-
-                if(superEfficiency == true)
-                {
-                    solCCR = dea.solve_Radial_SuperEff_Output(effCCR, false);
-                    double[][]solSuperBCC = dea.solve_Radial_SuperEff_Output(effBCC, true); //Separate Array to avoid confusing reference units
-                    solSBM = dea.solve_SBM_SuperEff_Output(effSBM);
-
-                    for(int i = 0; i < effCCR.length; i++)  //Write Superefficiency into normal efficiency arrays
-                    {
-                        if(effCCR[i] == 1)
-                            effCCR[i] = solCCR[i][dmu.length];
-                        if(effBCC[i] == 1)
-                            effBCC[i] = solSuperBCC[i][dmu.length];
-                        if(effSBM[i] == 1)
-                            effSBM[i] = solSBM[i][dmu.length];
-                    }
-                }
-                double[]scale = Evaluation.createScaleEfficiency(effCCR, effBCC);
-
-                overview = Evaluation.createOverview(effCCR, effBCC, scale, effSBM);
-                reference = Evaluation.createReferenceSetDual(dmu, solBCC);
-            }
-        } catch (IloException ex) {
-            System.out.println("Error solving for CCR, BCC or SBM efficiency");
-            Logger.getLogger(Scenario.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        overList.add(overview); //Add to list of result-arrays
-        refList.add(reference); //Add to list of result-arrays
-    }
-
     private double[][] copy2DArray(double[][]matrix){
         double [][] myInt = new double[matrix.length][];
         for(int i = 0; i < matrix.length; i++)
@@ -521,6 +537,8 @@ public class SolverController {
     }
 */
     // Getters and Setters
+
+
     public boolean isData() {
         return data;
     }
@@ -599,5 +617,56 @@ public class SolverController {
 
     public void setSeasons(int seasons) {
         this.seasons = seasons;
+    }
+
+    // JSON Models
+    private class ComplexSolutionModel {
+        public final ArrayList<double[][]> stage1Solutions;
+        public final ArrayList<double[]> stage1Eff;
+
+        public final ArrayList<double[][]> stage2Solutions;
+        public final ArrayList<double[]> stage2Eff;
+
+        public final ArrayList<double[][]> stage3Solutions;
+        public final ArrayList<double[]> stage3Eff;
+
+        public final String solutionMethod;
+        public final String[] dmu;
+        public final ArrayList<String> inputs;
+        public final ArrayList<String> outputs;
+
+        public ComplexSolutionModel(ArrayList<double[][]> stage1Solutions, ArrayList<double[]> stage1Eff, ArrayList<double[][]> stage2Solutions, ArrayList<double[]> stage2Eff, ArrayList<double[][]> stage3Solutions, ArrayList<double[]> stage3Eff, String solutionMethod, String[] dmu, ArrayList<String> inputs, ArrayList<String> outputs) {
+            this.stage1Solutions = stage1Solutions;
+            this.stage1Eff = stage1Eff;
+            this.stage2Solutions = stage2Solutions;
+            this.stage2Eff = stage2Eff;
+            this.stage3Solutions = stage3Solutions;
+            this.stage3Eff = stage3Eff;
+            this.solutionMethod = solutionMethod;
+            this.dmu = dmu;
+            this.inputs = inputs;
+            this.outputs = outputs;
+        }
+    }
+    private class SimpleSolutionModel {
+        public final HashMap<String, double[][]> solutions;
+        public final HashMap<String, double[]> efficiencies;
+
+        public final ArrayList<String> inputs;
+        public final ArrayList<String> outputs;
+
+        public final double[][] overview;     //Array to save efficiency results
+        public final String[] reference;
+        public final String[] dmu;
+
+        public SimpleSolutionModel(HashMap<String, double[][]> solutions, HashMap<String, double[]> efficencies, ArrayList<String> inputs, ArrayList<String> outputs, double[][] overview, String[] reference, String[] dmu) {
+            this.solutions = solutions;
+            this.efficiencies = efficencies;
+            this.inputs = inputs;
+            this.outputs = outputs;
+            this.overview = overview;
+            this.reference = reference;
+            this.dmu = dmu;
+        }
     }
 }
