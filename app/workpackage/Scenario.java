@@ -102,15 +102,12 @@ public class Scenario {
         double[][]paraIn = null;    //Arrays for saving parameter values
         double[][]paraOut = null;
 
-        for(int i = 0; i <= seasons; i++)
+        for(int i = 0; i < seasons; i++)
         {
             //Create parameter-arrays to work from
             this.dmu = connection.createDMUArray(league, start + i);
             this.input = connection.createParameterArray(league, start + i, inputStr);
             this.output = connection.createParameterArray(league, start + i, outputStr);
-
-            if(dmu.length < (3 * (input.length + output.length))) //CHECK: Correct formula?
-                throw new Exception("Cooper et al.'s (2007a) law is not fulfilled. Please reduce either the amount of inputs or the amount of outputs.");
 
             dmuList.add(dmu);   //Add DMU to list for Exceloutput later on
             if(paraIn == null)  //Building matrices showing all inputs and outputs

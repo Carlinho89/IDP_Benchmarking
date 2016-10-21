@@ -79,6 +79,4 @@ public class CplexController {
         //System.out.println("result string is '" + result + "'");
         return result;
     }
-
-
 }

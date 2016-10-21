@@ -14,56 +14,92 @@ import java.util.List;
  * Created by enrico on 16/05/2016.
  */
 public class SolverSimpleQuery {
-    private int leagueID;
-    private int seasons;
+    private int season;
+    private int numberOfTeams;
     private int teamID;
+    private int numberOfSeasons;
+    private int leagueID;
+    private ArrayList<String> selectedInputsNames;
+    private ArrayList<String> selectedOutputsNames;
     private List<Integer> selectedInputs;
     private List<Integer> selectedOutputs;
-    private int start;
-
+    private boolean superEff;
+    private boolean inputOriented;
+    private String solver;
+    private String selectedMethod;
+    private String leagueName;
+    private String teamName;
 
 
     public SolverSimpleQuery(String query) {
 
         try {
+            season = numberOfSeasons = teamID = numberOfSeasons = leagueID = -1;
+            superEff = false;
+            solver = selectedMethod = leagueName = teamName = null;
+            selectedInputs = new ArrayList<>();
+            selectedInputsNames = new ArrayList<>();
+            selectedOutputs = new ArrayList<>();
+            selectedOutputsNames = new ArrayList<>();
 
-            selectedInputs = new ArrayList<Integer>();
-            selectedOutputs = new ArrayList<Integer>();
+
             ObjectMapper mapper = new ObjectMapper();
 
             JsonNode rootNode = mapper.readTree(query);
-
-            this.leagueID =rootNode.path("leagueID").asInt();
-            //System.out.println("leagueID: " + this.leagueID);
-            this.start = rootNode.path("season").asInt();
-            //System.out.println("season: " + this.season);
-            this.teamID = rootNode.path("teamID").asInt();
-            //System.out.println("teamID: " + this.teamID);
-            this.seasons = 1;
-
-
-            JsonNode selectedInputsNode = rootNode.path("selectedInputs");
-            Iterator<JsonNode> iterator = selectedInputsNode.iterator();
-            //System.out.print("selectedInputs: [ ");
-
-            while (iterator.hasNext()) {
-                JsonNode input = iterator.next();
-                //System.out.print(input.asInt() + " ");
-                selectedInputs.add(input.asInt());
+            if (rootNode.has("superEff"))
+                superEff = rootNode.path("superEff").asBoolean();
+            if (rootNode.has("inputOriented"))
+                inputOriented = rootNode.path("inputOriented").asBoolean();
+            if (rootNode.has("season"))
+                season = rootNode.path("season").asInt();
+            if (rootNode.has("numberOfTeams"))
+                numberOfTeams = rootNode.path("numberOfTeams").asInt();
+            if (rootNode.has("numberOfSeasons"))
+                numberOfSeasons = rootNode.path("numberOfSeasons").asInt(1);
+            if (rootNode.has("teamID"))
+                teamID = rootNode.path("teamID").asInt();
+            if (rootNode.has("leagueID"))
+                leagueID = rootNode.path("leagueID").asInt();
+            if (rootNode.has("solver"))
+                solver = rootNode.path("solver").asText();
+            if (rootNode.has("selectedMethod"))
+                selectedMethod = rootNode.path("selectedMethod").asText();
+            if (rootNode.has("leagueName"))
+                leagueName = rootNode.path("leagueName").asText();
+            if (rootNode.has("teamName"))
+                teamName = rootNode.path("teamName").asText();
+            if (rootNode.has("selectedInputs")){
+                JsonNode selectedInputs = rootNode.path("selectedInputs");
+                Iterator<JsonNode> iterator = selectedInputs.iterator();
+                while (iterator.hasNext()){
+                    JsonNode input = iterator.next();
+                    this.selectedInputs.add(input.asInt());
+                }
             }
-
-            //System.out.println("]");
-
-            JsonNode selectedOutputsNode = rootNode.path("selectedOutputs");
-             iterator = selectedOutputsNode.iterator();
-            //System.out.print("selectedOutputs: [ ");
-
-            while (iterator.hasNext()) {
-                JsonNode output = iterator.next();
-                //System.out.print(output.asInt() + " ");
-                selectedOutputs.add(output.asInt());
+            if (rootNode.has("selectedInputsNames")){
+                JsonNode selectedInputsNames = rootNode.path("selectedInputsNames");
+                Iterator<JsonNode> iterator = selectedInputsNames.iterator();
+                while (iterator.hasNext()){
+                    JsonNode input = iterator.next();
+                    this.selectedInputsNames.add(input.asText());
+                }
             }
-
+            if (rootNode.has("selectedOutputs")){
+                JsonNode selectedOutputs = rootNode.path("selectedOutputs");
+                Iterator<JsonNode> iterator = selectedOutputs.iterator();
+                while (iterator.hasNext()){
+                    JsonNode input = iterator.next();
+                    this.selectedOutputs.add(input.asInt());
+                }
+            }
+            if (rootNode.has("selectedOutputsNames")){
+                JsonNode selectedOutputsNames = rootNode.path("selectedOutputsNames");
+                Iterator<JsonNode> iterator = selectedOutputsNames.iterator();
+                while (iterator.hasNext()){
+                    JsonNode input = iterator.next();
+                    this.selectedOutputsNames.add(input.asText());
+                }
+            }
             //System.out.println("]");
         }
         catch (JsonParseException e) { e.printStackTrace(); }
@@ -82,23 +118,12 @@ public class SolverSimpleQuery {
         this.superEff = superEff;
     }
 
-    private boolean superEff;
-
-
     public int getLeagueID() {
         return leagueID;
     }
 
     public void setLeagueID(int leagueID) {
         this.leagueID = leagueID;
-    }
-
-    public int getSeasons() {
-        return seasons;
-    }
-
-    public void setSeason(int season) {
-        this.seasons = season;
     }
 
     public int getTeamID() {
@@ -125,11 +150,79 @@ public class SolverSimpleQuery {
         this.selectedOutputs = selectedOutputs;
     }
 
-    public int getStart() {
-        return start;
+    public int getSeason() {
+        return season;
     }
 
-    public void setStart(int start) {
-        this.start = start;
+    public int getNumberOfTeams() {
+        return numberOfTeams;
+    }
+
+    public void setNumberOfTeams(int numberOfTeams) {
+        this.numberOfTeams = numberOfTeams;
+    }
+
+    public Integer getNumberOfSeasons() {
+        return numberOfSeasons;
+    }
+
+    public void setNumberOfSeasons(int numberOfSeasons) {
+        this.numberOfSeasons = numberOfSeasons;
+    }
+
+    public ArrayList<String> getSelectedInputsNames() {
+        return selectedInputsNames;
+    }
+
+    public void setSelectedInputsNames(ArrayList<String> selectedInputsNames) {
+        this.selectedInputsNames = selectedInputsNames;
+    }
+
+    public ArrayList<String> getSelectedOutputsNames() {
+        return selectedOutputsNames;
+    }
+
+    public void setSelectedOutputsNames(ArrayList<String> selectedOutputsNames) {
+        this.selectedOutputsNames = selectedOutputsNames;
+    }
+
+    public boolean isInputOriented() {
+        return inputOriented;
+    }
+
+    public void setInputOriented(boolean inputOriented) {
+        this.inputOriented = inputOriented;
+    }
+
+    public String getSolver() {
+        return solver;
+    }
+
+    public void setSolver(String solver) {
+        this.solver = solver;
+    }
+
+    public String getSelectedMethod() {
+        return selectedMethod;
+    }
+
+    public void setSelectedMethod(String selectedMethod) {
+        this.selectedMethod = selectedMethod;
+    }
+
+    public String getLeagueName() {
+        return leagueName;
+    }
+
+    public void setLeagueName(String leagueName) {
+        this.leagueName = leagueName;
+    }
+
+    public String getTeamName() {
+        return teamName;
+    }
+
+    public void setTeamName(String teamName) {
+        this.teamName = teamName;
     }
 }

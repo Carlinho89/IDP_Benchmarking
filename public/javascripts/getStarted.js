@@ -1,6 +1,7 @@
 $(document).ready(function () {
     //the query object will hold all the parameters needed for the modeller
     var query = {};
+  
     // Add scrollspy to <body>
     $('body').scrollspy({target: ".navbar", offset: 50});
 
@@ -18,8 +19,45 @@ $(document).ready(function () {
     });
 
 
-//Auto scrolling events: after each section is completed 
+//Auto scrolling events: after each section is completed
 //screen scrolls to next section
+
+//Method to league
+    $("#simpleSolver").on('click', function (event) {
+        event.preventDefault();
+        //save the value of the selected league
+        query.solver = "simple";
+        document.getElementById("chooseOrder").setAttribute("style","display: none;");
+        updateResume(query);
+        document.getElementById("chooseMethodAlert").style.visibility = "hidden";
+
+        //Scroll to next section
+        var hash = "#chooseLeague";
+
+        scrollTo(hash);
+
+
+    });
+
+//Method to league
+    $("#complexSolver").on('click', function (event) {
+        event.preventDefault();
+        //save the value of the selected league
+        query.solver = "complex";
+        query.selectedMethod = "BCC";
+        document.getElementById("chooseOrder").setAttribute("style","display: block;");
+        updateResume(query);
+        document.getElementById("chooseMethodAlert").style.visibility = "hidden";
+
+        //Scroll to next section
+        var hash = "#chooseLeague";
+
+        scrollTo(hash);
+
+
+    });
+
+
 //League to Season
     $(".league").on('click', function (event) {
         event.preventDefault();
@@ -77,23 +115,6 @@ $(document).ready(function () {
         document.getElementById("chooseTeamAlert").style.visibility = "hidden";
 
         //Scroll to next section
-        var hash = "#chooseMethod";
-
-        scrollTo(hash);
-
-
-    });
-
-    //Method to input
-    $("#simpleSolver").on('click', function (event) {
-        event.preventDefault();
-        //save the value of the selected league
-        query.solver = "simple";
-
-        updateResume(query);
-        document.getElementById("chooseMethodAlert").style.visibility = "hidden";
-
-        //Scroll to next section
         var hash = "#chooseInputs";
 
         scrollTo(hash);
@@ -101,22 +122,6 @@ $(document).ready(function () {
 
     });
 
-    //Method to input
-    $("#complexSolver").on('click', function (event) {
-        event.preventDefault();
-        //save the value of the selected league
-        query.solver = "complex";
-
-        updateResume(query);
-        document.getElementById("chooseMethodAlert").style.visibility = "hidden";
-
-        //Scroll to next section
-        //var hash = "#chooseInputs";
-
-        //scrollTo(hash);
-
-
-    });
 
 //Event to manage selection of super-efficiency
 
@@ -152,20 +157,35 @@ $(document).ready(function () {
 
     });
 
-//Events to manage the list of inputs selected  
+//Events to manage the list of inputs selected
     $("#chooseInputs input").on('click', function (event) {
         var names = [];
         var selected = [];
+        var alreadySelected = "";
+        var value=-1;
         $('#chooseInputs input:checked').each(function () {
-            selected.push(parseInt($(this).attr('value')));
-            names.push($(this).attr('name'));
+            value=parseInt($(this).attr('value'));
+            console.log(value);
+
+            if (query.selectedOutputs && query.selectedOutputs.indexOf(value)>=0  ){
+                alreadySelected=$(this).attr('name');
+                $(this).prop( "checked", false );
+
+            } else {
+                selected.push(parseInt($(this).attr('value')));
+                names.push($(this).attr('name'));
+            }
+
 
 
         });
+        if(alreadySelected!=""){
+            alert("The "+alreadySelected+" parameter is already selected as output");
+        }
         query.selectedInputs = selected;
         query.selectedInputsNames = names;
 
-        var offNames = [];
+     /*   var offNames = [];
         var offSelected = [];
         $('#offensiveInput input:checked').each(function () {
             offSelected.push(parseInt($(this).attr('value')));
@@ -196,26 +216,42 @@ $(document).ready(function () {
 
         });
         query.defSelectedInputs = defSelected;
-        query.defSelectedInputsNames = defNames;
-        
+        query.defSelectedInputsNames = defNames;*/
+
         updateResume(query);
         document.getElementById("chooseInputsAlert").style.visibility = "hidden";
     });
 
-//Events to manage the list of inputs selected  
+//Events to manage the list of outputs selected
     $("#chooseOutputs input").on('click', function (event) {
         var names = [];
         var selected = [];
+        var alreadySelected = "";
+        var value=-1;
         $('#chooseOutputs input:checked').each(function () {
-            selected.push(parseInt($(this).attr('value')));
-            names.push($(this).attr('name'));
+
+
+            value=parseInt($(this).attr('value'));
+            console.log(value);
+
+            if (query.selectedInputs && query.selectedInputs.indexOf(value)>=0  ){
+                alreadySelected=$(this).attr('name');
+                $(this).prop( "checked", false );
+
+            } else {
+                selected.push(parseInt($(this).attr('value')));
+                names.push($(this).attr('name'));
+            }
 
 
         });
+        if(alreadySelected!=""){
+            alert("The "+alreadySelected+" parameter is already selected as input");
+        }
         query.selectedOutputs = selected;
         query.selectedOutputsNames = names;
 
-        var spnames = [];
+       /* var spnames = [];
         var spselected = [];
         $('#sportiveOutput input:checked').each(function () {
             spselected.push(parseInt($(this).attr('value')));
@@ -247,9 +283,414 @@ $(document).ready(function () {
 
         });
         query.defSelectedOutputs = defselected;
-        query.defSelectedOutputsNames = defnames;
+        query.defSelectedOutputsNames = defnames;*/
         updateResume(query);
         document.getElementById("chooseOutputsAlert").style.visibility = "hidden";
+    });
+
+
+//Events to manage multi stage dea solving
+
+//CCR-BCC selection
+    $("#methodSelect").change(function () {
+        var str = "";
+
+        $("#methodSelect option:selected").each(function () {
+            str = $(this).text();
+        });
+
+        query.selectedMethod = str;
+        console.log(query.selectedMethod);
+
+        updateResume(query);
+
+        var hash = "#setStages";
+
+        scrollTo(hash);
+    });
+//Stage 1 manager
+    $("#stage1").on('click', function (event) {
+        if(  query.selectedInputs.length>0 && query.selectedOutputs.length>0){
+            if(typeof query.stage1DEA === "undefined")
+            document.getElementById("stage1-rem").setAttribute("style","display: block;");
+            var index = 0;
+            var dea= {};
+            dea.selectedInputs=[];
+            dea.selectedOutputs=[];
+            dea.previousResults=[];
+            dea.stage=1;
+            dea.inputOriented=false;
+            dea.deaID=0;
+
+            if(typeof query.stage1DEA === "undefined"){
+                query.stage1DEA= [];
+                query.stage1DEA.push(dea);
+
+            } else {
+                console.log(query.stage1DEA.length);
+                index= query.stage1DEA.length;
+                dea.deaID=index;
+                query.stage1DEA.push(dea);
+
+            }
+
+
+
+
+            var node = document.getElementById("dea-templates").cloneNode(true);
+            var newID= "dea"+(index);
+            console.log(newID);
+            node.setAttribute("id",newID);
+            //  var h4 = document.createElement("h4").setAttribute("class","text-center ");
+            // h4.innerHTML="AAA";
+
+            node.insertAdjacentHTML("afterbegin", "<h4 class='text-center'>DEA"+(index+1)+"</h4>");
+            //$( "#"+newID+".dea-title" ).replaceWith( '<h4>AAAAAA</h4>' );
+            //console.log(document.getElementById(newID).innerHTML);
+            //console.log("aaaaa" + JSON.stringify($('#'+newID+' .dea-title')));
+
+
+            var container = document.getElementById('stage1-dea');
+            console.log(JSON.stringify(query.stage1DEA));
+
+            var deaInputs= node.getElementsByClassName("dea-inputs-container")[0];
+            //deaInputs.innerHTML="AA";
+            var inputlist="";
+            for(var i=0; i< query.selectedInputs.length;i++){
+                inputlist+=' <div class="col-md-4 ">';
+                inputlist+=' <div class="dea-element">';
+                inputlist+='<input style=" margin-left:5%" type="checkbox" class="dea-input" stage="1" value='+query.selectedInputs[i]+' dea="'+index+'" parameter-type="input" >';
+                inputlist+='<label>'+query.selectedInputsNames[i]+'</label>';
+                inputlist+='</div></div>';
+            }
+            deaInputs.innerHTML=inputlist;
+
+            var deaOutputs= node.getElementsByClassName("dea-outputs-container")[0];
+            //deaInputs.innerHTML="AA";
+            var outputlist="";
+            for(var i=0; i< query.selectedOutputs.length;i++){
+                outputlist+=' <div class="col-md-4 ">';
+                outputlist+=' <div class="dea-element">';
+                outputlist+='<input style=" margin-left:5%" type="checkbox" class="dea-input" stage="1" value='+query.selectedOutputs[i]+' dea="'+index+'" parameter-type="output" >';
+                outputlist+='<label>'+query.selectedOutputsNames[i]+'</label>';
+                outputlist+='</div></div>';
+            }
+            deaOutputs.innerHTML=outputlist;
+
+            var deaOrientation= node.getElementsByClassName("dea-orientation-container")[0];
+            var orientationDiv="";
+            orientationDiv+='<div class="col-md-4">Orienation:</div>';
+            orientationDiv+='<div class="col-md-4"><input class="col-md-4" type="radio" stage="1" name="orientation" value="Input" checked dea="'+index+'" parameter-type="orientation"> Input</div>';
+            orientationDiv+='<div class="col-md-4"><input class="col-md-4" type="radio" stage="1" name="orientation" value="Output" dea="'+index+'" parameter-type="orientation"> Output</div>';
+            deaOrientation.innerHTML=orientationDiv;
+
+
+            container.appendChild(node);
+        }
+        else {
+            alert("Choose inputs and outputs first!");
+        }
+
+    });
+
+    $("#stage1-rem").on('click', function (event) {
+
+
+        if(typeof query.stage1DEA === "undefined"){
+
+
+        } else {
+            var last= query.stage1DEA.length;
+            if(last == 1){
+                document.getElementById("stage1-rem").setAttribute("style","display: none;")
+            }
+            var parent = document.getElementById("stage1-dea");
+            var child = parent.lastElementChild;
+            parent.removeChild(child);
+            query.stage1DEA.pop();
+
+            console.log(JSON.stringify(query.stage1DEA));
+
+
+
+
+        }
+
+
+
+    });
+
+//Stage 2 manager
+    $("#stage2").on('click', function (event) {
+        if(query.stage1DEA.length>0) {
+            document.getElementById("stage2-rem").setAttribute("style", "display: block;");
+            var index = 0;
+            var dea = {};
+            dea.selectedInputs = [];
+            dea.selectedOutputs = [];
+            dea.previousResults = [];
+            dea.stage = 2;
+            dea.inputOriented = false;
+            dea.deaID = 0;
+
+            if (typeof query.stage2DEA === "undefined") {
+                query.stage2DEA = [];
+                query.stage2DEA.push(dea);
+
+            } else {
+                console.log(query.stage2DEA.length);
+                index = query.stage2DEA.length;
+                dea.deaID = index;
+                query.stage2DEA.push(dea);
+
+            }
+
+
+            var node = document.getElementById("dea-templates").cloneNode(true);
+            var newID = "dea" + (index);
+            console.log(newID);
+            node.setAttribute("id", newID);
+            //  var h4 = document.createElement("h4").setAttribute("class","text-center ");
+            // h4.innerHTML="AAA";
+
+            node.insertAdjacentHTML("afterbegin", "<h4 class='text-center'>DEA" + (index + 1) + "</h4>");
+            //$( "#"+newID+".dea-title" ).replaceWith( '<h4>AAAAAA</h4>' );
+            //console.log(document.getElementById(newID).innerHTML);
+            //console.log("aaaaa" + JSON.stringify($('#'+newID+' .dea-title')));
+
+
+            var container = document.getElementById('stage2-dea');
+            console.log(JSON.stringify(query.stage1DEA));
+
+            var deaInputs = node.getElementsByClassName("dea-inputs-container")[0];
+            //deaInputs.innerHTML="AA";
+            var inputlist = "";
+            for (var i = 0; i < query.selectedInputs.length; i++) {
+                inputlist += ' <div class="col-md-4 ">';
+                inputlist += ' <div class="dea-element">';
+                inputlist += '<input style=" margin-left:5%" type="checkbox" class="dea-input" stage="2" value=' + query.selectedInputs[i] + ' dea="' + index + '"  parameter-type="input">';
+                inputlist += '<label>' + query.selectedInputsNames[i] + '</label>';
+                inputlist += '</div></div>';
+            }
+            for (var i = 0; i < query.stage1DEA.length; i++) {
+                inputlist += ' <div class="col-md-4 ">';
+                inputlist += ' <div class="dea-element">';
+                inputlist += '<input style=" margin-left:5%" type="checkbox" class="dea-input" stage="2" value="' + (1 * i) + '" dea="' + index + '"  parameter-type="result">';
+                inputlist += '<label>Stage1 DEA' + (i + 1) + ' result</label>';
+                inputlist += '</div></div>';
+            }
+            deaInputs.innerHTML = inputlist;
+
+            var deaOutputs = node.getElementsByClassName("dea-outputs-container")[0];
+            //deaInputs.innerHTML="AA";
+            var outputlist = "";
+            for (var i = 0; i < query.selectedOutputs.length; i++) {
+                outputlist += ' <div class="col-md-4 ">';
+                outputlist += ' <div class="dea-element">';
+                outputlist += '<input style=" margin-left:5%" type="checkbox" class="dea-input" stage="2" value=' + query.selectedOutputs[i] + ' dea="' + index + '" parameter-type="output" >';
+                outputlist += '<label>' + query.selectedOutputsNames[i] + '</label>';
+                outputlist += '</div></div>';
+            }
+            deaOutputs.innerHTML = outputlist;
+
+
+            var deaOrientation = node.getElementsByClassName("dea-orientation-container")[0];
+            var orientationDiv = "";
+            orientationDiv += '<div class="col-md-4">Orienation:</div>';
+            orientationDiv += '<div class="col-md-4"><input class="col-md-4" type="radio" stage="2" name="orientation" value="Input" checked dea="' + index + '" parameter-type="orientation"> Input</div>';
+            orientationDiv += '<div class="col-md-4"><input class="col-md-4" type="radio" stage="2" name="orientation" value="Output" dea="' + index + '" parameter-type="orientation"> Output</div>';
+            deaOrientation.innerHTML = orientationDiv;
+
+            container.appendChild(node);
+        }
+        else {
+            alert("There is no DEA set in the first stage ");
+        }
+    });
+
+    $("#stage2-rem").on('click', function (event) {
+
+
+        if(typeof query.stage2DEA === "undefined"){
+
+
+        } else {
+            var last= query.stage2DEA.length;
+            if(last == 1){
+                document.getElementById("stage2-rem").setAttribute("style","display: none;")
+            }
+            var parent = document.getElementById("stage2-dea");
+            var child = parent.lastElementChild;
+            parent.removeChild(child);
+            query.stage2DEA.pop();
+
+            console.log(JSON.stringify(query.stage2DEA));
+
+
+
+
+        }
+
+
+
+    });
+
+//Stage 3 manager
+    $("#stage3").on('click', function (event) {
+        if(query.stage2DEA.length>0) {
+            document.getElementById("stage3-rem").setAttribute("style","display: block;");
+            var index = 0;
+            var dea= {};
+            dea.selectedInputs=[];
+            dea.selectedOutputs=[];
+            dea.previousResults=[];
+            dea.stage=3;
+            dea.inputOriented=false;
+            dea.deaID=0;
+
+            if(typeof query.stage3DEA === "undefined"){
+                query.stage3DEA= [];
+                query.stage3DEA.push(dea);
+
+            } else {
+                console.log(query.stage3DEA.length);
+                index= query.stage3DEA.length;
+                dea.deaID=index;
+                query.stage3DEA.push(dea);
+
+            }
+
+
+
+
+            var node = document.getElementById("dea-templates").cloneNode(true);
+            var newID= "dea"+(index);
+            console.log(newID);
+            node.setAttribute("id",newID);
+            //  var h4 = document.createElement("h4").setAttribute("class","text-center ");
+            // h4.innerHTML="AAA";
+
+            node.insertAdjacentHTML("afterbegin", "<h4 class='text-center'>DEA"+(index+1)+"</h4>");
+            //$( "#"+newID+".dea-title" ).replaceWith( '<h4>AAAAAA</h4>' );
+            //console.log(document.getElementById(newID).innerHTML);
+            //console.log("aaaaa" + JSON.stringify($('#'+newID+' .dea-title')));
+
+
+            var container = document.getElementById('stage3-dea');
+            console.log(JSON.stringify(query.stage3DEA));
+
+            var deaInputs= node.getElementsByClassName("dea-inputs-container")[0];
+            //deaInputs.innerHTML="AA";
+            var inputlist="";
+            for(var i=0; i< query.selectedInputs.length;i++){
+                inputlist+=' <div class="col-md-4 ">';
+                inputlist+=' <div class="dea-element">';
+                inputlist+='<input style=" margin-left:5%" type="checkbox" class="dea-input" stage="3" value='+query.selectedInputs[i]+' dea="'+index+'" parameter-type="input">';
+                inputlist+='<label>'+query.selectedInputsNames[i]+'</label>';
+                inputlist+='</div></div>';
+            }
+            for(var i=0; i< query.stage2DEA.length;i++){
+                inputlist+=' <div class="col-md-4 ">';
+                inputlist+=' <div class="dea-element">';
+                inputlist+='<input style=" margin-left:5%" type="checkbox" class="dea-input" stage="3" value="'+(1*i)+'" dea="'+index+'" parameter-type="result">';
+                inputlist+='<label>Stage2 DEA'+(i+1)+' result</label>';
+                inputlist+='</div></div>';
+            }
+            deaInputs.innerHTML=inputlist;
+
+            var deaOutputs= node.getElementsByClassName("dea-outputs-container")[0];
+            //deaInputs.innerHTML="AA";
+            var outputlist="";
+            for(var i=0; i< query.selectedOutputs.length;i++){
+                outputlist+=' <div class="col-md-4 ">';
+                outputlist+=' <div class="dea-element">';
+                outputlist+='<input style=" margin-left:5%" type="checkbox" class="dea-input" stage="3" value='+query.selectedOutputs[i]+' dea="'+index+'" parameter-type="output">';
+                outputlist+='<label>'+query.selectedOutputsNames[i]+'</label>';
+                outputlist+='</div></div>';
+            }
+            deaOutputs.innerHTML=outputlist;
+
+            var deaOrientation= node.getElementsByClassName("dea-orientation-container")[0];
+            var orientationDiv="";
+            orientationDiv+='<div class="col-md-4">Orienation:</div>';
+            orientationDiv+='<div class="col-md-4"><input class="col-md-4" type="radio" stage="3" name="orientation" value="Input" checked dea="'+index+'" parameter-type="orientation"> Input</div>';
+            orientationDiv+='<div class="col-md-4"><input class="col-md-4" type="radio" stage="3" name="orientation" value="Output" dea="'+index+'" parameter-type="orientation"> Output</div>';
+            deaOrientation.innerHTML=orientationDiv;
+
+
+            container.appendChild(node);
+        }
+        else {
+            alert("There is no DEA set in the second stage ");
+
+        }
+    });
+
+    $("#stage3-rem").on('click', function (event) {
+
+
+        if(typeof query.stage3DEA === "undefined"){
+
+
+        } else {
+            var last= query.stage3DEA.length;
+            if(last == 1){
+                document.getElementById("stage3-rem").setAttribute("style","display: none;")
+            }
+            var parent = document.getElementById("stage3-dea");
+            var child = parent.lastElementChild;
+            parent.removeChild(child);
+            query.stage3DEA.pop();
+
+            console.log(JSON.stringify(query.stage3DEA));
+
+
+
+
+        }
+
+
+
+    });
+
+
+//Events to control selected values in each dea
+    $(".stage").on('click', function (event) {
+
+        if(event.target.tagName.localeCompare("INPUT")==0){
+            var inputObject={};
+            inputObject.stage= event.target.getAttribute('stage');
+            inputObject.inputType=event.target.getAttribute('parameter-type');
+            inputObject.deaIndex = parseInt(event.target.getAttribute('dea'));
+            inputObject.value = event.target.getAttribute('value');
+            console.log(JSON.stringify(inputObject));
+
+
+            if(inputObject.stage.localeCompare("1")==0){
+                setDEAParameters(query.stage1DEA,inputObject);
+
+                console.log(JSON.stringify(query.stage1DEA));
+
+            }
+            else if(inputObject.stage.localeCompare("2")==0){
+                setDEAParameters(query.stage2DEA,inputObject);
+                console.log(JSON.stringify(query.stage2DEA));
+
+            }
+            else if (inputObject.stage.localeCompare("3")==0){
+                setDEAParameters(query.stage3DEA,inputObject);
+                console.log(JSON.stringify(query.stage3DEA));
+
+            }
+
+
+
+        }
+        else console.log("Not an input");
+
+
+
+       // updateResume(query);
     });
 
 
@@ -267,7 +708,7 @@ $(document).ready(function () {
             hash = "#chooseOutputs";
         }
 
-        if (typeof query.selectedInputs === "undefined" || query.selectedInputs.length < 2) {
+        if (typeof query.selectedInputs === "undefined" || query.selectedInputs.length < 1) {
 
             hash = "#chooseInputs";
             alert = "chooseInputsAlert";
@@ -315,7 +756,7 @@ $(document).ready(function () {
             else
             {url = './complex-solver';}
             console.log(url);
-          
+
            /* var form = $('<form action="' + url + '" method="post">' +
                 '<input type="text" name="query" value="' + JSON.stringify(query) + '" />' +
                 '</form>');
@@ -441,7 +882,7 @@ function updateResume(query) {
     }
     resume += inputs;
 
-    var offinputs = "Offensive Inputs: ";
+    /*var offinputs = "Offensive Inputs: ";
     if (typeof query.offSelectedInputs === "undefined") {
         offinputs += "NOT SELECTED<br>";
 
@@ -475,7 +916,7 @@ function updateResume(query) {
         }
         socinputs += "<br>";
     }
-    resume += socinputs;
+    resume += socinputs; */
 
     var outputs = "Outputs: ";
     if (typeof query.selectedOutputs === "undefined") {
@@ -489,7 +930,7 @@ function updateResume(query) {
     }
     resume += outputs;
 
-    var spoutputs = "Sportive Outputs: ";
+    /*var spoutputs = "Sportive Outputs: ";
     if (typeof query.spSelectedOutputsNames === "undefined") {
         spoutputs += "NOT SELECTED<br>";
 
@@ -523,7 +964,7 @@ function updateResume(query) {
         }
         offoutputs += "<br>";
     }
-    resume += offoutputs;
+    resume += offoutputs;*/
 
     document.getElementById("selection-summary").innerHTML = resume;
 }
@@ -534,7 +975,7 @@ function displayTeams(query) {
         success: function (data) {
             $("#teams").empty();
             var html='<div class="row"><div class="col-md-1"></div>';
-            
+            query.numberOfTeams=data.length;
 // <a href=""><img class="  img-thumbnail img-circle img-responsive favorite_team" src="/assets/images/team_logo/' + data[i].logo + '"  val="' + data[i].tm_id + '" title="' + data[i].name + '" ></a>
             for (var i = 0; i < data.length; i++) {
                 html+='<div class="col-md-1 "><div class="team-box" ><img class="team-logo img-thumbnail img-responsive favorite_team" src="/assets/images/team_logo/' + data[i].logo + '"  val="' + data[i].tm_id + '" title="' + data[i].name + '" ></div></div>';
@@ -549,4 +990,28 @@ function displayTeams(query) {
             $("#teams").append(html+"<br><br>");
         }
     });
+}
+
+//Function to set the selected parameters of each dea in multistage solving
+function setDEAParameters(stageArray,inputObject){
+    if(inputObject.inputType.localeCompare("input")==0) {
+        var found= stageArray[inputObject.deaIndex].selectedInputs.indexOf(parseInt(inputObject.value));
+        if(found >= 0)stageArray[inputObject.deaIndex].selectedInputs.splice(found,1);
+        else  stageArray[inputObject.deaIndex].selectedInputs.push(parseInt(inputObject.value));
+    }
+    else if (inputObject.inputType.localeCompare("output")==0) {
+        var found= stageArray[inputObject.deaIndex].selectedOutputs.indexOf(parseInt(inputObject.value));
+        if(found >= 0)stageArray[inputObject.deaIndex].selectedOutputs.splice(found,1);
+        else  stageArray[inputObject.deaIndex].selectedOutputs.push(parseInt(inputObject.value));
+
+    }
+    else if (inputObject.inputType.localeCompare("result")==0) {
+        var found= stageArray[inputObject.deaIndex].previousResults.indexOf(parseInt(inputObject.value));
+        if(found >= 0)stageArray[inputObject.deaIndex].previousResults.splice(found,1);
+        else  stageArray[inputObject.deaIndex].previousResults.push(parseInt(inputObject.value));
+
+    }
+    else if (inputObject.inputType.localeCompare("orientation")==0 && inputObject.value.localeCompare("Input")) {stageArray[inputObject.deaIndex].inputOriented=true;}
+    else if (inputObject.inputType.localeCompare("orientation")==0 && inputObject.value.localeCompare("Output")) {stageArray[inputObject.deaIndex].inputOriented=false;}
+
 }
