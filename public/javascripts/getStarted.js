@@ -1,6 +1,7 @@
 $(document).ready(function () {
     //the query object will hold all the parameters needed for the modeller
     var query = {};
+  
     // Add scrollspy to <body>
     $('body').scrollspy({target: ".navbar", offset: 50});
 
@@ -18,7 +19,7 @@ $(document).ready(function () {
     });
 
 
-//Auto scrolling events: after each section is completed 
+//Auto scrolling events: after each section is completed
 //screen scrolls to next section
 
 //Method to league
@@ -156,7 +157,7 @@ $(document).ready(function () {
 
     });
 
-//Events to manage the list of inputs selected  
+//Events to manage the list of inputs selected
     $("#chooseInputs input").on('click', function (event) {
         var names = [];
         var selected = [];
@@ -216,7 +217,7 @@ $(document).ready(function () {
         });
         query.defSelectedInputs = defSelected;
         query.defSelectedInputsNames = defNames;*/
-        
+
         updateResume(query);
         document.getElementById("chooseInputsAlert").style.visibility = "hidden";
     });
@@ -300,16 +301,16 @@ $(document).ready(function () {
 
         query.selectedMethod = str;
         console.log(query.selectedMethod);
-       
+
         updateResume(query);
-       
+
         var hash = "#setStages";
 
         scrollTo(hash);
     });
 //Stage 1 manager
     $("#stage1").on('click', function (event) {
-        if(!typeof query.selectedInputs === "undefined" && !typeof query.selectedOutputs === "undefined" && query.selectedInputs.length>0 && query.selectedOutputs.length>0){
+        if(  query.selectedInputs.length>0 && query.selectedOutputs.length>0){
             if(typeof query.stage1DEA === "undefined")
             document.getElementById("stage1-rem").setAttribute("style","display: block;");
             var index = 0;
@@ -421,7 +422,7 @@ $(document).ready(function () {
 
 //Stage 2 manager
     $("#stage2").on('click', function (event) {
-        if(!typeof query.selectedInputs === "undefined" && !typeof query.selectedOutputs === "undefined" && query.selectedInputs.length>0 && query.selectedOutputs.length>0) {
+        if(query.stage1DEA.length>0) {
             document.getElementById("stage2-rem").setAttribute("style", "display: block;");
             var index = 0;
             var dea = {};
@@ -503,7 +504,7 @@ $(document).ready(function () {
             container.appendChild(node);
         }
         else {
-            alert("Choose inputs and outputs first!");
+            alert("There is no DEA set in the first stage ");
         }
     });
 
@@ -536,7 +537,7 @@ $(document).ready(function () {
 
 //Stage 3 manager
     $("#stage3").on('click', function (event) {
-        if(!typeof query.selectedInputs === "undefined" && !typeof query.selectedOutputs === "undefined" && query.selectedInputs.length>0 && query.selectedOutputs.length>0) {
+        if(query.stage2DEA.length>0) {
             document.getElementById("stage3-rem").setAttribute("style","display: block;");
             var index = 0;
             var dea= {};
@@ -620,7 +621,8 @@ $(document).ready(function () {
             container.appendChild(node);
         }
         else {
-            alert("Choose inputs and outputs first!");
+            alert("There is no DEA set in the second stage ");
+
         }
     });
 
@@ -754,7 +756,7 @@ $(document).ready(function () {
             else
             {url = './complex-solver';}
             console.log(url);
-          
+
            /* var form = $('<form action="' + url + '" method="post">' +
                 '<input type="text" name="query" value="' + JSON.stringify(query) + '" />' +
                 '</form>');
