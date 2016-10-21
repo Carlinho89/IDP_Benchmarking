@@ -15,7 +15,7 @@
 
 
             $(function () {
-                $('#table').append("<thead><tr><th>DMU</th><th>CCR</th><th>BCC</th><th>SBM</th><tr></thead><tbody>");
+                $('#table').append("<thead><tr><th>Teams</th><th>CCR</th><th>BCC</th><th>SBM</th><tr></thead><tbody>");
                 for(var i = 0; i < jsonObj.dmu.length;i++){
                     $('#table').append("<tr><td>"+jsonObj.dmu[i]+"</td><td>"+ jsonObj.efficiencies.CCR[i]+"</td><td>"+ jsonObj.efficiencies.BCC[i]+"</td><td>"+ jsonObj.efficiencies.SBM[i]+"</td><tr>");
                 }
@@ -160,7 +160,7 @@
 
                 <div class="panel panel-info">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Column</h3>
+                        <h3 class="panel-title">Chart</h3>
                     </div>
                     <div class="panel-body">
                         <div id="columnChart" class="chart-holder"></div>
