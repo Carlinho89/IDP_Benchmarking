@@ -714,6 +714,15 @@ $(document).ready(function () {
             alert = "chooseInputsAlert";
         }
 
+        if (query.selectedInputs &&  query.selectedOutputs &&  query.numberOfTeams ) {
+          if (query.numberOfTeams < 3*(query.selectedInputs.length + query.selectedOutputs.length)) {
+            hash = "#chooseInputs";
+            alert = "cooperAlert";
+          }
+
+        }
+
+
         if (typeof query.teamID === "undefined") {
 
             hash = "#chooseTeam";
