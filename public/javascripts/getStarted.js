@@ -1,7 +1,7 @@
 $(document).ready(function () {
     //the query object will hold all the parameters needed for the modeller
     var query = {};
-  
+
     // Add scrollspy to <body>
     $('body').scrollspy({target: ".navbar", offset: 50});
 
@@ -319,7 +319,7 @@ $(document).ready(function () {
             dea.selectedOutputs=[];
             dea.previousResults=[];
             dea.stage=1;
-            dea.inputOriented=false;
+            dea.inputOriented=true;
             dea.deaID=0;
 
             if(typeof query.stage1DEA === "undefined"){
@@ -430,7 +430,7 @@ $(document).ready(function () {
             dea.selectedOutputs = [];
             dea.previousResults = [];
             dea.stage = 2;
-            dea.inputOriented = false;
+            dea.inputOriented = true;
             dea.deaID = 0;
 
             if (typeof query.stage2DEA === "undefined") {
@@ -545,7 +545,7 @@ $(document).ready(function () {
             dea.selectedOutputs=[];
             dea.previousResults=[];
             dea.stage=3;
-            dea.inputOriented=false;
+            dea.inputOriented=true;
             dea.deaID=0;
 
             if(typeof query.stage3DEA === "undefined"){
@@ -713,6 +713,15 @@ $(document).ready(function () {
             hash = "#chooseInputs";
             alert = "chooseInputsAlert";
         }
+
+        if (query.selectedInputs &&  query.selectedOutputs &&  query.numberOfTeams ) {
+          if (query.numberOfTeams < 3*(query.selectedInputs.length + query.selectedOutputs.length)) {
+            hash = "#chooseInputs";
+            alert = "cooperAlert";
+          }
+
+        }
+
 
         if (typeof query.teamID === "undefined") {
 
@@ -1011,7 +1020,10 @@ function setDEAParameters(stageArray,inputObject){
         else  stageArray[inputObject.deaIndex].previousResults.push(parseInt(inputObject.value));
 
     }
-    else if (inputObject.inputType.localeCompare("orientation")==0 && inputObject.value.localeCompare("Input")) {stageArray[inputObject.deaIndex].inputOriented=true;}
-    else if (inputObject.inputType.localeCompare("orientation")==0 && inputObject.value.localeCompare("Output")) {stageArray[inputObject.deaIndex].inputOriented=false;}
+    else if (inputObject.inputType.localeCompare("orientation")==0 && inputObject.value.localeCompare("Output")) {
+      stageArray[inputObject.deaIndex].inputOriented=true;
+      console.log("true");
+    }
+    else if (inputObject.inputType.localeCompare("orientation")==0 && inputObject.value.localeCompare("Input")) {stageArray[inputObject.deaIndex].inputOriented=false;}
 
 }
