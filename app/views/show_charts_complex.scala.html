@@ -4,6 +4,7 @@
 @main("Get Started") {
     <script src="@routes.Assets.versioned("javascripts/getStarted.js")" type="text/javascript"></script>
 
+
     <script>
             var jsonString = JSON.stringify("@json");
 
@@ -25,6 +26,7 @@
                 var stage3table = showStage(jsonObj.stage3Eff,jsonObj.dmu, method);
 
                 $('#stage3').append(stage3table);
+                $("#stage3").tablesorter();
                 var stage3series=[];
                 for(var i = 0; i < jsonObj.stage3Eff.length; i++ ){
                   stage3series.push({
@@ -67,6 +69,7 @@
                 var stage2table = showStage(jsonObj.stage2Eff,jsonObj.dmu, method);
 
                 $('#stage2').append(stage2table);
+                $("#stage2").tablesorter();
                 var stage2series=[];
                 for(var i = 0; i < jsonObj.stage2Eff.length; i++ ){
                   stage2series.push({
@@ -112,6 +115,7 @@
 
 
                 $('#stage1').append(stage1table);
+                $("#stage1").tablesorter();
                 var stage1series=[];
                 for(var i = 0; i < jsonObj.stage1Eff.length; i++ ){
                   stage1series.push({
@@ -303,9 +307,9 @@
 
             });
             function showStage(stage,dmu,title){
-                var table = "<thead><tr><th>DMU</th>";
+                var table = "<thead><tr><th><a>Teams<a></th>";
                 for(var j=0;j<stage.length;j++){
-                    table+="<th>"+title+" DEA"+(j+1)+"</th>"
+                    table+="<th><a>"+title+" DEA"+(j+1)+"</a></th>"
                 }
                 table +="<tr></thead><tbody>";
 
@@ -341,7 +345,7 @@
                                       <h3 class="panel-title">Stage 3 Table</h3>
                                   </div>
                                   <div class="panel-body">
-                                      <table class="table table-striped" id ="stage3"></table>
+                                      <table class="table table-striped tablesorter" id ="stage3"></table>
                                   </div>
                               </div>
                             </div>
@@ -364,7 +368,7 @@
                                       <h3 class="panel-title">Stage 2 Table</h3>
                                   </div>
                                   <div class="panel-body">
-                                        <table class="table table-striped" id ="stage2"></table>
+                                        <table class="table table-striped tablesorter" id ="stage2"></table>
                                   </div>
                               </div>
                             </div>
@@ -387,7 +391,7 @@
                                       <h3 class="panel-title">Stage 1 Table</h3>
                                   </div>
                                   <div class="panel-body">
-                                      <table class="table table-striped" id ="stage1"></table>
+                                      <table class="table table-striped tablesorter" id ="stage1"></table>
                                   </div>
                               </div>
                             </div>

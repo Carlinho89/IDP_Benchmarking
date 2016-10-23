@@ -68,20 +68,20 @@
     }
 
     .championship-label {
-    
+
      color: white;
   text-align: center;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
   background: #1e88e5;
- 
+
   border-bottom: 2px solid #186fbb;
   border-right: 2px solid #186fbb;
- 
-    
+
+
     margin-right: 10%;
     margin-left: 10%;
     margin-bottom: 5px;
-   
+
   }
 
   .league{
@@ -124,7 +124,7 @@
     box-shadow: rgba(0,0,0,0.2) 10px 10px 10px;
     padding:10px;
     margin-bottom: 15px;
- 
+
   }
 
   .input-box-header{
@@ -147,7 +147,7 @@
     box-shadow: rgba(0,0,0,0.2) 10px 10px 10px;
     padding:10px;
     margin-bottom: 15px;
- 
+
   }
 
   .output-box-header{
@@ -177,7 +177,7 @@
 
   .col5{
       width: 18%;
- 
+
       float: left;
       margin: 10px;
   }
@@ -260,7 +260,33 @@
                     <h1>Simple Solver</h1>
                     <h5>The simple solver is suggested for non expert users. <br>Select Maximum three inputs and one output</h5>
                     <button id="simpleSolver" type="button" class="btn btn-success red"> <span class="glyphicon glyphicon-check" aria-hidden="true"></span>Select</button>
+                    <div class="row">
+                        <div class="col-md-4"></div>
+                        <div class="col-md-4">
+                            <div class="superEff-element">
+                                <input style="margin-left:5%" type="checkbox" value="efficiency" id="efficiency" >
+                                <label >
+                                    Super Efficiency  <a href="/benchmarking/Efficiency">?</a>
+                                </label>
 
+                            </div>
+                        </div>
+                        <div class="col-md-4"></div>
+
+                        <!--<div class="col-md-6" style="display: none">
+                            <div class="superEff-element" >
+
+                                <div class="form-group">
+                                    <label for="numberOfSeasonsSelect">Number Of Seasons</label>
+                                    <select class="form-control" ; style="width: 90%; margin-left: 5%; margin-right: 5%" id="numberOfSeasonsSelect">
+                                        <option>1</option>
+
+                                    </select>
+
+                                </div>
+                            </div>
+                        </div>-->
+                    </div>
                 </div>
                 <div class="col-md-2"></div>
                 <div class="col-md-4" style="background-color: #610B0B">
@@ -268,33 +294,7 @@
                     <h5>The complex solver is using a multi stage Data Envelopment Analysis.<br>
                         Please select the inputs and outputs desired<br>
                         <button id="complexSolver" type="button" class="btn btn-success red"> <span class="glyphicon glyphicon-check" aria-hidden="true"></span>Select</button>
-                        <div class="row">
-                            <div class="col-md-4"></div>
-                            <div class="col-md-4">
-                                <div class="superEff-element">
-                                    <input style="margin-left:5%" type="checkbox" value="efficiency" id="efficiency" >
-                                    <label >
-                                        Super Efficiency  <a href="/benchmarking/Efficiency">?</a>
-                                    </label>
 
-                                </div>
-                            </div>
-                            <div class="col-md-4"></div>
-
-                            <!--<div class="col-md-6" style="display: none">
-                                <div class="superEff-element" >
-
-                                    <div class="form-group">
-                                        <label for="numberOfSeasonsSelect">Number Of Seasons</label>
-                                        <select class="form-control" ; style="width: 90%; margin-left: 5%; margin-right: 5%" id="numberOfSeasonsSelect">
-                                            <option>1</option>
-
-                                        </select>
-
-                                    </div>
-                                </div>
-                            </div>-->
-                        </div>
                 </div>
                 <div class="col-md-1"></div>
 
@@ -339,7 +339,7 @@
                      <div class="championship">
                      <br>
                          <div class="championship-label"><h2 >Premier</h2></div>
-                       
+
 
                         <a href="">
 
@@ -440,6 +440,9 @@
 
             <div id="chooseInputsAlert" class="alert alert-danger" style="visibility: hidden;">
                 <strong>Necessary Field</strong> Select at least two inputs
+            </div>
+            <div id="cooperAlert" class="alert alert-danger" style="visibility: hidden;">
+                <strong>Cooper Law not respected</strong> check that Number of DMUs ≥ 2 * (Number of Inputs * Number of Outputs)
             </div>
             <div class="row" >
                 <div class="col5">

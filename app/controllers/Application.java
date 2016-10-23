@@ -52,6 +52,10 @@ public class Application extends Controller {
         } else if(chapter.compareTo("Multi") == 0){
             return ok(dea_multi.render());
 
+        } else if(chapter.compareTo("Inputs/Outputs") == 0){
+            return ok(input_output_list.render());
+
+
         } else if(chapter.compareTo("MQI") == 0){
             return ok(dea_mqi.render());
 
