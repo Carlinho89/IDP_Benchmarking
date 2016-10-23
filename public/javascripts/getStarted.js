@@ -185,38 +185,38 @@ $(document).ready(function () {
         query.selectedInputs = selected;
         query.selectedInputsNames = names;
 
-     /*   var offNames = [];
-        var offSelected = [];
-        $('#offensiveInput input:checked').each(function () {
-            offSelected.push(parseInt($(this).attr('value')));
-            offNames.push($(this).attr('name'));
+        /*   var offNames = [];
+         var offSelected = [];
+         $('#offensiveInput input:checked').each(function () {
+         offSelected.push(parseInt($(this).attr('value')));
+         offNames.push($(this).attr('name'));
 
 
-        });
-        query.offSelectedInputs = offSelected;
-        query.offSelectedInputsNames = offNames;
+         });
+         query.offSelectedInputs = offSelected;
+         query.offSelectedInputsNames = offNames;
 
-        var socNames = [];
-        var socSelected = [];
-        $('#socialInput input:checked').each(function () {
-            socSelected.push(parseInt($(this).attr('value')));
-            socNames.push($(this).attr('name'));
-
-
-        });
-        query.socSelectedInputs = socSelected;
-        query.socSelectedInputsNames = socNames;
-
-        var defNames = [];
-        var defSelected = [];
-        $('#defensiveInput input:checked').each(function () {
-            defSelected.push(parseInt($(this).attr('value')));
-            defNames.push($(this).attr('name'));
+         var socNames = [];
+         var socSelected = [];
+         $('#socialInput input:checked').each(function () {
+         socSelected.push(parseInt($(this).attr('value')));
+         socNames.push($(this).attr('name'));
 
 
-        });
-        query.defSelectedInputs = defSelected;
-        query.defSelectedInputsNames = defNames;*/
+         });
+         query.socSelectedInputs = socSelected;
+         query.socSelectedInputsNames = socNames;
+
+         var defNames = [];
+         var defSelected = [];
+         $('#defensiveInput input:checked').each(function () {
+         defSelected.push(parseInt($(this).attr('value')));
+         defNames.push($(this).attr('name'));
+
+
+         });
+         query.defSelectedInputs = defSelected;
+         query.defSelectedInputsNames = defNames;*/
 
         updateResume(query);
         document.getElementById("chooseInputsAlert").style.visibility = "hidden";
@@ -251,39 +251,39 @@ $(document).ready(function () {
         query.selectedOutputs = selected;
         query.selectedOutputsNames = names;
 
-       /* var spnames = [];
-        var spselected = [];
-        $('#sportiveOutput input:checked').each(function () {
-            spselected.push(parseInt($(this).attr('value')));
-            spnames.push($(this).attr('name'));
+        /* var spnames = [];
+         var spselected = [];
+         $('#sportiveOutput input:checked').each(function () {
+         spselected.push(parseInt($(this).attr('value')));
+         spnames.push($(this).attr('name'));
 
 
-        });
-        query.spSelectedOutputs = spselected;
-        query.spSelectedOutputsNames = spnames;
+         });
+         query.spSelectedOutputs = spselected;
+         query.spSelectedOutputsNames = spnames;
 
 
-        var offnames = [];
-        var offselected = [];
-        $('#offensiveOutput input:checked').each(function () {
-            offselected.push(parseInt($(this).attr('value')));
-            offnames.push($(this).attr('name'));
+         var offnames = [];
+         var offselected = [];
+         $('#offensiveOutput input:checked').each(function () {
+         offselected.push(parseInt($(this).attr('value')));
+         offnames.push($(this).attr('name'));
 
 
-        });
-        query.offSelectedOutputs = offselected;
-        query.offSelectedOutputsNames = offnames;
+         });
+         query.offSelectedOutputs = offselected;
+         query.offSelectedOutputsNames = offnames;
 
-        var defnames = [];
-        var defselected = [];
-        $('#defensiveOutput input:checked').each(function () {
-            defselected.push(parseInt($(this).attr('value')));
-            defnames.push($(this).attr('name'));
+         var defnames = [];
+         var defselected = [];
+         $('#defensiveOutput input:checked').each(function () {
+         defselected.push(parseInt($(this).attr('value')));
+         defnames.push($(this).attr('name'));
 
 
-        });
-        query.defSelectedOutputs = defselected;
-        query.defSelectedOutputsNames = defnames;*/
+         });
+         query.defSelectedOutputs = defselected;
+         query.defSelectedOutputsNames = defnames;*/
         updateResume(query);
         document.getElementById("chooseOutputsAlert").style.visibility = "hidden";
     });
@@ -310,13 +310,9 @@ $(document).ready(function () {
     });
 //Stage 1 manager
     $("#stage1").on('click', function (event) {
-<<<<<<< HEAD
-        if(true){//if(!typeof query.selectedInputs === "undefined" && !typeof query.selectedOutputs === "undefined" && query.selectedInputs.length>0 && query.selectedOutputs.length>0){
-=======
         if(  query.selectedInputs.length>0 && query.selectedOutputs.length>0){
->>>>>>> 46a83e86a7878fc421462ea1b31f7febd54b9d92
             if(typeof query.stage1DEA === "undefined")
-            document.getElementById("stage1-rem").setAttribute("style","display: block;");
+                document.getElementById("stage1-rem").setAttribute("style","display: block;");
             var index = 0;
             var dea= {};
             dea.selectedInputs=[];
@@ -426,11 +422,7 @@ $(document).ready(function () {
 
 //Stage 2 manager
     $("#stage2").on('click', function (event) {
-<<<<<<< HEAD
-        if(true){//if(!typeof query.selectedInputs === "undefined" && !typeof query.selectedOutputs === "undefined" && query.selectedInputs.length>0 && query.selectedOutputs.length>0) {
-=======
         if(query.stage1DEA.length>0) {
->>>>>>> 46a83e86a7878fc421462ea1b31f7febd54b9d92
             document.getElementById("stage2-rem").setAttribute("style", "display: block;");
             var index = 0;
             var dea = {};
@@ -545,11 +537,7 @@ $(document).ready(function () {
 
 //Stage 3 manager
     $("#stage3").on('click', function (event) {
-<<<<<<< HEAD
-        if(true){//if(!typeof query.selectedInputs === "undefined" && !typeof query.selectedOutputs === "undefined" && query.selectedInputs.length>0 && query.selectedOutputs.length>0) {
-=======
         if(query.stage2DEA.length>0) {
->>>>>>> 46a83e86a7878fc421462ea1b31f7febd54b9d92
             document.getElementById("stage3-rem").setAttribute("style","display: block;");
             var index = 0;
             var dea= {};
@@ -702,7 +690,7 @@ $(document).ready(function () {
 
 
 
-       // updateResume(query);
+        // updateResume(query);
     });
 
 
@@ -727,10 +715,10 @@ $(document).ready(function () {
         }
 
         if (query.selectedInputs &&  query.selectedOutputs &&  query.numberOfTeams ) {
-          if (query.numberOfTeams < 3*(query.selectedInputs.length + query.selectedOutputs.length)) {
-            hash = "#chooseInputs";
-            alert = "cooperAlert";
-          }
+            if (query.numberOfTeams < 3*(query.selectedInputs.length + query.selectedOutputs.length)) {
+                hash = "#chooseInputs";
+                alert = "cooperAlert";
+            }
 
         }
 
@@ -778,11 +766,11 @@ $(document).ready(function () {
             {url = './complex-solver';}
             console.log(url);
 
-           /* var form = $('<form action="' + url + '" method="post">' +
-                '<input type="text" name="query" value="' + JSON.stringify(query) + '" />' +
-                '</form>');
-            $('body').append(form);
-            form.submit();*/
+            /* var form = $('<form action="' + url + '" method="post">' +
+             '<input type="text" name="query" value="' + JSON.stringify(query) + '" />' +
+             '</form>');
+             $('body').append(form);
+             form.submit();*/
 
             var newForm = $('<form>', {
                 'method':'post',
@@ -904,40 +892,40 @@ function updateResume(query) {
     resume += inputs;
 
     /*var offinputs = "Offensive Inputs: ";
-    if (typeof query.offSelectedInputs === "undefined") {
-        offinputs += "NOT SELECTED<br>";
+     if (typeof query.offSelectedInputs === "undefined") {
+     offinputs += "NOT SELECTED<br>";
 
-    } else {
-        for (var i = query.offSelectedInputsNames.length - 1; i >= 0; i--) {
-            offinputs += query.offSelectedInputsNames[i] + ", "
-        }
-        offinputs += "<br>";
-    }
-    resume += offinputs;
+     } else {
+     for (var i = query.offSelectedInputsNames.length - 1; i >= 0; i--) {
+     offinputs += query.offSelectedInputsNames[i] + ", "
+     }
+     offinputs += "<br>";
+     }
+     resume += offinputs;
 
-    var definputs = "Defensive Inputs: ";
-    if (typeof query.defSelectedInputsNames === "undefined") {
-        definputs += "NOT SELECTED<br>";
+     var definputs = "Defensive Inputs: ";
+     if (typeof query.defSelectedInputsNames === "undefined") {
+     definputs += "NOT SELECTED<br>";
 
-    } else {
-        for (var i = query.defSelectedInputsNames.length - 1; i >= 0; i--) {
-            definputs += query.defSelectedInputsNames[i] + ", "
-        }
-        definputs += "<br>";
-    }
-    resume += definputs;
+     } else {
+     for (var i = query.defSelectedInputsNames.length - 1; i >= 0; i--) {
+     definputs += query.defSelectedInputsNames[i] + ", "
+     }
+     definputs += "<br>";
+     }
+     resume += definputs;
 
-    var socinputs = "Social Inputs: ";
-    if (typeof query.socSelectedInputsNames === "undefined") {
-        socinputs += "NOT SELECTED<br>";
+     var socinputs = "Social Inputs: ";
+     if (typeof query.socSelectedInputsNames === "undefined") {
+     socinputs += "NOT SELECTED<br>";
 
-    } else {
-        for (var i = query.socSelectedInputsNames.length - 1; i >= 0; i--) {
-            socinputs += query.socSelectedInputsNames[i] + ", "
-        }
-        socinputs += "<br>";
-    }
-    resume += socinputs; */
+     } else {
+     for (var i = query.socSelectedInputsNames.length - 1; i >= 0; i--) {
+     socinputs += query.socSelectedInputsNames[i] + ", "
+     }
+     socinputs += "<br>";
+     }
+     resume += socinputs; */
 
     var outputs = "Outputs: ";
     if (typeof query.selectedOutputs === "undefined") {
@@ -952,40 +940,40 @@ function updateResume(query) {
     resume += outputs;
 
     /*var spoutputs = "Sportive Outputs: ";
-    if (typeof query.spSelectedOutputsNames === "undefined") {
-        spoutputs += "NOT SELECTED<br>";
+     if (typeof query.spSelectedOutputsNames === "undefined") {
+     spoutputs += "NOT SELECTED<br>";
 
-    } else {
-        for (var i = query.spSelectedOutputsNames.length - 1; i >= 0; i--) {
-            spoutputs += query.spSelectedOutputsNames[i] + ", "
-        }
-        spoutputs += "<br>";
-    }
-    resume += spoutputs;
+     } else {
+     for (var i = query.spSelectedOutputsNames.length - 1; i >= 0; i--) {
+     spoutputs += query.spSelectedOutputsNames[i] + ", "
+     }
+     spoutputs += "<br>";
+     }
+     resume += spoutputs;
 
-    var defoutputs = "Defensive Outputs: ";
-    if (typeof query.defSelectedOutputsNames === "undefined") {
-        defoutputs += "NOT SELECTED<br>";
+     var defoutputs = "Defensive Outputs: ";
+     if (typeof query.defSelectedOutputsNames === "undefined") {
+     defoutputs += "NOT SELECTED<br>";
 
-    } else {
-        for (var i = query.defSelectedOutputsNames.length - 1; i >= 0; i--) {
-            defoutputs += query.defSelectedOutputsNames[i] + ", "
-        }
-        defoutputs += "<br>";
-    }
-    resume += defoutputs;
+     } else {
+     for (var i = query.defSelectedOutputsNames.length - 1; i >= 0; i--) {
+     defoutputs += query.defSelectedOutputsNames[i] + ", "
+     }
+     defoutputs += "<br>";
+     }
+     resume += defoutputs;
 
-    var offoutputs = "Offensive Outputs: ";
-    if (typeof query.offSelectedOutputsNames === "undefined") {
-        offoutputs += "NOT SELECTED<br>";
+     var offoutputs = "Offensive Outputs: ";
+     if (typeof query.offSelectedOutputsNames === "undefined") {
+     offoutputs += "NOT SELECTED<br>";
 
-    } else {
-        for (var i = query.offSelectedOutputsNames.length - 1; i >= 0; i--) {
-            offoutputs += query.offSelectedOutputsNames[i] + ", "
-        }
-        offoutputs += "<br>";
-    }
-    resume += offoutputs;*/
+     } else {
+     for (var i = query.offSelectedOutputsNames.length - 1; i >= 0; i--) {
+     offoutputs += query.offSelectedOutputsNames[i] + ", "
+     }
+     offoutputs += "<br>";
+     }
+     resume += offoutputs;*/
 
     document.getElementById("selection-summary").innerHTML = resume;
 }
@@ -1001,7 +989,7 @@ function displayTeams(query) {
             for (var i = 0; i < data.length; i++) {
                 html+='<div class="col-md-1 "><div class="team-box" ><img class="team-logo img-thumbnail img-responsive favorite_team" src="/assets/images/team_logo/' + data[i].logo + '"  val="' + data[i].tm_id + '" title="' + data[i].name + '" ></div></div>';
                 if(i==9){
-               html+='<div class="col-md-1"></div></div><div class="row"><div class="col-md-1"></div>';
+                    html+='<div class="col-md-1"></div></div><div class="row"><div class="col-md-1"></div>';
 
                 }
 
@@ -1033,8 +1021,8 @@ function setDEAParameters(stageArray,inputObject){
 
     }
     else if (inputObject.inputType.localeCompare("orientation")==0 && inputObject.value.localeCompare("Output")) {
-      stageArray[inputObject.deaIndex].inputOriented=true;
-      console.log("true");
+        stageArray[inputObject.deaIndex].inputOriented=true;
+        console.log("true");
     }
     else if (inputObject.inputType.localeCompare("orientation")==0 && inputObject.value.localeCompare("Input")) {stageArray[inputObject.deaIndex].inputOriented=false;}
 
