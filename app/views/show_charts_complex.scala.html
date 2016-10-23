@@ -7,7 +7,7 @@
     <script>
             var jsonString = JSON.stringify("@json");
 
-            
+
 
 
 
@@ -22,21 +22,135 @@
                 var method= jsonObj.solutionMethod;
 
 
-               var stage3table = showStage(jsonObj.stage3Eff,jsonObj.dmu, "Stage 3"+method);
-
+                var stage3table = showStage(jsonObj.stage3Eff,jsonObj.dmu, method);
 
                 $('#stage3').append(stage3table);
+                var stage3series=[];
+                for(var i = 0; i < jsonObj.stage3Eff.length; i++ ){
+                  stage3series.push({
+                    name: jsonObj.solutionMethod+" DEA"+(i+1),
+                    data: jsonObj.stage3Eff[i],
+                  });
+                }
 
+                $('#columnChart3').highcharts({
+                    chart: {
+                        type: 'column'
+                    },
+                    title: {
+                        text: null
+                    },
+                    subtitle: {
+                        text: null
+                    },
+                    xAxis: {
+                        categories: jsonObj.dmu,
+                    },
+                    yAxis: {},
+                    tooltip: {
+                        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                        '<td style="padding:0"><b>{point.y:.1f} </b></td></tr>',
+                        footerFormat: '</table>',
+                        shared: true,
+                        useHTML: true
+                    },
+                    plotOptions: {
+                        column: {
+                            pointPadding: 0.01,
+                            borderWidth: 0
+                        }
+                    },
+                    series: stage3series,
+                });
 
-                var stage2table = showStage(jsonObj.stage2Eff,jsonObj.dmu, "Stage 2"+method);
-
+                var stage2table = showStage(jsonObj.stage2Eff,jsonObj.dmu, method);
 
                 $('#stage2').append(stage2table);
+                var stage2series=[];
+                for(var i = 0; i < jsonObj.stage2Eff.length; i++ ){
+                  stage2series.push({
+                    name: jsonObj.solutionMethod+" DEA"+(i+1),
+                    data: jsonObj.stage2Eff[i],
+                  });
+                }
+                $('#columnChart2').highcharts({
+                    chart: {
+                        type: 'column'
+                    },
+                    title: {
+                        text: null
+                    },
+                    subtitle: {
+                        text: null
+                    },
+                    xAxis: {
+                        categories: jsonObj.dmu,
+                    },
+                    yAxis: {
 
-                var stage1table = showStage(jsonObj.stage1Eff,jsonObj.dmu, "Stage 1"+method);
+                    },
+                    tooltip: {
+                        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                        '<td style="padding:0"><b>{point.y:.1f} </b></td></tr>',
+                        footerFormat: '</table>',
+                        shared: true,
+                        useHTML: true
+                    },
+                    plotOptions: {
+                        column: {
+                            pointPadding: 0.01,
+                            borderWidth: 0
+                        }
+                    },
+                    series: stage2series,
+                });
+
+
+                var stage1table = showStage(jsonObj.stage1Eff,jsonObj.dmu, method);
 
 
                 $('#stage1').append(stage1table);
+                var stage1series=[];
+                for(var i = 0; i < jsonObj.stage1Eff.length; i++ ){
+                  stage1series.push({
+                    name: jsonObj.solutionMethod+" DEA"+(i+1),
+                    data: jsonObj.stage1Eff[i],
+                  });
+                }
+                $('#columnChart1').highcharts({
+                    chart: {
+                        type: 'column'
+                    },
+                    title: {
+                        text: null
+                    },
+                    subtitle: {
+                        text: null
+                    },
+                    xAxis: {
+                        categories: jsonObj.dmu,
+                    },
+                    yAxis: {
+
+                    },
+                    tooltip: {
+                        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                        '<td style="padding:0"><b>{point.y:.1f} </b></td></tr>',
+                        footerFormat: '</table>',
+                        shared: true,
+                        useHTML: true
+                    },
+                    plotOptions: {
+                        column: {
+                            pointPadding: 0.01,
+                            borderWidth: 0
+                        }
+                    },
+                    series: stage1series,
+                });
 
 
               /*  $('#barChart').highcharts({
@@ -186,54 +300,12 @@
                 //     }]
                 // });
 
-             /*   $('#columnChart3').highcharts({
-                    chart: {
-                        type: 'column'
-                    },
-                    title: {
-                        text: null
-                    },
-                    subtitle: {
-                        text: null
-                    },
-                    xAxis: {
-                        categories: jsonObj.dmu,
-                    },
-                    yAxis: {
 
-                    },
-                    tooltip: {
-                        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-                        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                        '<td style="padding:0"><b>{point.y:.1f} </b></td></tr>',
-                        footerFormat: '</table>',
-                        shared: true,
-                        useHTML: true
-                    },
-                    plotOptions: {
-                        column: {
-                            pointPadding: 0.01,
-                            borderWidth: 0
-                        }
-                    },
-                    series: [
-                        {
-                            name: 'CCR-1Off',
-                            data: jsonObj.overviewList[0][0].slice(0, 20),
-                            visible: false
-
-                        },{
-                            name: 'CCR-1Dif',
-                            data: jsonObj.overviewList[0][0].slice(20, 40),
-                            visible: false
-
-                        }]
-                });  */
             });
             function showStage(stage,dmu,title){
-                var table = "<thead><tr><th>DMU"+title+"</th>";
+                var table = "<thead><tr><th>DMU</th>";
                 for(var j=0;j<stage.length;j++){
-                    table+="<th>Dea"+(j+1)+"</th>"
+                    table+="<th>"+title+" DEA"+(j+1)+"</th>"
                 }
                 table +="<tr></thead><tbody>";
 
@@ -241,7 +313,7 @@
                 for(var i=0; i<dmu.length;i++){
                     table+="<tr><td>"+dmu[i]+"</td>";
                     for(var j=0;j<stage.length;j++){
-                        console.log(j+" "+i);
+
                         table+="<td>"+stage[j][i]+"</td>";
                     }
                     table+="</tr>";
@@ -256,17 +328,27 @@
         <div class="row">
 
             <div class="col-md-12">
-                <div class="panel panel-info">
+                <div class="panel panel-success">
                     <div class="panel-heading">
                         <h3 class="panel-title">Results</h3>
                     </div>
                     <div class="panel-body">
                         <div class="row">
-                            <div class="col-md-6"><table class="table table-striped" id ="stage3"></table></div>
+                            <div class="col-md-6">
+
+                              <div class="panel panel-info">
+                                  <div class="panel-heading">
+                                      <h3 class="panel-title">Stage 3 Table</h3>
+                                  </div>
+                                  <div class="panel-body">
+                                      <table class="table table-striped" id ="stage3"></table>
+                                  </div>
+                              </div>
+                            </div>
                             <div class="col-md-6">
                                 <div class="panel panel-info">
                                     <div class="panel-heading">
-                                        <h3 class="panel-title">Bar</h3>
+                                        <h3 class="panel-title">Stage 3 Chart</h3>
                                     </div>
                                     <div class="panel-body">
                                         <div id="columnChart3" class="chart-holder"></div>
@@ -275,11 +357,21 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-6"><table class="table table-striped" id ="stage2"></table></div>
+                            <div class="col-md-6">
+
+                              <div class="panel panel-info">
+                                  <div class="panel-heading">
+                                      <h3 class="panel-title">Stage 2 Table</h3>
+                                  </div>
+                                  <div class="panel-body">
+                                        <table class="table table-striped" id ="stage2"></table>
+                                  </div>
+                              </div>
+                            </div>
                             <div class="col-md-6">
                                 <div class="panel panel-info">
                                     <div class="panel-heading">
-                                        <h3 class="panel-title">Bar</h3>
+                                        <h3 class="panel-title">Stage 2 Chart</h3>
                                     </div>
                                     <div class="panel-body">
                                         <div id="columnChart2" class="chart-holder"></div>
@@ -288,11 +380,21 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-6"><table class="table table-striped" id ="stage1"></table></div>
+                            <div class="col-md-6">
+
+                              <div class="panel panel-info">
+                                  <div class="panel-heading">
+                                      <h3 class="panel-title">Stage 1 Table</h3>
+                                  </div>
+                                  <div class="panel-body">
+                                      <table class="table table-striped" id ="stage1"></table>
+                                  </div>
+                              </div>
+                            </div>
                             <div class="col-md-6">
                                 <div class="panel panel-info">
                                     <div class="panel-heading">
-                                        <h3 class="panel-title">Bar</h3>
+                                        <h3 class="panel-title">Stage 1 Chart</h3>
                                     </div>
                                     <div class="panel-body">
                                         <div id="columnChart1" class="chart-holder"></div>
