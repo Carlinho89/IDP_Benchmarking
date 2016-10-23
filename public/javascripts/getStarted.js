@@ -309,7 +309,7 @@ $(document).ready(function () {
     });
 //Stage 1 manager
     $("#stage1").on('click', function (event) {
-        if(!typeof query.selectedInputs === "undefined" && !typeof query.selectedOutputs === "undefined" && query.selectedInputs.length>0 && query.selectedOutputs.length>0){
+        if(true){//if(!typeof query.selectedInputs === "undefined" && !typeof query.selectedOutputs === "undefined" && query.selectedInputs.length>0 && query.selectedOutputs.length>0){
             if(typeof query.stage1DEA === "undefined")
             document.getElementById("stage1-rem").setAttribute("style","display: block;");
             var index = 0;
@@ -421,7 +421,7 @@ $(document).ready(function () {
 
 //Stage 2 manager
     $("#stage2").on('click', function (event) {
-        if(!typeof query.selectedInputs === "undefined" && !typeof query.selectedOutputs === "undefined" && query.selectedInputs.length>0 && query.selectedOutputs.length>0) {
+        if(true){//if(!typeof query.selectedInputs === "undefined" && !typeof query.selectedOutputs === "undefined" && query.selectedInputs.length>0 && query.selectedOutputs.length>0) {
             document.getElementById("stage2-rem").setAttribute("style", "display: block;");
             var index = 0;
             var dea = {};
@@ -536,7 +536,7 @@ $(document).ready(function () {
 
 //Stage 3 manager
     $("#stage3").on('click', function (event) {
-        if(!typeof query.selectedInputs === "undefined" && !typeof query.selectedOutputs === "undefined" && query.selectedInputs.length>0 && query.selectedOutputs.length>0) {
+        if(true){//if(!typeof query.selectedInputs === "undefined" && !typeof query.selectedOutputs === "undefined" && query.selectedInputs.length>0 && query.selectedOutputs.length>0) {
             document.getElementById("stage3-rem").setAttribute("style","display: block;");
             var index = 0;
             var dea= {};

@@ -47,7 +47,7 @@ public class SolverSimpleQuery {
 
             JsonNode rootNode = mapper.readTree(query);
             if (rootNode.has("superEff"))
-                superEff = rootNode.path("superEff").asBoolean();
+                superEff = rootNode.path("superEff").asBoolean(true);
             if (rootNode.has("inputOriented"))
                 inputOriented = rootNode.path("inputOriented").asBoolean();
             if (rootNode.has("season"))
