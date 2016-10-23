@@ -119,19 +119,17 @@ public class Application extends Controller {
 
     public  Result complexSolver(){
         DynamicForm form = Form.form().bindFromRequest();
-        boolean mockIt = false;
+
         System.out.println("Complex");
 
-        if (form.data().size() != 0 || mockIt){
-            //TO-DO: remove mock string
-            final String mockResponse = "{\"superEff\":false,\"numberOfSeasons\":1,\"leagueID\":\"2\",\"leagueName\":\"Premier\",\"season\":2014,\"numberOfTeams\":20,\"teamID\":\"11\",\"teamName\":\"Arsenal\",\"selectedInputs\":[2,8,9,10,16],\"selectedInputsNames\":[\"Games Drawn\",\"Ball Possession\",\"Pass Success\",\"Red Cards\",\"Cross Per Game\"],\"selectedOutputs\":[6,1,4,3,5],\"selectedOutputsNames\":[\"Rank\",\"Games Won\",\"Goals Scored\",\"Games Lost\",\"Goals Against\"],\"solver\":\"complex\",\"selectedMethod\":\"CCR\",\"stage1DEA\":[{\"selectedInputs\":[2],\"selectedOutputs\":[6],\"previousResults\":[],\"stage\":1,\"inputOriented\":false,\"deaID\":0},{\"selectedInputs\":[8],\"selectedOutputs\":[1],\"previousResults\":[],\"stage\":1,\"inputOriented\":true,\"deaID\":1}],\"stage2DEA\":[{\"selectedInputs\":[9],\"selectedOutputs\":[4],\"previousResults\":[0,1],\"stage\":2,\"inputOriented\":false,\"deaID\":0},{\"selectedInputs\":[2],\"selectedOutputs\":[6,1],\"previousResults\":[],\"stage\":2,\"inputOriented\":false,\"deaID\":1}],\"stage3DEA\":[{\"selectedInputs\":[2],\"selectedOutputs\":[6],\"previousResults\":[0],\"stage\":3,\"inputOriented\":false,\"deaID\":0}]}";
+        if (form.data().size() != 0){
 
             SolverController solverController = null;
             String response = null;
             JsonNode json = null;
             SolverComplexQuery query = null;
 
-            response = (mockIt)? mockResponse: form.get("query");
+            response = form.get("query");
 
             solverController = new SolverController();
             json = Json.parse(response);
@@ -143,8 +141,7 @@ public class Application extends Controller {
 
             Scenario solvedScenario = null;
             JsonNode node = Json.toJson(solution);
-            //System.out.println("JSON RESULT: ");
-            //System.out.println(Json.stringify(node));
+
             return ok(show_charts_complex.render(Json.stringify(node)));
 
         }

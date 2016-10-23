@@ -230,7 +230,6 @@ public class SolverController {
         model = new ComplexSolutionModel(st1solList,st1eff,st2solList,st2eff,st3solList,st3eff,query.getSelectedMethod(),dmu,query.getSelectedInputsNames(),query.getSelectedOutputsNames());
 
         JsonNode node = Json.toJson(model);
-        System.out.println("JSON FINAL SOLUTION: " + node);
 
         return node;
     }
