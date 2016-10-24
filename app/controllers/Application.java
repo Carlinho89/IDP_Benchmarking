@@ -110,9 +110,7 @@ public class Application extends Controller {
             solution = solverController.solve(query);
             System.out.println("Solution: " + solution);
 
-            //TO-DO: Change with new return type for the solution --> JsonNode
-            Scenario solvedScenario = null;
-             return ok(show_charts.render(Json.stringify(solution)));
+            return ok(show_charts.render(Json.stringify(solution)));
 
         }
     }
