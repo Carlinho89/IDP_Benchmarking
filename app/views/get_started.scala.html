@@ -321,9 +321,8 @@
                         <div class="championship-label"><h2 >Serie A</h2></div>
 
 
-                        <a href="">
-                            <img class="img-responsive img-thumbnail img-circle center-block league" src="@routes.Assets.at("images/SerieA500.png")" val=1 alt="SerieA" width="150" height="150" >
-                        </a>
+
+                        <img class="img-responsive img-thumbnail img-circle center-block league" src="@routes.Assets.at("images/SerieA500.png")" val=1 alt="SerieA" width="150" height="150" />
                         <div class="championship-label"> <p><strong>Italian Football League</strong></p></div>
                         <br>
                         <div class=" championship-label">
@@ -339,14 +338,10 @@
                      <div class="championship">
                      <br>
                          <div class="championship-label"><h2 >Premier</h2></div>
+                         <img class="img-responsive img-thumbnail img-circle center-block league" src="@routes.Assets.at("images/Premier500.png")" val=2 alt="Premier" width="150" height="150">
 
 
-                        <a href="">
-
-                            <img class="img-responsive img-thumbnail img-circle center-block league" src="@routes.Assets.at("images/Premier500.png")" val=2 alt="Premier" width="150" height="150">
-
-                        </a>
-                        <div class="championship-label"><p><strong>English Football League</strong></p></div>
+                         <div class="championship-label"><p><strong>English Football League</strong></p></div>
                         <br>
                         <div class="championship-label">
                             <p>League Value: <strong>4,41 Billion €</strong></p>
@@ -363,9 +358,8 @@
                         <br>
                          <div class="championship-label"><h2 >Liga</h2></div>
 
-                        <a href="">
-                            <img class="img-responsive img-thumbnail img-circle center-block league" src="@routes.Assets.at("images/Liga500.png")" val=3 alt="Liga" width="150" height="150">
-                        </a>
+                        <img class="img-responsive img-thumbnail img-circle center-block league" src="@routes.Assets.at("images/Liga500.png")" val=3 alt="Liga" width="150" height="150">
+
                          <div class="championship-label"><p><strong>Spanish Football League</strong></p></div>
                          <br>
                          <div class="championship-label">
@@ -382,9 +376,8 @@
                         <br>
                          <div class="championship-label"><h2 >Bundes Liga</h2></div>
 
-                        <a href="">
-                            <img class="img-responsive img-thumbnail img-circle center-block league" src="@routes.Assets.at("images/Bundes500c.png")" val=4 alt="Bundes" width="150" height="150">
-                        </a>
+                        <img class="img-responsive img-thumbnail img-circle center-block league" src="@routes.Assets.at("images/Bundes500c.png")" val=4 alt="Bundes" width="150" height="150">
+
                          <div class="championship-label"><p><strong>German Football League</strong></p></div>
                          <br>
                          <div class="championship-label">
@@ -436,7 +429,7 @@
         </div>
 
         <div id="chooseInputs" class="container-fluid">
-            <h1 class="text-center">Choose input parameters</h1>
+            <h1 class="text-center">Choose <a href="@routes.Application.benchmarking("Inputs/Outputs")">Input</a> parameters</h1>
 
             <div id="chooseInputsAlert" class="alert alert-danger" style="visibility: hidden;">
                 <strong>Necessary Field</strong> Select at least two inputs
@@ -547,7 +540,8 @@
         </div>
 
         <div id="chooseOutputs" class="container-fluid">
-            <h1 class="text-center">Choose output  parameters</h1>
+            <h1 class="text-center">Choose <a href="@routes.Application.benchmarking("Inputs/Outputs")">Output</a> parameters</h1>
+
 
             <div id="chooseOutputsAlert" class="alert alert-danger" style="visibility: hidden;">
                 <strong>Necessary Field</strong> Select at least one output
@@ -739,9 +733,8 @@
 
                 </div>
             </div>
-
-
         </div>
+        <p ><span  >&nbsp;</span></p>
 
         <div >
             <div class="select-method-box" id="dea-templates">
@@ -779,7 +772,6 @@
 
             </div>
         </div>
-
     </body>
 
 
