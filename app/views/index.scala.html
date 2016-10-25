@@ -11,6 +11,11 @@
           width: 100%;
           margin: auto;
       }
+
+      #carousel-inner-container{
+      background: rgba(254, 254, 254, 0.35);
+      border-radius: 25px;
+      }
       </style>
 
 
@@ -28,7 +33,7 @@
       <div class="carousel-inner" role="listbox">
             <div class="item active">
               <img  src="@routes.Assets.at("images/slide-11.jpg")" >
-              <div class="carousel-caption">
+              <div class="carousel-caption" id="carousel-inner-container">
                       <h1>Top European Leagues</h1>
                       <p>Analyze your favorite championship</p>
                     </div>
@@ -36,18 +41,21 @@
 
             <div class="item">
               <img src="@routes.Assets.at("images/slide-12.jpg")" alt="1">
-              <div class="carousel-caption">
-                      <h1>PUT SOME NICE SENTENCE</h1>
-                      <p>HERE</p>
+              <div class="carousel-caption" id="carousel-inner-container">
+                      <h1>Multiple Seasons to choose between</h1>
                     </div>
             </div>
 
             <div class="item">
               <img src="@routes.Assets.at("images/slide-13.jpg")" alt="2">
               <div class="carousel-caption">
-                     <h1>PUT SOME NICE SENTENCE</h1>
-                      <p>HERE</p>
-                    </div>
+                  <div id="carousel-inner-container">
+                      <h1>One, Two or Three <a href="@routes.Application.benchmarking("Multi")">Stage DEA</a></h1>
+                      <p>Multiple solution methods</p>
+                      <p><a href="@routes.Application.benchmarking("BCC")">BCC</a></p>
+                      <p><a href="@routes.Application.benchmarking("CCR")">CCR</a></p>
+                  </div>
+              </div>
             </div>
 
 
