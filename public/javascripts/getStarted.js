@@ -539,6 +539,7 @@ $(document).ready(function () {
     $("#stage3").on('click', function (event) {
         if(query.stage2DEA.length>0) {
             document.getElementById("stage3-rem").setAttribute("style","display: block;");
+            document.getElementById("stage3").setAttribute("style","display: none;");
             var index = 0;
             var dea= {};
             dea.selectedInputs=[];
@@ -633,6 +634,7 @@ $(document).ready(function () {
 
 
         } else {
+            document.getElementById("stage3").setAttribute("style","display: block;");
             var last= query.stage3DEA.length;
             if(last == 1){
                 document.getElementById("stage3-rem").setAttribute("style","display: none;")
