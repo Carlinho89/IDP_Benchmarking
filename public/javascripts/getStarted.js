@@ -669,18 +669,18 @@ $(document).ready(function () {
 
 
             if(inputObject.stage.localeCompare("1")==0){
-                setDEAParameters(query.stage1DEA,inputObject);
+                setDEAParameters(query.stage1DEA,inputObject,query,$(this));
 
                 console.log(JSON.stringify(query.stage1DEA));
 
             }
             else if(inputObject.stage.localeCompare("2")==0){
-                setDEAParameters(query.stage2DEA,inputObject);
+                setDEAParameters(query.stage2DEA,inputObject,query);
                 console.log(JSON.stringify(query.stage2DEA));
 
             }
             else if (inputObject.stage.localeCompare("3")==0){
-                setDEAParameters(query.stage3DEA,inputObject);
+                setDEAParameters(query.stage3DEA,inputObject,query);
                 console.log(JSON.stringify(query.stage3DEA));
 
             }
@@ -716,8 +716,9 @@ $(document).ready(function () {
             alert = "chooseInputsAlert";
         }
 
-        if (query.selectedInputs &&  query.selectedOutputs &&  query.numberOfTeams ) {
-            if (query.numberOfTeams < 3*(query.selectedInputs.length + query.selectedOutputs.length)) {
+        if (query.selectedInputs &&  query.selectedOutputs &&  query.numberOfTeams && query.solver.localeCompare("simple")==0) {
+
+            if ( query.numberOfTeams < 3*(query.selectedInputs.length + query.selectedOutputs.length)) {
                 hash = "#chooseInputs";
                 alert = "cooperAlert";
             }
@@ -893,41 +894,7 @@ function updateResume(query) {
     }
     resume += inputs;
 
-    /*var offinputs = "Offensive Inputs: ";
-     if (typeof query.offSelectedInputs === "undefined") {
-     offinputs += "NOT SELECTED<br>";
 
-     } else {
-     for (var i = query.offSelectedInputsNames.length - 1; i >= 0; i--) {
-     offinputs += query.offSelectedInputsNames[i] + ", "
-     }
-     offinputs += "<br>";
-     }
-     resume += offinputs;
-
-     var definputs = "Defensive Inputs: ";
-     if (typeof query.defSelectedInputsNames === "undefined") {
-     definputs += "NOT SELECTED<br>";
-
-     } else {
-     for (var i = query.defSelectedInputsNames.length - 1; i >= 0; i--) {
-     definputs += query.defSelectedInputsNames[i] + ", "
-     }
-     definputs += "<br>";
-     }
-     resume += definputs;
-
-     var socinputs = "Social Inputs: ";
-     if (typeof query.socSelectedInputsNames === "undefined") {
-     socinputs += "NOT SELECTED<br>";
-
-     } else {
-     for (var i = query.socSelectedInputsNames.length - 1; i >= 0; i--) {
-     socinputs += query.socSelectedInputsNames[i] + ", "
-     }
-     socinputs += "<br>";
-     }
-     resume += socinputs; */
 
     var outputs = "Outputs: ";
     if (typeof query.selectedOutputs === "undefined") {
@@ -941,41 +908,7 @@ function updateResume(query) {
     }
     resume += outputs;
 
-    /*var spoutputs = "Sportive Outputs: ";
-     if (typeof query.spSelectedOutputsNames === "undefined") {
-     spoutputs += "NOT SELECTED<br>";
 
-     } else {
-     for (var i = query.spSelectedOutputsNames.length - 1; i >= 0; i--) {
-     spoutputs += query.spSelectedOutputsNames[i] + ", "
-     }
-     spoutputs += "<br>";
-     }
-     resume += spoutputs;
-
-     var defoutputs = "Defensive Outputs: ";
-     if (typeof query.defSelectedOutputsNames === "undefined") {
-     defoutputs += "NOT SELECTED<br>";
-
-     } else {
-     for (var i = query.defSelectedOutputsNames.length - 1; i >= 0; i--) {
-     defoutputs += query.defSelectedOutputsNames[i] + ", "
-     }
-     defoutputs += "<br>";
-     }
-     resume += defoutputs;
-
-     var offoutputs = "Offensive Outputs: ";
-     if (typeof query.offSelectedOutputsNames === "undefined") {
-     offoutputs += "NOT SELECTED<br>";
-
-     } else {
-     for (var i = query.offSelectedOutputsNames.length - 1; i >= 0; i--) {
-     offoutputs += query.offSelectedOutputsNames[i] + ", "
-     }
-     offoutputs += "<br>";
-     }
-     resume += offoutputs;*/
 
     document.getElementById("selection-summary").innerHTML = resume;
 }
@@ -1004,22 +937,44 @@ function displayTeams(query) {
 }
 
 //Function to set the selected parameters of each dea in multistage solving
-function setDEAParameters(stageArray,inputObject){
+function setDEAParameters(stageArray,inputObject,query, event){
+    var hash="";
     if(inputObject.inputType.localeCompare("input")==0) {
-        var found= stageArray[inputObject.deaIndex].selectedInputs.indexOf(parseInt(inputObject.value));
-        if(found >= 0)stageArray[inputObject.deaIndex].selectedInputs.splice(found,1);
-        else  stageArray[inputObject.deaIndex].selectedInputs.push(parseInt(inputObject.value));
+        console.log(stageArray[inputObject.deaIndex].selectedInputs.length);
+        if(!(query.numberOfTeams < 3*(1 + stageArray[inputObject.deaIndex].selectedInputs.length  + stageArray[inputObject.deaIndex].selectedOutputs.length + stageArray[inputObject.deaIndex].previousResults.length))){
+            var found= stageArray[inputObject.deaIndex].selectedInputs.indexOf(parseInt(inputObject.value));
+            if(found >= 0)stageArray[inputObject.deaIndex].selectedInputs.splice(found,1);
+            else  stageArray[inputObject.deaIndex].selectedInputs.push(parseInt(inputObject.value));
+
+        } else {
+            hash = "#chooseOrder";
+            alert = "cooperAlertComplex";
+            event.prop( "checked", false );
+        }
+
+
     }
     else if (inputObject.inputType.localeCompare("output")==0) {
-        var found= stageArray[inputObject.deaIndex].selectedOutputs.indexOf(parseInt(inputObject.value));
-        if(found >= 0)stageArray[inputObject.deaIndex].selectedOutputs.splice(found,1);
-        else  stageArray[inputObject.deaIndex].selectedOutputs.push(parseInt(inputObject.value));
+        if(!(query.numberOfTeams < 3*(1 + stageArray[inputObject.deaIndex].selectedInputs.length  + stageArray[inputObject.deaIndex].selectedOutputs.length + stageArray[inputObject.deaIndex].previousResults.length))){
+            var found= stageArray[inputObject.deaIndex].selectedOutputs.indexOf(parseInt(inputObject.value));
+            if(found >= 0)stageArray[inputObject.deaIndex].selectedOutputs.splice(found,1);
+            else  stageArray[inputObject.deaIndex].selectedOutputs.push(parseInt(inputObject.value));
+        } else {
+            hash = "#chooseOrder";
+            alert = "cooperAlertComplex";
+        }
+
 
     }
     else if (inputObject.inputType.localeCompare("result")==0) {
-        var found= stageArray[inputObject.deaIndex].previousResults.indexOf(parseInt(inputObject.value));
-        if(found >= 0)stageArray[inputObject.deaIndex].previousResults.splice(found,1);
-        else  stageArray[inputObject.deaIndex].previousResults.push(parseInt(inputObject.value));
+        if(!(query.numberOfTeams < 3*(1 + stageArray[inputObject.deaIndex].selectedInputs.length  + stageArray[inputObject.deaIndex].selectedOutputs.length + stageArray[inputObject.deaIndex].previousResults.length))){
+            var found= stageArray[inputObject.deaIndex].previousResults.indexOf(parseInt(inputObject.value));
+            if(found >= 0)stageArray[inputObject.deaIndex].previousResults.splice(found,1);
+            else  stageArray[inputObject.deaIndex].previousResults.push(parseInt(inputObject.value));
+        } else {
+            hash = "#chooseOrder";
+            alert = "cooperAlertComplex";
+        }
 
     }
     else if (inputObject.inputType.localeCompare("orientation")==0 && inputObject.value.localeCompare("Output")) {
@@ -1028,4 +983,11 @@ function setDEAParameters(stageArray,inputObject){
     }
     else if (inputObject.inputType.localeCompare("orientation")==0 && inputObject.value.localeCompare("Input")) {stageArray[inputObject.deaIndex].inputOriented=false;}
 
+    if (hash != "") {
+        scrollTo(hash);
+        document.getElementById(alert).style.visibility = "visible";
+
+        // document.getElementById(hash+"Alert").innerHTML = error;
+        //alert(error);
+    }
 }
