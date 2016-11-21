@@ -70,24 +70,6 @@ public class Application extends Controller {
 
     }
 
-    public Result showCharts() {
-
-        GarciaSanchez gs = new GarciaSanchez();
-        String jsonResult = "";
-        try {
-           jsonResult = gs.test();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        System.out.println(jsonResult);
-
-        Scenario a = null;
-
-        return ok(show_charts.render(jsonResult));
-
-    }
-
     public Result getLeagueTeamsBySeason(int year, int league_id) {
         return ok(Json.toJson(Team.getAllbySeason(year, league_id)));
     }

@@ -57,8 +57,6 @@ public class Input extends Model {
      */
 
     public static List<Input> getOutputs(){
-
-
             return find.where()
                     .eq("output", true)
                     .findList();
@@ -67,6 +65,12 @@ public class Input extends Model {
 
     }
 
+    /**
+     * Function that check the type of an input
+     * @param type string: input type
+     * @return True -> match
+     *         False -> missmatch
+     */
     public boolean isOfType(String type){
         if(this.type.equals(type))
         return true;

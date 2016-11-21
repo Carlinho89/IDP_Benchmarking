@@ -7,7 +7,6 @@ GET     /                           controllers.Application.index()
 GET     /getStarted/                controllers.Application.getStarted()
 GET     /benchmarking/:chapter         controllers.Application.benchmarking(chapter: String)
 
-GET     /charts                     controllers.Application.showCharts()
 
 GET     /team/:year/:league_id         controllers.Application.getLeagueTeamsBySeason(year: Integer, league_id : Integer)
 

@@ -5,13 +5,11 @@ import ilog.concert.IloException;
 import models.DEAWrapper;
 import models.SolverComplexQuery;
 import models.SolverSimpleQuery;
-import models.SolverSimpleQueryMQI;
 import play.libs.Json;
 import workpackage.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -19,19 +17,6 @@ import java.util.logging.Logger;
  * Created by carlodidomenico on 16/05/16.
  */
 public class SolverController {
-
-    private Scenario scenario;
-    private List<ScenarioMQI> solvedScenarioMQI;
-    private List<Integer> inputs;
-    private List<Integer> outputs;
-    private List<Integer> leagues;
-    private int league;
-    private int scale;
-    private boolean orientation;
-    private boolean superEfficiency;
-    private boolean data;
-    private int start;
-    private int seasons;
     // Solving vars
     ArrayList<String[]> st1dmuList = null;      //List of used DMUs
     ArrayList<String[]> st2dmuList = null;      //List of used DMUs
@@ -46,13 +31,7 @@ public class SolverController {
     private ArrayList<double[][]> st3solList;
 
     public SolverController(){
-        scenario = null;
-        inputs = new ArrayList<>();
-        outputs = new ArrayList<>();
-        leagues = new ArrayList<>();
-        solvedScenarioMQI = null;
-        orientation = superEfficiency = data = false;
-        start = seasons = league = scale = -1;
+
         st1solList = st2solList = st3solList = null;
 
     }
@@ -92,33 +71,6 @@ public class SolverController {
 
     }
 
-
-
-    public List<ScenarioMQI> solve(SolverSimpleQueryMQI query){
-        this.solvedScenarioMQI = new ArrayList<ScenarioMQI>();
-
-        inputs = query.getSelectedInputs();
-        outputs = query.getSelectedOutputs();
-        leagues = query.getLeagueID();
-        start = query.getStart();
-        data = query.isData();
-        scale = query.getScale();
-        orientation = query.isOrientation();
-        seasons = query.getSeason();
-
-
-
-        for(int i = 0; i < leagues.size(); i++)
-            try{
-                solvedScenarioMQI.add(new ScenarioMQI(leagues.get(i), inputs, outputs, orientation, data, start, seasons, scale));
-            }catch(Exception ex){
-                solvedScenarioMQI.add(null);
-                System.out.println("Failed to compute the case for league " + leagues.get(i));
-            }
-
-
-        return solvedScenarioMQI;
-    }
 
     public JsonNode solve(SolverComplexQuery query) {
         ComplexSolutionModel model;
@@ -509,113 +461,6 @@ public class SolverController {
         for(int i = 0; i < matrix.length; i++)
             myInt[i] = matrix[i].clone();
         return myInt;
-    }
-
-    /*
-    private double[][] createSolutionTwo(double[][]solutionOne, double[][]solutionTwo)
-    {
-        double[][] solution = new double[solutionOne.length + solutionTwo.length][solutionOne[0].length];
-
-        for(int i = 0; i < solutionOne.length; i++)
-            for(int j = 0; j < solutionOne[i].length; j++)
-            {
-                solution[i][j] = solutionOne[i][j];
-                solution[i + solutionOne.length][j] = solutionTwo[i][j];
-            }
-        return solution;
-    }
-    private double[][]createSolutionThree(double[][]solutionOne, double[][]solutionTwo)
-    {
-        double[][] solution = new double[solutionOne.length + solutionTwo.length][solutionOne[0].length];
-
-        for(int i = 0; i < solutionOne.length; i++)
-            System.arraycopy(solutionOne[i], 0, solution[i], 0, solutionOne[i].length);
-        for(int i = solutionOne.length; i < solution.length; i++)
-            System.arraycopy(solutionTwo[i - solutionOne.length], 0, solution[i], 0, solutionTwo[i - solutionOne.length].length);
-        return solution;
-    }
-*/
-    // Getters and Setters
-
-
-    public boolean isData() {
-        return data;
-    }
-
-    public void setData(boolean data) {
-        this.data = data;
-    }
-
-    public List<Integer> getLeagues() {
-        return leagues;
-    }
-
-    public void setLeagues(List<Integer> leagues) {
-        this.leagues = leagues;
-    }
-
-    public Scenario getScenario() {
-        return scenario;
-    }
-
-    public void setScenario(Scenario sc) {
-        this.scenario = sc;
-    }
-
-    public List<Integer> getInputs() {
-        return inputs;
-    }
-
-    public void setInputs(List<Integer> inputs) {
-        this.inputs = inputs;
-    }
-
-    public List<Integer> getOutputs() {
-        return outputs;
-    }
-
-    public void setOutputs(List<Integer> outputs) {
-        this.outputs = outputs;
-    }
-
-    public int getLeague() {
-        return league;
-    }
-
-    public void setLeague(int league) {
-        this.league = league;
-    }
-
-    public boolean isOrientation() {
-        return orientation;
-    }
-
-    public void setOrientation(boolean orientation) {
-        this.orientation = orientation;
-    }
-
-    public boolean isSuperEfficiency() {
-        return superEfficiency;
-    }
-
-    public void setSuperEfficiency(boolean superEfficiency) {
-        this.superEfficiency = superEfficiency;
-    }
-
-    public int getStart() {
-        return start;
-    }
-
-    public void setStart(int start) {
-        this.start = start;
-    }
-
-    public int getSeasons() {
-        return seasons;
-    }
-
-    public void setSeasons(int seasons) {
-        this.seasons = seasons;
     }
 
     // JSON Models

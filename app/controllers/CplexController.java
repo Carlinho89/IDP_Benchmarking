@@ -1,29 +1,30 @@
 package controllers;
 
 import com.avaje.ebean.Model;
-import ilog.concert.IloNumVar;
-import ilog.cplex.IloCplex;
 import models.Input;
 import models.SeasonalData;
 import models.Team;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
  * Created by carlodidomenico on 20/02/16.
+ *
+ * CplexController is the controller that interacts with cplex
  */
 public class CplexController {
-    private IloCplex cplex;
-    private HashMap<String, IloNumVar> numVars;
 
     public CplexController(){
         super();
-        cplex = null;
-        numVars = new HashMap<String, IloNumVar>();
     }
 
+    /**
+     * Method that creates the correct DMU array from the id of the selected league
+     * @param league id of selected league
+     * @param season season between 2010-2015
+     * @return DMU array for selected season
+     */
     public String[] createDMUArray(int league, int season) {
         List<Team> teamsForSeason = Team.getAllbySeason(season, league);
         String[] teamsNamesForSeason = new String[teamsForSeason.size()];
@@ -38,17 +39,10 @@ public class CplexController {
     * */
     public double[][] createParameterArray(int league, int season, List<Integer> choice)    {
         SeasonalData stringPara[][] = new SeasonalData[choice.size()][];
-        //System.out.println("Fetching DB, choices number: " + choice.size());
         for (int i = 0; i < choice.size(); i++){
             List<SeasonalData> result = SeasonalData.getBySeasonAndLeague(season, league, choice.get(i));
             stringPara[i] = result.toArray(new SeasonalData[result.size()]);
-            //System.out.println("Done choice n" + i + " has n: " + result.size() + " elements");
         }
-
-        //System.out.println("stringPara.length: " + stringPara.length);
-        //System.out.println("stringPara[0].length: " + stringPara[0].length);
-
-
         double[][] parameter = new double[stringPara.length][stringPara[0].length];   //Create final array for return
         for(int i = 0; i < stringPara.length; i++)
             for (int j = 0; j < stringPara[i].length; j++)
@@ -58,6 +52,11 @@ public class CplexController {
         return parameter;
     }
 
+    /**
+     * Method that transforms a list into a Comma Separated String
+     * @param l list
+     * @return Comma Separated String
+     */
     static public String listToCSString(List<Integer> l){
         String result = "";
         List<Input> inputs = new ArrayList<Input>();

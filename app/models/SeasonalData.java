@@ -38,6 +38,13 @@ public class SeasonalData extends Model {
         return (List<SeasonalData>) new Model.Finder(SeasonalData.class).all();
     }
 
+    /**
+     * Function that queries the DB getting a list of Seasonal Data for a certain League and Season
+     * @param season
+     * @param league_id
+     * @param input_id
+     * @return
+     */
     public static List<SeasonalData> getBySeasonAndLeague(int season, int league_id, int input_id){
         RawSql rawSql = RawSqlBuilder.parse("select id, team_id, team_name, year, league_id, input_id, value  " +
                 "from seasonal_data " +

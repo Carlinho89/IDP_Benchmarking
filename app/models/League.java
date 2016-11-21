@@ -54,6 +54,11 @@ public class League extends Model {
         return names;
     }
 
+    /**
+     * Query to get a League from the DB from its ID
+     * @param league
+     * @return
+     */
     public static int getIdByName(String league){
         int result = -1;
 
