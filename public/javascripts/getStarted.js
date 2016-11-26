@@ -251,39 +251,6 @@ $(document).ready(function () {
         query.selectedOutputs = selected;
         query.selectedOutputsNames = names;
 
-        /* var spnames = [];
-         var spselected = [];
-         $('#sportiveOutput input:checked').each(function () {
-         spselected.push(parseInt($(this).attr('value')));
-         spnames.push($(this).attr('name'));
-
-
-         });
-         query.spSelectedOutputs = spselected;
-         query.spSelectedOutputsNames = spnames;
-
-
-         var offnames = [];
-         var offselected = [];
-         $('#offensiveOutput input:checked').each(function () {
-         offselected.push(parseInt($(this).attr('value')));
-         offnames.push($(this).attr('name'));
-
-
-         });
-         query.offSelectedOutputs = offselected;
-         query.offSelectedOutputsNames = offnames;
-
-         var defnames = [];
-         var defselected = [];
-         $('#defensiveOutput input:checked').each(function () {
-         defselected.push(parseInt($(this).attr('value')));
-         defnames.push($(this).attr('name'));
-
-
-         });
-         query.defSelectedOutputs = defselected;
-         query.defSelectedOutputsNames = defnames;*/
         updateResume(query);
         document.getElementById("chooseOutputsAlert").style.visibility = "hidden";
     });
@@ -341,13 +308,9 @@ $(document).ready(function () {
             var newID= "dea"+(index);
             console.log(newID);
             node.setAttribute("id",newID);
-            //  var h4 = document.createElement("h4").setAttribute("class","text-center ");
-            // h4.innerHTML="AAA";
 
             node.insertAdjacentHTML("afterbegin", "<h4 class='text-center'>DEA"+(index+1)+"</h4>");
-            //$( "#"+newID+".dea-title" ).replaceWith( '<h4>AAAAAA</h4>' );
-            //console.log(document.getElementById(newID).innerHTML);
-            //console.log("aaaaa" + JSON.stringify($('#'+newID+' .dea-title')));
+
 
 
             var container = document.getElementById('stage1-dea');
@@ -359,7 +322,7 @@ $(document).ready(function () {
             for(var i=0; i< query.selectedInputs.length;i++){
                 inputlist+=' <div class="col-md-4 ">';
                 inputlist+=' <div class="dea-element">';
-                inputlist+='<input style=" margin-left:5%" type="checkbox" class="dea-input" stage="1" value='+query.selectedInputs[i]+' dea="'+index+'" parameter-type="input" >';
+                inputlist+='<input style=" margin-left:5%" type="checkbox" class="dea-input" stage="1" value='+query.selectedInputs[i]+' id='+query.selectedInputs[i]+' dea="'+index+'" parameter-type="input" >';
                 inputlist+='<label>'+query.selectedInputsNames[i]+'</label>';
                 inputlist+='</div></div>';
             }
@@ -371,7 +334,7 @@ $(document).ready(function () {
             for(var i=0; i< query.selectedOutputs.length;i++){
                 outputlist+=' <div class="col-md-4 ">';
                 outputlist+=' <div class="dea-element">';
-                outputlist+='<input style=" margin-left:5%" type="checkbox" class="dea-input" stage="1" value='+query.selectedOutputs[i]+' dea="'+index+'" parameter-type="output" >';
+                outputlist+='<input style=" margin-left:5%" type="checkbox" class="dea-input" stage="1" value='+query.selectedOutputs[i]+' id='+query.selectedOutputs[i]+' dea="'+index+'" parameter-type="output" >';
                 outputlist+='<label>'+query.selectedOutputsNames[i]+'</label>';
                 outputlist+='</div></div>';
             }
@@ -450,13 +413,9 @@ $(document).ready(function () {
             var newID = "dea" + (index);
             console.log(newID);
             node.setAttribute("id", newID);
-            //  var h4 = document.createElement("h4").setAttribute("class","text-center ");
-            // h4.innerHTML="AAA";
+
 
             node.insertAdjacentHTML("afterbegin", "<h4 class='text-center'>DEA" + (index + 1) + "</h4>");
-            //$( "#"+newID+".dea-title" ).replaceWith( '<h4>AAAAAA</h4>' );
-            //console.log(document.getElementById(newID).innerHTML);
-            //console.log("aaaaa" + JSON.stringify($('#'+newID+' .dea-title')));
 
 
             var container = document.getElementById('stage2-dea');
@@ -468,26 +427,25 @@ $(document).ready(function () {
             for (var i = 0; i < query.selectedInputs.length; i++) {
                 inputlist += ' <div class="col-md-4 ">';
                 inputlist += ' <div class="dea-element">';
-                inputlist += '<input style=" margin-left:5%" type="checkbox" class="dea-input" stage="2" value=' + query.selectedInputs[i] + ' dea="' + index + '"  parameter-type="input">';
+                inputlist += '<input style=" margin-left:5%" type="checkbox" class="dea-input" stage="2" value=' + query.selectedInputs[i] + ' id='+query.selectedInputs[i]+' dea="' + index + '"  parameter-type="input">';
                 inputlist += '<label>' + query.selectedInputsNames[i] + '</label>';
                 inputlist += '</div></div>';
             }
             for (var i = 0; i < query.stage1DEA.length; i++) {
                 inputlist += ' <div class="col-md-4 ">';
                 inputlist += ' <div class="dea-element">';
-                inputlist += '<input style=" margin-left:5%" type="checkbox" class="dea-input" stage="2" value="' + (1 * i) + '" dea="' + index + '"  parameter-type="result">';
+                inputlist += '<input style=" margin-left:5%" type="checkbox" class="dea-input" stage="2" value="' + (1 * i) + '" id=' + (1 * i) + ' dea="' + index + '"  parameter-type="result">';
                 inputlist += '<label>Stage1 DEA' + (i + 1) + ' result</label>';
                 inputlist += '</div></div>';
             }
             deaInputs.innerHTML = inputlist;
 
             var deaOutputs = node.getElementsByClassName("dea-outputs-container")[0];
-            //deaInputs.innerHTML="AA";
             var outputlist = "";
             for (var i = 0; i < query.selectedOutputs.length; i++) {
                 outputlist += ' <div class="col-md-4 ">';
                 outputlist += ' <div class="dea-element">';
-                outputlist += '<input style=" margin-left:5%" type="checkbox" class="dea-input" stage="2" value=' + query.selectedOutputs[i] + ' dea="' + index + '" parameter-type="output" >';
+                outputlist += '<input style=" margin-left:5%" type="checkbox" class="dea-input" stage="2" value=' + query.selectedOutputs[i] + ' id=' + query.selectedOutputs[i] + ' dea="' + index + '" parameter-type="output" >';
                 outputlist += '<label>' + query.selectedOutputsNames[i] + '</label>';
                 outputlist += '</div></div>';
             }
@@ -568,44 +526,36 @@ $(document).ready(function () {
             var newID= "dea"+(index);
             console.log(newID);
             node.setAttribute("id",newID);
-            //  var h4 = document.createElement("h4").setAttribute("class","text-center ");
-            // h4.innerHTML="AAA";
-
             node.insertAdjacentHTML("afterbegin", "<h4 class='text-center'>DEA"+(index+1)+"</h4>");
-            //$( "#"+newID+".dea-title" ).replaceWith( '<h4>AAAAAA</h4>' );
-            //console.log(document.getElementById(newID).innerHTML);
-            //console.log("aaaaa" + JSON.stringify($('#'+newID+' .dea-title')));
 
 
             var container = document.getElementById('stage3-dea');
             console.log(JSON.stringify(query.stage3DEA));
 
             var deaInputs= node.getElementsByClassName("dea-inputs-container")[0];
-            //deaInputs.innerHTML="AA";
             var inputlist="";
             for(var i=0; i< query.selectedInputs.length;i++){
                 inputlist+=' <div class="col-md-4 ">';
                 inputlist+=' <div class="dea-element">';
-                inputlist+='<input style=" margin-left:5%" type="checkbox" class="dea-input" stage="3" value='+query.selectedInputs[i]+' dea="'+index+'" parameter-type="input">';
+                inputlist+='<input style=" margin-left:5%" type="checkbox" class="dea-input" stage="3" value='+query.selectedInputs[i]+' id='+query.selectedInputs[i]+' dea="'+index+'" parameter-type="input">';
                 inputlist+='<label>'+query.selectedInputsNames[i]+'</label>';
                 inputlist+='</div></div>';
             }
             for(var i=0; i< query.stage2DEA.length;i++){
                 inputlist+=' <div class="col-md-4 ">';
                 inputlist+=' <div class="dea-element">';
-                inputlist+='<input style=" margin-left:5%" type="checkbox" class="dea-input" stage="3" value="'+(1*i)+'" dea="'+index+'" parameter-type="result">';
+                inputlist+='<input style=" margin-left:5%" type="checkbox" class="dea-input" stage="3" value="'+(1*i)+'" value='+(1*i)+' dea="'+index+'" parameter-type="result">';
                 inputlist+='<label>Stage2 DEA'+(i+1)+' result</label>';
                 inputlist+='</div></div>';
             }
             deaInputs.innerHTML=inputlist;
 
             var deaOutputs= node.getElementsByClassName("dea-outputs-container")[0];
-            //deaInputs.innerHTML="AA";
             var outputlist="";
             for(var i=0; i< query.selectedOutputs.length;i++){
                 outputlist+=' <div class="col-md-4 ">';
                 outputlist+=' <div class="dea-element">';
-                outputlist+='<input style=" margin-left:5%" type="checkbox" class="dea-input" stage="3" value='+query.selectedOutputs[i]+' dea="'+index+'" parameter-type="output">';
+                outputlist+='<input style=" margin-left:5%" type="checkbox" class="dea-input" stage="3" value='+query.selectedOutputs[i]+' id='+query.selectedOutputs[i]+' dea="'+index+'" parameter-type="output">';
                 outputlist+='<label>'+query.selectedOutputsNames[i]+'</label>';
                 outputlist+='</div></div>';
             }
@@ -655,9 +605,11 @@ $(document).ready(function () {
 
     });
 
-
 //Events to control selected values in each dea
-    $(".stage").on('click', function (event) {
+   $(".stage").on('click', function (event) {
+    var alert = "cooperAlertComplex";
+     document.getElementById(alert).style.visibility = "hidden";
+
 
         if(event.target.tagName.localeCompare("INPUT")==0){
             var inputObject={};
@@ -666,21 +618,20 @@ $(document).ready(function () {
             inputObject.deaIndex = parseInt(event.target.getAttribute('dea'));
             inputObject.value = event.target.getAttribute('value');
             console.log(JSON.stringify(inputObject));
-
+            var checkbox = this;
 
             if(inputObject.stage.localeCompare("1")==0){
-                setDEAParameters(query.stage1DEA,inputObject,query,$(this));
-
+                setDEAParameters(query.stage1DEA,inputObject,query,checkbox);
                 console.log(JSON.stringify(query.stage1DEA));
 
             }
             else if(inputObject.stage.localeCompare("2")==0){
-                setDEAParameters(query.stage2DEA,inputObject,query);
+                setDEAParameters(query.stage2DEA,inputObject,query, checkbox);
                 console.log(JSON.stringify(query.stage2DEA));
 
             }
             else if (inputObject.stage.localeCompare("3")==0){
-                setDEAParameters(query.stage3DEA,inputObject,query);
+                setDEAParameters(query.stage3DEA,inputObject,query, checkbox);
                 console.log(JSON.stringify(query.stage3DEA));
 
             }
@@ -913,14 +864,13 @@ function updateResume(query) {
     document.getElementById("selection-summary").innerHTML = resume;
 }
 
-
+//Function to display the teams in the league dinamically
 function displayTeams(query) {
     appRoutes.controllers.Application.getLeagueTeamsBySeason(query.season, query.leagueID).ajax({
         success: function (data) {
             $("#teams").empty();
             var html='<div class="row"><div class="col-md-1"></div>';
             query.numberOfTeams=data.length;
-// <a href=""><img class="  img-thumbnail img-circle img-responsive favorite_team" src="/assets/images/team_logo/' + data[i].logo + '"  val="' + data[i].tm_id + '" title="' + data[i].name + '" ></a>
             for (var i = 0; i < data.length; i++) {
                 html+='<div class="col-md-1 "><div class="team-box" ><img class="team-logo img-thumbnail img-responsive favorite_team" src="/assets/images/team_logo/' + data[i].logo + '"  val="' + data[i].tm_id + '" title="' + data[i].name + '" ></div></div>';
                 if(i==9){
@@ -937,31 +887,34 @@ function displayTeams(query) {
 }
 
 //Function to set the selected parameters of each dea in multistage solving
-function setDEAParameters(stageArray,inputObject,query, event){
+function setDEAParameters(stageArray,inputObject,query, checkbox){
     var hash="";
     if(inputObject.inputType.localeCompare("input")==0) {
-        console.log(stageArray[inputObject.deaIndex].selectedInputs.length);
-        if(!(query.numberOfTeams < 3*(1 + stageArray[inputObject.deaIndex].selectedInputs.length  + stageArray[inputObject.deaIndex].selectedOutputs.length + stageArray[inputObject.deaIndex].previousResults.length))){
-            var found= stageArray[inputObject.deaIndex].selectedInputs.indexOf(parseInt(inputObject.value));
-            if(found >= 0)stageArray[inputObject.deaIndex].selectedInputs.splice(found,1);
-            else  stageArray[inputObject.deaIndex].selectedInputs.push(parseInt(inputObject.value));
-
-        } else {
-            hash = "#chooseOrder";
-            alert = "cooperAlertComplex";
-            event.prop( "checked", false );
+      var found= stageArray[inputObject.deaIndex].selectedInputs.indexOf(parseInt(inputObject.value));
+      if(found >= 0)
+        stageArray[inputObject.deaIndex].selectedInputs.splice(found,1);
+      else {
+      if (!(query.numberOfTeams < 3*(1 + stageArray[inputObject.deaIndex].selectedInputs.length  + stageArray[inputObject.deaIndex].selectedOutputs.length + stageArray[inputObject.deaIndex].previousResults.length))){
+          stageArray[inputObject.deaIndex].selectedInputs.push(parseInt(inputObject.value));
         }
-
-
+        else {
+          hash = "#chooseOrder";
+          alert = "cooperAlertComplex";
+          $("input[type=checkbox][id="+inputObject.value+"]", checkbox).removeAttr('checked');
+        }
+      }
     }
+
     else if (inputObject.inputType.localeCompare("output")==0) {
         if(!(query.numberOfTeams < 3*(1 + stageArray[inputObject.deaIndex].selectedInputs.length  + stageArray[inputObject.deaIndex].selectedOutputs.length + stageArray[inputObject.deaIndex].previousResults.length))){
             var found= stageArray[inputObject.deaIndex].selectedOutputs.indexOf(parseInt(inputObject.value));
-            if(found >= 0)stageArray[inputObject.deaIndex].selectedOutputs.splice(found,1);
+            if(found >= 0)
+            stageArray[inputObject.deaIndex].selectedOutputs.splice(found,1);
             else  stageArray[inputObject.deaIndex].selectedOutputs.push(parseInt(inputObject.value));
         } else {
             hash = "#chooseOrder";
             alert = "cooperAlertComplex";
+            $("input[type=checkbox][id="+inputObject.value+"]", checkbox).removeAttr('checked');
         }
 
 
@@ -974,6 +927,7 @@ function setDEAParameters(stageArray,inputObject,query, event){
         } else {
             hash = "#chooseOrder";
             alert = "cooperAlertComplex";
+            $("input[type=checkbox][id="+inputObject.value+"]", checkbox).removeAttr('checked');
         }
 
     }
