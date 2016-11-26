@@ -251,39 +251,6 @@ $(document).ready(function () {
         query.selectedOutputs = selected;
         query.selectedOutputsNames = names;
 
-        /* var spnames = [];
-         var spselected = [];
-         $('#sportiveOutput input:checked').each(function () {
-         spselected.push(parseInt($(this).attr('value')));
-         spnames.push($(this).attr('name'));
-
-
-         });
-         query.spSelectedOutputs = spselected;
-         query.spSelectedOutputsNames = spnames;
-
-
-         var offnames = [];
-         var offselected = [];
-         $('#offensiveOutput input:checked').each(function () {
-         offselected.push(parseInt($(this).attr('value')));
-         offnames.push($(this).attr('name'));
-
-
-         });
-         query.offSelectedOutputs = offselected;
-         query.offSelectedOutputsNames = offnames;
-
-         var defnames = [];
-         var defselected = [];
-         $('#defensiveOutput input:checked').each(function () {
-         defselected.push(parseInt($(this).attr('value')));
-         defnames.push($(this).attr('name'));
-
-
-         });
-         query.defSelectedOutputs = defselected;
-         query.defSelectedOutputsNames = defnames;*/
         updateResume(query);
         document.getElementById("chooseOutputsAlert").style.visibility = "hidden";
     });
@@ -341,13 +308,9 @@ $(document).ready(function () {
             var newID= "dea"+(index);
             console.log(newID);
             node.setAttribute("id",newID);
-            //  var h4 = document.createElement("h4").setAttribute("class","text-center ");
-            // h4.innerHTML="AAA";
 
             node.insertAdjacentHTML("afterbegin", "<h4 class='text-center'>DEA"+(index+1)+"</h4>");
-            //$( "#"+newID+".dea-title" ).replaceWith( '<h4>AAAAAA</h4>' );
-            //console.log(document.getElementById(newID).innerHTML);
-            //console.log("aaaaa" + JSON.stringify($('#'+newID+' .dea-title')));
+
 
 
             var container = document.getElementById('stage1-dea');
@@ -450,13 +413,9 @@ $(document).ready(function () {
             var newID = "dea" + (index);
             console.log(newID);
             node.setAttribute("id", newID);
-            //  var h4 = document.createElement("h4").setAttribute("class","text-center ");
-            // h4.innerHTML="AAA";
+
 
             node.insertAdjacentHTML("afterbegin", "<h4 class='text-center'>DEA" + (index + 1) + "</h4>");
-            //$( "#"+newID+".dea-title" ).replaceWith( '<h4>AAAAAA</h4>' );
-            //console.log(document.getElementById(newID).innerHTML);
-            //console.log("aaaaa" + JSON.stringify($('#'+newID+' .dea-title')));
 
 
             var container = document.getElementById('stage2-dea');
@@ -482,7 +441,6 @@ $(document).ready(function () {
             deaInputs.innerHTML = inputlist;
 
             var deaOutputs = node.getElementsByClassName("dea-outputs-container")[0];
-            //deaInputs.innerHTML="AA";
             var outputlist = "";
             for (var i = 0; i < query.selectedOutputs.length; i++) {
                 outputlist += ' <div class="col-md-4 ">';
@@ -568,20 +526,13 @@ $(document).ready(function () {
             var newID= "dea"+(index);
             console.log(newID);
             node.setAttribute("id",newID);
-            //  var h4 = document.createElement("h4").setAttribute("class","text-center ");
-            // h4.innerHTML="AAA";
-
             node.insertAdjacentHTML("afterbegin", "<h4 class='text-center'>DEA"+(index+1)+"</h4>");
-            //$( "#"+newID+".dea-title" ).replaceWith( '<h4>AAAAAA</h4>' );
-            //console.log(document.getElementById(newID).innerHTML);
-            //console.log("aaaaa" + JSON.stringify($('#'+newID+' .dea-title')));
 
 
             var container = document.getElementById('stage3-dea');
             console.log(JSON.stringify(query.stage3DEA));
 
             var deaInputs= node.getElementsByClassName("dea-inputs-container")[0];
-            //deaInputs.innerHTML="AA";
             var inputlist="";
             for(var i=0; i< query.selectedInputs.length;i++){
                 inputlist+=' <div class="col-md-4 ">';
@@ -600,7 +551,6 @@ $(document).ready(function () {
             deaInputs.innerHTML=inputlist;
 
             var deaOutputs= node.getElementsByClassName("dea-outputs-container")[0];
-            //deaInputs.innerHTML="AA";
             var outputlist="";
             for(var i=0; i< query.selectedOutputs.length;i++){
                 outputlist+=' <div class="col-md-4 ">';
@@ -657,6 +607,9 @@ $(document).ready(function () {
 
 //Events to control selected values in each dea
    $(".stage").on('click', function (event) {
+    var alert = "cooperAlertComplex";
+     document.getElementById(alert).style.visibility = "hidden";
+
 
         if(event.target.tagName.localeCompare("INPUT")==0){
             var inputObject={};
@@ -918,7 +871,6 @@ function displayTeams(query) {
             $("#teams").empty();
             var html='<div class="row"><div class="col-md-1"></div>';
             query.numberOfTeams=data.length;
- // <a href=""><img class="  img-thumbnail img-circle img-responsive favorite_team" src="/assets/images/team_logo/' + data[i].logo + '"  val="' + data[i].tm_id + '" title="' + data[i].name + '" ></a>
             for (var i = 0; i < data.length; i++) {
                 html+='<div class="col-md-1 "><div class="team-box" ><img class="team-logo img-thumbnail img-responsive favorite_team" src="/assets/images/team_logo/' + data[i].logo + '"  val="' + data[i].tm_id + '" title="' + data[i].name + '" ></div></div>';
                 if(i==9){
