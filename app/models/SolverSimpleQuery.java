@@ -12,6 +12,9 @@ import java.util.List;
 
 /**
  * Created by enrico on 16/05/2016.
+ *
+ * This class is a wrapper for all the data needed to perform a single stage DEA
+
  */
 public class SolverSimpleQuery {
     private int season;

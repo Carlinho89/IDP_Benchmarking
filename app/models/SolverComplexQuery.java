@@ -11,9 +11,12 @@ import java.util.Iterator;
 
 /**
  * Created by carlodidomenico on 08/07/2016.
+ *
+ * This class is a wrapper for all the data needed to perform a Multistage DEA
+ *
  */
 public class SolverComplexQuery {
-
+    // Complex query vars
     private boolean superEff;
     private boolean inputOriented;
     private String solver;
@@ -33,7 +36,10 @@ public class SolverComplexQuery {
     private int numberOfSeasons;
     private int leagueID;
 
-
+    /**
+     * Constructor that parses the input query string
+     * @param query query string containing the query performed by the user
+     */
     public SolverComplexQuery(String query){
         try {
             season = numberOfSeasons = teamID = numberOfSeasons = leagueID = -1;
