@@ -607,11 +607,13 @@ $(document).ready(function () {
 
 //Events to control selected values in each dea
    $(".stage").on('click', function (event) {
-    var alert = "cooperAlertComplex";
-     document.getElementById(alert).style.visibility = "hidden";
+       var alert = "cooperAlertComplex";
+       document.getElementById(alert).style.visibility = "hidden";
+       document.getElementById("inputsAlertComplex").style.visibility = "hidden";
+       document.getElementById("outputsAlertComplex").style.visibility = "hidden";
 
 
-        if(event.target.tagName.localeCompare("INPUT")==0){
+       if(event.target.tagName.localeCompare("INPUT")==0){
             var inputObject={};
             inputObject.stage= event.target.getAttribute('stage');
             inputObject.inputType=event.target.getAttribute('parameter-type');
@@ -703,6 +705,40 @@ $(document).ready(function () {
             query.numberOfSeasons=1;
 
         }
+        if(query.solver.localeCompare("complex")==0){
+            if (query.stage1DEA.length == 0 || query.stage2DEA.length == 0 || query.stage3DEA.length == 0){
+                hash = "#chooseInputs";
+                alert = "chooseInputsAlert";
+            } else{
+                query.stage1DEA.forEach(function myFunction(dea, index) {
+                    if( (dea.selectedInputs.length + dea.previousResults.length) == 0){
+                        hash = "#chooseOrder";
+                        alert = "inputsAlertComplex";
+                    }else if( dea.selectedOutputs.length == 0) {
+                        hash = "#chooseOrder";
+                        alert = "outputsAlertComplex";
+                    }
+                });
+                query.stage2DEA.forEach(function myFunction(dea, index) {
+                    if( (dea.selectedInputs.length + dea.previousResults.length) == 0) {
+                        hash = "#chooseOrder";
+                        alert = "inputsAlertComplex";
+                    }else if( dea.selectedOutputs.length == 0) {
+                        hash = "#chooseOrder";
+                        alert = "outputsAlertComplex";
+                    }
+                });
+                query.stage3DEA.forEach(function myFunction(dea, index) {
+                    if( (dea.selectedInputs.length + dea.previousResults.length) == 0) {
+                        hash = "#chooseOrder";
+                        alert = "inputsAlertComplex";
+                    }else if( dea.selectedOutputs.length == 0) {
+                        hash = "#chooseOrder";
+                        alert = "outputsAlertComplex";
+                    }
+                });
+            }
+        }
 
 
         //if form is not compiled properly scrolls to
@@ -716,8 +752,10 @@ $(document).ready(function () {
             var url="";
             if(query.solver.localeCompare("simple")==0){ url = './simple-solver';}
 
-            else
-            {url = './complex-solver';}
+            else {
+                url = './complex-solver';
+
+            }
             console.log(url);
 
             /* var form = $('<form action="' + url + '" method="post">' +
