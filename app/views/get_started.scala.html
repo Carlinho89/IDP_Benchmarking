@@ -210,6 +210,7 @@
     margin-bottom: 10px;
     }
 
+
     #dea-templates { display: none; }
 
     </style>
@@ -266,7 +267,7 @@
                             <div class="superEff-element">
                                 <input style="margin-left:5%" type="checkbox" value="efficiency" id="efficiency" >
                                 <label >
-                                    Super Efficiency  <a href="/benchmarking/Efficiency">?</a>
+                                    Super Efficiency  <a href="/benchmarking/Efficiency" target="_blank">?</a>
                                 </label>
 
                             </div>
@@ -429,7 +430,7 @@
         </div>
 
         <div id="chooseInputs" class="container-fluid">
-            <h1 class="text-center">Choose <a href="@routes.Application.benchmarking("Inputs/Outputs")">Input</a> parameters</h1>
+            <h1 class="text-center">Choose <a href="a href="@routes.Application.benchmarking("Inputs/Outputs")" target="_blank" >Input</a> parameters</h1>
 
             <div id="chooseInputsAlert" class="alert alert-danger" style="visibility: hidden;">
                 <strong>Necessary Field</strong> Select at least two inputs
@@ -540,7 +541,7 @@
         </div>
 
         <div id="chooseOutputs" class="container-fluid">
-            <h1 class="text-center">Choose <a href="@routes.Application.benchmarking("Inputs/Outputs")">Output</a> parameters</h1>
+            <h1 class="text-center">Choose <a target="_blank" href="@routes.Application.benchmarking("Inputs/Outputs")">Output</a> parameters</h1>
 
 
             <div id="chooseOutputsAlert" class="alert alert-danger" style="visibility: hidden;">
@@ -639,8 +640,14 @@
                 </div>
                 <div class="col-md-10">
                     <h1  class="text-center">Compose Your Solver</h1>
-                    <p  class="text-center">You have choosen to use a multi-stage data analysis. This method is a composition of several "Simple Solvers" or one-stage DEAs.</p>
+                    <p  class="text-center"> You have choosen to use a multi-stage data analysis. This method is a composition of several "Simple Solvers" or one-stage DEAs.</p>
                     <p class="text-center"> You can create up to three stages and solve multiple DEAs in each stage. The results from one stage can be used as inputs for DEAs in the following stages</p>
+                    <br/>
+                    <p class="text-center"> In order to perform a <bold>2-Stage-DEA</bold>:</p>
+                    <ul class="tabs right">
+                        <li> Fill the <bold>Stage 1</bold> with dummy data </li>
+                        <li> Consider <bold>Stage 2 and Stage 3</bold> as if they were the <bold>2-Stage-DEA </bold></li>
+                    </ul>
                 </div>
                 <div class="col-md-1">
 
@@ -659,14 +666,13 @@
                 <div class="col-md-4"></div>
                 <div class="col-md-4  select-method-box">
                     <h4 class="text-center">Select a solving method:
-                        <h5 class="text-center">Learn more on <a href="/benchmarking/CCR">CCR</a>,<a href="/benchmarking/BCC">BCC</a></h5>
+                        <h5 class="text-center">Learn more on <a href="/benchmarking/CCR" target="_blank">CCR</a>,<a href="/benchmarking/BCC" target="_blank">BCC</a></h5>
                         <div class="form-group">
                             <label for="seasonSelect"></label>
                             <select class="form-control" id="methodSelect">
                                 <option>BCC</option>
                                 <option>CCR</option>
                             </select>
-
                         </div>
                 </div>
                 <div class="col-md-4"></div>
